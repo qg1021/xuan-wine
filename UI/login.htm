@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>  
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<meta http-equiv="Cache-Control" content="no-store"/>
+	<meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+	<meta content="index" name="menu" />
+	<link href="favicon.ico" rel="SHORTCUT ICON" />
+	<link href= "favicon.ico" rel= "Bookmark">
+	<link href="css/passport.css" rel="stylesheet" type="text/css" /> 
+	<link href="css/regist.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<title>宣酒特供客户端后台登录</title>
+	 
+
+</head>
+<body>
+<div id="shortcut">
+		<div class="w">
+			<ul class="fl lh">
+				<li clstag="homepage|keycount|home2012|01a" class="fore1 ld"><b></b><a href="javascript:addToFavorite()">收藏</a> </li>
+				<li clstag="homepage|keycount|home2012|01b" class="fore2"><a target="_blank" href="http://www.360top.com/">设为首页</a> </li>
+			</ul>
+		</div>
+	</div>
+	<div id="header" class="w">
+		<div id="logo" class="ld">
+			<a href="new-index.htm" clstag="homepage|keycount|home2012|02a"><b></b>
+			<img alt="东方农机商城" src="images/logo.png" height="90"></a>
+		</div><!--logo end-->
+	</div><!--header end-->
+	<form onsubmit="return false;" method="post" id="formlogin">
+    <div id="entry" class="w">
+        <div class="mt"><h2>用户登录</h2><b></b></div>
+        <div style="padding-top:20px;" class="mc">
+            <div class="form"><div class="item"><span class="label">账户名：</span><div class="fl">
+                        <input type="text" autocomplete="off" class="text" value="qg1019" onfocus="if(this.value=='用户名/邮箱/已验证手机'){this.value='';this.style.color='#333'}" onblur="if(this.value==''){this.value='用户名/邮箱/已验证手机';this.style.color='#999'}" tabindex="1" name="loginname" id="loginname">
+                        <label class="blank invisible" id="loginname_succeed"></label>
+                        <span class="clr"></span>
+                        <label id="loginname_error"></label>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="label">密码：</span>
+                    <div class="fl">
+                        <input type="password" autocomplete="off" onfocus="preCheck();" tabindex="2" class="text" name="loginpwd" id="loginpwd">
+                        <label class="blank invisible" id="loginpwd_succeed"></label>
+                        <span class="clr"></span>
+                        <label id="loginpwd_error"></label>
+                    </div>
+                </div>
+                <div id="autoentry" class="item">
+                    <span class="label">&nbsp;</span>
+                    <div class="fl safety">
+                        <label class="mar"><input type="checkbox" name="chkRememberUsername" id="chkRememberUsername"  class="checkbox">
+                            <label class="mar-b">记住账户名</label>
+                        </label>
+            
+
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="label">&nbsp;</span>
+                    <input type="button" tabindex="8" value="登录" id="loginsubmit" class="btn-img btn-entry">
+                </div>
+            </div>
+            <div id="guide">
+				<div class="slide" id="slide">
+			<div class="slide-itemswrap">
+				<div id="imgplayer"   style="display:none;">
+					<a href="youku.htm" target="_blank" ><img src="images/j1.jpg" /></a>
+					<a href="youku.htm" target="_blank" ><img src="images/j2.jpg" /></a>
+					<a href="youku.htm" target="_blank" ><img src="images/j3.jpg"  /></a>
+					<a href="youku.htm" target="_blank" ><img src="images/j4.jpg"  /></a>
+					<a href="youku.htm" target="_blank" ><img src="images/j5.jpg" /></a>
+					<a href="youku.htm" target="_blank" ><img src="images/j6.jpg"  /></a>
+				</div>
+			</div>
+		</div>
+			</div>
+            <span class="clr"></span>
+        </div>
+    </div>
+	</form>
+<div class="w w1">	
+	<SPAN class="clr"></SPAN>
+	<div id="footer">
+		<div class="copyright"> Copyright@2013  张建军 版权所有 联系方式:18956363422</div>
+	</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery.fn.imgplayer.js"></script>
+<script type="text/javascript">
+		$("#imgplayer").player({
+			width	: '340px',
+			height  : '300px',
+			showTitle : false
+		}).play();
+
+</script>
+</html>
