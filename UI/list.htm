@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>  
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<meta http-equiv="Cache-Control" content="no-store"/>
+	<meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+	<meta content="index" name="menu" />
+	<link href="favicon.ico" rel="SHORTCUT ICON" />
+	<link href= "favicon.ico" rel= "Bookmark">
+	<link href="css/passport.css" rel="stylesheet" type="text/css" /> 
+	<link href="css/regist.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<title>宣酒特供客户端后台列表</title>
+	 
+
+</head>
+<body>
+	<div id="shortcut">
+		<div class="w">
+			<ul class="fl lh">
+				<li clstag="homepage|keycount|home2012|01a" class="fore1 ld"><b></b><a href="javascript:addToFavorite()">收藏</a> </li>
+				<li clstag="homepage|keycount|home2012|01b" class="fore2"><a target="_blank" href="http://www.360top.com/">设为首页</a> </li>
+			</ul>
+		</div>
+	</div>
+	<div id="header" class="w">
+		<div id="logo" class="ld">
+			<a href="new-index.htm"><b></b>
+			<img alt="东方农机商城" src="images/logo.png" height="90"></a>
+		</div><!--logo end-->
+	</div><!--header end-->
+	<div class="w">
+		<div id="nav">
+			<ul id="navitems">
+			  <li id="index"><a href="index.action">首页</a> </li>
+			  <li id="ad_0" ><a href="links.action?mtype=0">左广告位</a> </li>
+			  <li id="ad_1" ><a href="links.action?mtype=1">右广告位</a></li>
+			  <li id="user"  ><a href="user!input.action">修改密码</a> </li>
+			  <li id="nav-auction" ><a onclick="if (confirm('确定要退出吗？')) return true; else return false;" href="${ctx}/j_spring_security_logout" >退出系统</a> </li>
+			</ul>
+		</div>
+		
+			<h2 class="mb10 box_solid_bottom color9C04">首页左边广告</h2>
+			<div class="pagehead01"></div>
+				<div id="message" style="line-height: 35px;">
+					
+				</div>
+    			<form id="mainForm" action="links.action?mtype=0" method="post">
+	    			<div class="box_search">
+	    				<input value="搜索" class="rr" type="submit">
+	    				<span>
+	    					<label class="ml20">标题</label>
+	    					<input id="title" name="filter_LIKES_title" size="15" value="" type="text"></span>
+	    				<span>
+							<label class="ml20">状态</label>
+                     	 	
+    
+    <select name="filter_EQB_ispublish" id="ispublish" style="width:85px;">
+    <option value="">--全 部--</option>
+    <option value="true">已发布</option>
+    <option value="false">未发布</option>
+
+
+</select>
+
+
+ 
+                     	 </span> 
+	    			</div>
+    			<p class="ll mt15">
+    				<button id="btnCreate" type="button" onclick="window.location.href='links!input.action?mtype=0'">新增</button>
+    				<button id="btnDelete" type="button" onclick="onBatchDelete();">删除</button>
+    				<button id="btnPublish" type="button" onclick="onPublish();">发布</button>
+    				<button id="btnCancel" type="button" onclick="onCancel();">取消发布</button>
+    			</p>
+	    		<table class="tablebox">
+				    <tbody><tr>
+				    	<th width="5%"><input id="checkall" name="checkall" type="checkbox"></th>
+				        <th width="20%">标题</th>
+				        <th width="50%">图片</th>
+				        <th width="10%">是否发布</th>
+				        <th width="15%">操作</th>
+				    </tr>
+    				
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="12" type="checkbox"></td>
+					        <td title="苏宁电器">苏宁电器</td>
+					        <td><img src="../upload/image//201211/im1352017775541163.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=12&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=12&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="11" type="checkbox"></td>
+					        <td title="人民网">人民网</td>
+					        <td><img src="../upload/image//201211/im1352017732436994.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=11&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=11&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="10" type="checkbox"></td>
+					        <td title="美的电器">美的电器</td>
+					        <td><img src="../upload/image//201211/im1352017694971107.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=10&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=10&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="9" type="checkbox"></td>
+					        <td title="格力电器">格力电器</td>
+					        <td><img src="../upload/image//201211/im1352017663945658.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=9&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=9&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="8" type="checkbox"></td>
+					        <td title="中国银行">中国银行</td>
+					        <td><img src="../upload/image//201211/im1352017616708710.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=8&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=8&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="7" type="checkbox"></td>
+					        <td title="中国工商银行">中国工商银行</td>
+					        <td><img src="../upload/image//201211/im1352017572739523.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=7&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=7&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="6" type="checkbox"></td>
+					        <td title="京东商城">京东商城</td>
+					        <td><img src="../upload/image//201211/im1352017522650401.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=6&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=6&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="5" type="checkbox"></td>
+					        <td title="央视网">央视网</td>
+					        <td><img src="../upload/image//201211/im1352017466576835.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=5&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=5&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="4" type="checkbox"></td>
+					        <td title="三星">三星</td>
+					        <td><img src="../upload/image//201211/im1352017418983125.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=4&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=4&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+					   <tr>
+					   		<td title=""><input id="ids" name="ids" value="3" type="checkbox"></td>
+					        <td title="百度">百度</td>
+					        <td><img src="../upload/image//201211/im1352017328805952.jpg" height="50" width="150"></td>
+					        <td>已发布</td>
+					        <td>
+					        	<a href="links!input.action?id=3&amp;mtype=0">修改</a>&nbsp;&nbsp;
+					        	<a href="javaScript:delRecord('links!delete.action?id=3&amp;mtype=0');">删除</a>
+					        </td>
+					    </tr>
+				    
+				          
+    			</tbody></table>
+    			<!-- 翻页 start  -->
+    			
+
+
+
+
+
+
+
+
+<script src="/search-webapp/js/jquery.pager.js" type="text/javascript"></script>
+<script type="text/javascript">
+     $(document).ready(function() {
+    	  PageClick = function(pageclickednumber) {
+              $("#pager").pager({pageTotalCount:10, pagenumber: pageclickednumber, pagecount:1, buttonClickCallback: PageClick });
+              jumpPage(pageclickednumber);
+          }
+          $("#pager").pager({pageTotalCount:10, pagenumber:1, pagecount:1, buttonClickCallback:PageClick });
+          $("#mainForm").find("button[type='submit'],input[type='submit']").click(function(){
+              $('#pageNo').val(1);
+          });
+ 
+
+
+        	            
+
+        });
+     function jumpPage(pageNo) {
+    		$("#pageNo").val(pageNo);
+    		$("#mainForm").submit();
+     }
+     function gotoSubmit(obj,pagecount,callBack){
+         var pageGo = document.getElementById('pageGo').value;
+         if(pageGo==""){
+             alert("页码不能为空");
+             document.getElementById('pageGo').focus(); 
+             return false;
+         }else{
+        	 var r = /^\+?[1-9][0-9]*$/;　　//正整数 
+             if(!r.test(pageGo) || pageGo > pagecount){
+            	 alert("页码不合法");
+            	 document.getElementById('pageGo').value='';
+                 document.getElementById('pageGo').focus();
+                 return false;
+             }
+         }
+         jumpPage(pageGo);
+         
+     }
+</script>
+<div id="pager" class="pagernumber"><span><a class="pgEmpty" style="cursor: pointer;">首页</a><a class="pgEmpty" style="cursor: pointer;">上一页</a><a class="pagenum_cur" style="cursor: pointer;">1</a><a class="pgEmpty" style="cursor: pointer;">下一页</a><a class="pgEmpty" style="cursor: pointer;">尾页</a><span class="pgEmpty" style="color: #666666;">共1页 </span></span></div>
+<input name="page.pageNo" id="pageNo" value="1" type="hidden">
+<input name="page.orderBy" id="orderBy" value="id" type="hidden">
+<input name="page.order" id="order" value="desc" type="hidden">
+
+				<!-- 翻页 end  -->
+				</form>
+			</div>
+	</div>
+
+<div class="w w1">	
+	<SPAN class="clr"></SPAN>
+	<div id="footer">
+		<div class="copyright"> Copyright@2013  张建军 版权所有 联系方式:18956363422</div>
+	</div>
+	</div>
+</body>
+</html>

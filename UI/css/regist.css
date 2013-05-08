@@ -1,6 +1,6 @@
 /*entry*/
 #entry .mt{height:33px;background:url(../images/tit_regist.jpg) #D1D1D1 repeat-x 0 -34px;}
-#entry .mt h2{float:left;height:33px;padding-left:15px;background:url(../images/tit_regist.jpg) no-repeat 0 0;line-height:33px;}
+#entry .mt h2{float:left;height:33px;padding-left:15px;background:url(../images/tit_regist.jpg) no-repeat 0 0;line-height:33px;color: #C5312F;}
 #entry .mt span{float:right;height:33px;line-height:33px;text-align:right;}
 #entry .mt b{float:right;width:10px;height:33px;background:url(../images/tit_regist.jpg) no-repeat 0 -68px;}
 #entry .mc{padding:40px 40px 30px 40px;border:solid #D1D1D1;border-width:0 1px 1px; margin-bottom: 10px;}

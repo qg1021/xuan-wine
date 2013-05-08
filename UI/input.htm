@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>  
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<meta http-equiv="Cache-Control" content="no-store"/>
+	<meta http-equiv="Pragma" content="no-cache"/>
+	<meta http-equiv="Expires" content="0"/>
+	<meta content="index" name="menu" />
+	<link href="favicon.ico" rel="SHORTCUT ICON" />
+	<link href= "favicon.ico" rel= "Bookmark">
+	<link href="css/passport.css" rel="stylesheet" type="text/css" /> 
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<title>宣酒特供新增页面</title>
+	 
+
+</head>
+<body>
+	<div id="shortcut">
+		<div class="w">
+			<ul class="fl lh">
+				<li clstag="homepage|keycount|home2012|01a" class="fore1 ld"><b></b><a href="javascript:addToFavorite()">收藏</a> </li>
+				<li clstag="homepage|keycount|home2012|01b" class="fore2"><a target="_blank" href="http://www.360top.com/">设为首页</a> </li>
+			</ul>
+		</div>
+	</div>
+	<div id="header" class="w">
+		<div id="logo" class="ld">
+			<a href="new-index.htm"><b></b>
+			<img  src="images/logo.png" height="90"></a>
+		</div><!--logo end-->
+	</div><!--header end-->
+	<div class="w">
+		<div id="nav">
+			<ul id="navitems">
+			  <li id="index"><a href="index.action">首页</a> </li>
+			  <li id="ad_0" ><a href="links.action?mtype=0">左广告位</a> </li>
+			  <li id="ad_1" ><a href="links.action?mtype=1">右广告位</a></li>
+			  <li id="user"  ><a href="user!input.action">修改密码</a> </li>
+			  <li id="nav-auction" ><a onclick="if (confirm('确定要退出吗？')) return true; else return false;" href="${ctx}/j_spring_security_logout" >退出系统</a> </li>
+			</ul>
+		</div>
+		
+			<h2 class="mb10 box_solid_bottom color9C04">首页左边广告</h2>
+			<form id="inputForm" name="inputForm" action="links!save.action?mtype=${mtype}" method="post">
+					<input id="id" name="id" value="23" type="hidden">
+	    			<ul class="inputform">
+						<li>以下有<b>*</b>的内容为必填项：</li>
+						<li>
+				  			<label>标题<b>*</b></label>
+				  			<input class="valid" id="title" name="title" value="122" maxlength="100" style="width:300px;" type="text">
+				  		</li>
+				  		<li>
+				  			<label>链接<b>*</b></label>
+				  			<input id="linkurl" name="linkurl" value="222" maxlength="100" style="width:300px;" type="text">
+				  		</li>
+
+
+					</ul>    
+	 				<p class="button_box">
+	 					<button class="course_btn_orange" type="button" onclick="onSubmit();">保存</button> &nbsp;
+	 					<button class="course_btn_grey" type="button" onclick="location.href='links.action?mtype=0'">取消</button>&nbsp;
+	 				</p>
+</form>					
+	 			
+	</div>
+
+<div class="w w1">	
+	<SPAN class="clr"></SPAN>
+	<div id="footer">
+		<div class="copyright"> Copyright@2013  张建军 版权所有 联系方式:18956363422</div>
+	</div>
+	</div>
+</body>
+</html>
