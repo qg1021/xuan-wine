@@ -36,9 +36,9 @@ public class UserSuccessHandler extends SimpleUrlAuthenticationSuccessHandler
 
         User user = accountManager.findUserByLoginName(userDetails
                 .getUsername());
-        request.getSession().setAttribute("logindate", user.getCreateDate());
         user.setCreateDate(new Date());
         accountManager.saveUser(user);
+        request.getSession().setAttribute("loginuser", user);
         StringBuffer sb = new StringBuffer();
         if (user.getRoleList() != null)
         {
