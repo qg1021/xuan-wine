@@ -9,6 +9,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -51,7 +52,45 @@ public class User extends BaseEntity
 
     private Date               createDate;                 // 创建时间
 
-    public static final String DEFAULT_PASSWORD = "123456"; // 用户默认密码
+    private boolean             userlock;                   // 是否被锁
+
+    public final static boolean PUBLIC_USER      = false;   // 未锁定
+
+    public final static boolean LOCK_USER        = true;    // 已锁定
+
+    public static final String  DEFAULT_PASSWORD = "123456"; // 用户默认密码
+
+    private String              roleName;                   // 角色名称
+
+    public String getRoleName()
+    {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName)
+    {
+        this.roleName = roleName;
+    }
+
+    public boolean isUserlock()
+    {
+        return userlock;
+    }
+
+    public void setUserlock(boolean userlock)
+    {
+        this.userlock = userlock;
+    }
+
+    @Transient
+    public String getStatusName()
+    {
+        if (userlock)
+        {
+            return "已锁定";
+        }
+        return "未锁定";
+    }
 
     public Date getCreateDate()
     {

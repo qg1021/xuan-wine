@@ -26,6 +26,8 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.api;
 
+import java.util.List;
+
 import cn.common.lib.springside.orm.BaseDao;
 
 import com.gm.wine.entity.User;
@@ -42,5 +44,26 @@ import com.gm.wine.entity.User;
  */
 public interface UserDao extends BaseDao<User, Long>
 {
+    /**
+     * 
+     * 批量删除
+     * 
+     * @since 2012-7-25
+     * @author qingang
+     * @param ids
+     */
+    public void batchDelete(List<Long> ids);
+
+    /**
+     * 
+     * 解锁和被锁
+     * 
+     * @since 2012-11-28
+     * @author qingang
+     * @param islock
+     *            true:已锁定 false：未锁定
+     * @param ids
+     */
+    public void batchOperate(boolean islock, List<Long> ids);
 
 }

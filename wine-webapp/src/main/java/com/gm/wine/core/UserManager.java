@@ -1,5 +1,7 @@
 package com.gm.wine.core;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +72,45 @@ public class UserManager extends EntityManager<User, Long>
     {
         user.setPassword(password);
         super.save(user);
+    }
+
+    /**
+     * 
+     * 批量删除
+     * 
+     * @since 2012-7-26
+     * @author qingang
+     * @param ids
+     */
+    public void batchDelete(List<Long> ids)
+    {
+        userDao.batchDelete(ids);
+    }
+
+    /**
+     * 
+     * 批量锁定用户
+     * 
+     * @since 2012-11-28
+     * @author qingang
+     * @param ids
+     */
+    public void locked(List<Long> ids)
+    {
+        userDao.batchOperate(User.LOCK_USER, ids);
+    }
+
+    /**
+     * 
+     * 批量用户解锁
+     * 
+     * @since 2012-11-28
+     * @author qingang
+     * @param ids
+     */
+    public void clear(List<Long> ids)
+    {
+        userDao.batchOperate(User.PUBLIC_USER, ids);
     }
 
     @Override

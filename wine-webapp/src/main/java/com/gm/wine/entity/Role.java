@@ -49,6 +49,10 @@ public class Role extends BaseEntity
 
     }
 
+    public final static String ROLE_TYPE_0 = "注册会员";
+
+    public final static String ROLE_TYPE_1 = "后台管理员";
+
     public Role(Long id, String name)
     {
         this.id = id;

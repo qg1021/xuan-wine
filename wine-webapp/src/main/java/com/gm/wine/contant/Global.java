@@ -47,6 +47,13 @@ public class Global
 
     // table
     // 编辑标识位
+    public final static String     LOCK_SUCCESS    = "锁定成功";
+
+    public final static String     LOCK_LOSE       = "锁定失败";
+
+    public final static String     CLEAR_SUCCESS   = "解锁成功";
+
+    public final static String     CLEAR_LOSE      = "解锁失败";
 
     public final static String     EXPORT_SUCCESS  = "导出成功";
 
@@ -71,6 +78,10 @@ public class Global
     public final static String     SAVE_SUCCESS    = "保存成功";
 
     public final static String     SAVE_LOSE       = "保存失败";
+
+    public final static String     MODIFY_SUCCESS  = "修改成功";
+
+    public final static String     MODIFY_LOSE     = "修改失败";
 
     public final static String     UPLOAD_SUCCESS  = "上传成功";
 

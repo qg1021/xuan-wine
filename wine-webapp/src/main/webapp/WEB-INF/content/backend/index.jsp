@@ -13,7 +13,11 @@
 <body>
 	<%@ include file="/common/header.jsp"%>
 	<%@ include file="/common/menu.jsp"%>
-
+	<div class="w">
+		<div style="padding-top:20px;" class="content">
+			欢迎进入后台！
+		</div>
+	</div>
 	<%@ include file="/common/footer.jsp" %>
 
 <!-- wrapper  end-->

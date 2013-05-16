@@ -26,6 +26,11 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.dao;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import org.springside.modules.orm.hibernate.HibernateDao;
 
@@ -44,5 +49,35 @@ import com.gm.wine.entity.User;
 public class UserHibernateDao extends HibernateDao<User, Long> implements
 UserDao
 {
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 2012-11-28
+     * @see com.gm.machine.api.UserDao#batchDelete(java.util.List)
+     */
+    @Override
+    public void batchDelete(List<Long> ids)
+    {
+        String hql = "delete from User where id in(:ids)";
+        Map<String, List<Long>> values = Collections.singletonMap("ids", ids);
+        super.batchExecute(hql, values);
 
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 2012-11-28
+     * @see com.gm.machine.api.UserDao#batchOperate(boolean, java.util.List)
+     */
+    @Override
+    public void batchOperate(boolean islock, List<Long> ids)
+    {
+        String hql = "update User set userlock =:userlock where id in(:ids)";
+        Map<String, Object> values = new HashMap<String, Object>();
+        values.put("userlock", islock);
+        values.put("ids", ids);
+        super.batchExecute(hql, values);
+
+    }
 }

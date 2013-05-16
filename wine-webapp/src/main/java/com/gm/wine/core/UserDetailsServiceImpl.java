@@ -23,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
     public UserDetails loadUserByUsername(String username)
     throws UsernameNotFoundException, DataAccessException
     {
+        boolean accountNonLocked = true;
         // TODO Auto-generated method stub
         User user = accountManager.findUserByLoginName(username);
         if (user == null)
@@ -30,12 +31,17 @@ public class UserDetailsServiceImpl implements UserDetailsService
             throw new UsernameNotFoundException("用户" + username + " 不存在");
 
         }
+        else
+            if (user.isUserlock())
+            {
+                accountNonLocked = false;
+            }
 
         // -- jsexam示例中无以下属性, 暂时全部设为true. --//
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
+
 
         Set<GrantedAuthority> grantedAuths = obtainGrantedAuthorities(user);
 
