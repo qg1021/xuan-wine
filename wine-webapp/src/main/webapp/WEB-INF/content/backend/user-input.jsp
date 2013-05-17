@@ -119,7 +119,7 @@
 			        		</ul>
 	                    <p class="button_box">
 	 						<button class="course_btn_orange" type="submit">保存</button> &nbsp;
-	 						<button class="course_btn_grey" type="button" onclick="location.href='links.action?mtype=0'">取消</button>&nbsp;
+	 						<button class="course_btn_grey" type="button" onclick="location.href='user.action'">取消</button>&nbsp;
 	 					</p>
 		 			</form>
  				</div>

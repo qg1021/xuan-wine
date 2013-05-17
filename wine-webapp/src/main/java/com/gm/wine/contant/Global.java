@@ -99,6 +99,8 @@ public class Global
 
     public static List<LabelValue> BASEDATA_TYPES  = Lists.newArrayList();
 
+    public static List<LabelValue> newsTypeList    = Lists.newArrayList();
+
     public static String           picpath;
 
     public static String           appurl;
@@ -107,6 +109,7 @@ public class Global
     {
         picpath = PropertyUtils.getProperty("upload.path");
         appurl = PropertyUtils.getProperty("search.appurl");
+        newsTypeList.add(new LabelValue("zxxw", "资讯新闻"));
 
     }
 

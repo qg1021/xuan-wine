@@ -14,6 +14,7 @@
 	String savePath = request.getSession().getServletContext().getRealPath("/")+ "upload/news/";
 	//文件保存目录URL /zswz/attached/ 
 	String saveUrl = request.getContextPath() + "/upload/news/";
+	String displayUrl="http://localhost:8088/wine-webapp"+"/upload/news/";
 	//定义允许上传的文件扩展名 
 	//定义允许上传的文件扩展名 
 	HashMap<String, String> extMap = new HashMap<String, String>();
@@ -51,7 +52,8 @@
 	//创建文件夹 
 	savePath += dirName + "/";
 	//D:\Tomcat6.0\webapps\zswz\attached/image/ 
-	saveUrl += dirName + "/";///zswz/attached/image/ 
+	saveUrl += dirName + "/";///zswz/attached/image/
+	displayUrl+= dirName + "/";
 	File saveDirFile = new File(savePath);
 	if (!saveDirFile.exists()) {
 		saveDirFile.mkdirs();
@@ -60,7 +62,8 @@
 	String ymd = sdf.format(new Date());
 	savePath += ymd + "/";
 	//D:\Tomcat6.0\webapps\zswz\attached/image/20111129/ 
-	saveUrl += ymd + "/";///zswz/attached/image/20111129/ 
+	saveUrl += ymd + "/";///zswz/attached/image/20111129/
+	displayUrl+= ymd + "/";
 	File dirFile = new File(savePath);
 	if (!dirFile.exists()) {
 		dirFile.mkdirs();
@@ -136,7 +139,7 @@
 	//发送给 KE  
 	JSONObject obj = new JSONObject();
 	obj.put("error", 0);
-	obj.put("url", saveUrl + "/" + newImgName);
+	obj.put("url", displayUrl+ "/" + newImgName);
 	///zswz/attached/image/20111129/  image 20111129195421_593.jpg 
 	out.println(obj.toJSONString());
 %>
