@@ -409,4 +409,31 @@ table {
 #entry .message{color:#090!important;}
 .content{padding:10px 10px 10px 10px;border: 1px solid #D1D1D1; border-radius: 1px 1px 1px 1px;margin-bottom: 10px;}
 
+.course_btn_orange{
+	background:url(../images/btn.gif) no-repeat -150px 0px;
+	width:70px;
+	height:25px;
+	display:inline-block;
+	font-size: 13px;
+    font-weight: bold;
+    border: 0 none;
+    cursor: pointer;
+	color:#fff;
+	vertical-align:middle;
+	}
+.course_btn_orange:hover {background:url(../images/btn.gif) no-repeat -150px -50px;}
+.course_btn_grey{
+	background:url(../images/btn.gif) no-repeat -150px -200px;
+	width:70px;
+	height:25px;
+	display:inline-block;
+    border: 0 none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+	color:#CC0000;
+	vertical-align: middle;
+}
+.course_btn_grey:hover {background:url(../images/btn.gif) no-repeat -150px -250px;}
+
 

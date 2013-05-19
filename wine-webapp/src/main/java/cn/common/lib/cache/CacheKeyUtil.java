@@ -11,7 +11,7 @@ package cn.common.lib.cache;
 public class CacheKeyUtil
 {
 
-    public static String cachePerfix        = "machine_";
+    public static String cachePerfix        = "wine_";
 
     /** 基础数据Key **/
 

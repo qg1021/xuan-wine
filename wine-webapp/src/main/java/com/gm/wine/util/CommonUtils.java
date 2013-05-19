@@ -211,6 +211,120 @@ public class CommonUtils
 
     }
 
+
+
+    /**
+     * 将Html页面接收到的数据中的空格，回车，tab等进行转换
+     * 
+     * @param in
+     * @return
+     */
+    public static String escapeHTMLTags(String in)
+    {
+        if (in == null)
+        {
+            return null;
+        }
+        char ch;
+        int i = 0;
+        int last = 0;
+        char[] input = in.toCharArray();
+        int len = input.length;
+        StringBuffer out = new StringBuffer();
+        while (i < len)
+        {
+            ch = input[i];
+            if (ch == '<')
+            {
+                if (i > last)
+                {
+                    out.append(input, last, i - last);
+                }
+                last = i + 1;
+                out.append("&lt;");
+                i++;
+                continue;
+            }
+            else
+                if (ch == '>')
+                {
+                    if (i > last)
+                    {
+                        out.append(input, last, i - last);
+                    }
+                    last = i + 1;
+                    out.append("&gt;");
+                    i++;
+                    continue;
+                }
+                else
+                    if (ch == '\r')
+                    {
+                        char chNext = input[i + 1];
+                        if ((byte) chNext == '\n')
+                        {
+                            if (i > last)
+                            {
+                                out.append(input, last, i - last);
+                            }
+                            last = i + 1 + 1;
+                            out.append("<BR>");
+                            i += 2;
+                            continue;
+                        }
+                    }
+                    else
+                        if (ch == '\n')
+                        {
+                            if (i > last)
+                            {
+                                out.append(input, last, i - last);
+                            }
+                            last = i + 1;
+                            out.append("<BR>");
+                            i++;
+                            continue;
+                        }
+                        else
+                            if (ch == ' ')
+                            {
+                                if (i > last)
+                                {
+                                    out.append(input, last, i - last);
+                                }
+                                last = i + 1;
+                                out.append("&nbsp;");
+                                i++;
+                                continue;
+                            }
+                            else
+                                if (ch == '"')
+                                {
+                                    if (i > last)
+                                    {
+                                        out.append(input, last, i - last);
+                                    }
+                                    last = i + 1;
+                                    out.append("&quot;");
+                                    i++;
+                                    continue;
+                                }
+                                else
+                                {
+                                    i++;
+                                }
+        }
+        if (last == 0)
+        {
+            return in;
+        }
+        if (i > last)
+        {
+            out.append(input, last, i - last);
+        }
+        return out.toString();
+    }
+
     public static void main(String[] args) throws Exception
     {
         System.err.println("--------------" + getNumberString("1", 2));
