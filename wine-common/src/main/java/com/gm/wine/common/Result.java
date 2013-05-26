@@ -27,83 +27,32 @@
 package com.gm.wine.common;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
- * 新闻资讯vo
- * 
- * @author qingang
- * @version 1.0
- * @since 2013-5-19
+ * Description of the class
+ *
+ * @author            qingang
+ * @version           1.0
+ * @since             2013-5-25
  */
 
-public class NewsVO<T> implements Serializable
+public class Result implements Serializable
 {
-
     /**
      * serialVersionUID long
      */
     private static final long serialVersionUID = 1L;
 
-    private Long              id;
+    private String            data;
 
-    private String            title;                // 标题
-
-    private String            source;               // 来源
-
-    private Date              publishdate;          // 发布时间
-
-    private String            desciption;
-
-    public Long getId()
+    public String getData()
     {
-        return id;
+        return data;
     }
 
-    public void setId(Long id)
+    public void setData(String data)
     {
-        this.id = id;
+        this.data = data;
     }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public String getSource()
-    {
-        return source;
-    }
-
-    public void setSource(String source)
-    {
-        this.source = source;
-    }
-
-    public Date getPublishdate()
-    {
-        return publishdate;
-    }
-
-    public void setPublishdate(Date publishdate)
-    {
-        this.publishdate = publishdate;
-    }
-
-    public String getDesciption()
-    {
-        return desciption;
-    }
-
-    public void setDesciption(String desciption)
-    {
-        this.desciption = desciption;
-    }
-
 }

@@ -8,8 +8,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-
+import com.google.gson.Gson;
 
 
 
@@ -29,8 +28,10 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
+import com.gm.wine.app.bean.Result;
 import com.gm.wine.app.bean.URLs;
 import com.gm.wine.app.bean.Update;
+import com.gm.wine.app.bean.User;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -188,6 +189,193 @@ public class ApiClient {
 	public static Update checkVersion(AppContext appContext) throws AppException {
 		try{
 			return Update.parse(http_get(appContext, URLs.UPDATE_VERSION));		
+		}catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * get请求URL
+	 * @param url
+	 * @throws AppException 
+	 */
+	private static String http_get(AppContext appContext, String url) throws AppException {	
+		String data = "";
+		String cookie = getCookie(appContext);
+		String userAgent = getUserAgent(appContext);
+		
+		HttpClient httpClient = null;
+		GetMethod httpGet = null;
+
+		String responseBody = "";
+		int time = 0;
+		do{
+			try 
+			{
+				httpClient = getHttpClient();
+				httpGet = getHttpGet(url, cookie, userAgent);			
+				int statusCode = httpClient.executeMethod(httpGet);
+				if (statusCode != HttpStatus.SC_OK) {
+					throw AppException.http(statusCode);
+				}
+				responseBody = httpGet.getResponseBodyAsString();
+				//System.out.println("XMLDATA=====>"+responseBody);
+				break;				
+			} catch (HttpException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// 发生致命的异常，可能是协议不对或者返回的内容有问题
+				e.printStackTrace();
+				throw AppException.http(e);
+			} catch (IOException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// 发生网络异常
+				e.printStackTrace();
+				throw AppException.network(e);
+			} finally {
+				// 释放连接
+				httpGet.releaseConnection();
+				httpClient = null;
+			}
+		}while(time < RETRY_TIME);
+		
+
+		if(responseBody.contains("data")){
+			try {
+				Gson g = new Gson();
+				data = g.fromJson(responseBody, Result.class).getData();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+		}
+		return data;
+	}
+	/**
+	 * 公用post方法
+	 * @param url
+	 * @param params
+	 * @param files
+	 * @throws AppException
+	 */
+	private static String _post(AppContext appContext, String url, Map<String, Object> params) throws AppException {
+		//System.out.println("post_url==> "+url);
+		String data="";
+		String cookie = getCookie(appContext);
+		String userAgent = getUserAgent(appContext);
+		
+		HttpClient httpClient = null;
+		PostMethod httpPost = null;
+		
+		//post表单参数处理
+		int length = (params == null ? 0 : params.size());
+		Part[] parts = new Part[length];
+		int i = 0;
+        if(params != null)
+        for(String name : params.keySet()){
+        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
+        	//System.out.println("post_key==> "+name+"    value==>"+String.valueOf(params.get(name)));
+        }
+
+		
+		String responseBody = "";
+		int time = 0;
+		do{
+			try 
+			{
+				httpClient = getHttpClient();
+				httpPost = getHttpPost(url, cookie, userAgent);	        
+		        httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));		        
+		        int statusCode = httpClient.executeMethod(httpPost);
+		        if(statusCode != HttpStatus.SC_OK) 
+		        {
+		        	throw AppException.http(statusCode);
+		        }
+		        else if(statusCode == HttpStatus.SC_OK) 
+		        {
+		            Cookie[] cookies = httpClient.getState().getCookies();
+		            String tmpcookies = "";
+		            for (Cookie ck : cookies) {
+		                tmpcookies += ck.toString()+";";
+		            }
+		            //保存cookie   
+	        		if(appContext != null && tmpcookies != ""){
+	        			appContext.setProperty("cookie", tmpcookies);
+	        			appCookie = tmpcookies;
+	        		}
+		        }
+		     	responseBody = httpPost.getResponseBodyAsString();
+		        //System.out.println("XMLDATA=====>"+responseBody);
+		     	break;	     	
+			} catch (HttpException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// 发生致命的异常，可能是协议不对或者返回的内容有问题
+				e.printStackTrace();
+				throw AppException.http(e);
+			} catch (IOException e) {
+				time++;
+				if(time < RETRY_TIME) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {} 
+					continue;
+				}
+				// 发生网络异常
+				e.printStackTrace();
+				throw AppException.network(e);
+			} finally {
+				// 释放连接
+				httpPost.releaseConnection();
+				httpClient = null;
+			}
+		}while(time < RETRY_TIME);
+        
+		if(responseBody.contains("data")){
+			try {
+				Gson g = new Gson();
+				data = g.fromJson(responseBody, Result.class).getData();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+		}
+		return data;
+	}
+	/**
+	 * 登录， 自动处理cookie
+	 * @param url
+	 * @param username
+	 * @param pwd
+	 * @return
+	 * @throws AppException
+	 */
+	public static User login(AppContext appContext, String username, String pwd) throws AppException {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("username", username);
+		params.put("pwd", pwd);
+		params.put("keep_login", 1);
+				
+		String loginurl = URLs.LOGIN_VALIDATE_HTTP;
+
+		
+		try{
+			return new Gson().fromJson(_post(appContext, loginurl, params),User.class);		
 		}catch(Exception e){
 			if(e instanceof AppException)
 				throw (AppException)e;

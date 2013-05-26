@@ -89,9 +89,9 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>1.7.1</version>
-			<scope>compile</scope>
+			<version>2.2.2</version>
 		</dependency>
+            
 
 		<!-- spring data access -->
 		<dependency>

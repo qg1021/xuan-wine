@@ -39,7 +39,7 @@ public class URLs implements Serializable {
 	public final static String PRODUCT_DETAIL = URL_API_HOST+"product!detail.action";//пбнецВо╦
 	
 
-	public final static String UPDATE_VERSION = URL_API_HOST+"MobileAppVersion.xml";
+	public final static String UPDATE_VERSION = URL_API_HOST+"appversion.action";
 	
 	
 }

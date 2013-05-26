@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import com.gm.wine.app.AppException;
 import com.gm.wine.app.common.StringUtils;
+import com.google.gson.Gson;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -53,55 +54,7 @@ public class Update implements Serializable{
 		this.updateLog = updateLog;
 	}
 	
-	public static Update parse(InputStream inputStream) throws IOException, AppException {
-		Update update = null;
-        //获得XmlPullParser解析器
-        XmlPullParser xmlParser = Xml.newPullParser();
-        try {        	
-            xmlParser.setInput(inputStream, UTF8);
-            //获得解析到的事件类别，这里有开始文档，结束文档，开始标签，结束标签，文本等等事件。
-            int evtType=xmlParser.getEventType();
-			//一直循环，直到文档结束    
-			while(evtType!=XmlPullParser.END_DOCUMENT){ 
-	    		String tag = xmlParser.getName(); 
-			    switch(evtType){ 
-			    	case XmlPullParser.START_TAG:			    		
-			            //通知信息
-			            if(tag.equalsIgnoreCase("android"))
-			    		{
-			            	update = new Update();
-			    		}
-			            else if(update != null)
-			    		{
-			    			if(tag.equalsIgnoreCase("versionCode"))
-				            {			      
-			    				update.setVersionCode(StringUtils.toInt(xmlParser.nextText(),0));
-				            }
-				            else if(tag.equalsIgnoreCase("versionName"))
-				            {			            	
-				            	update.setVersionName(xmlParser.nextText());
-				            }
-				            else if(tag.equalsIgnoreCase("downloadUrl"))
-				            {			            	
-				            	update.setDownloadUrl(xmlParser.nextText());
-				            }
-				            else if(tag.equalsIgnoreCase("updateLog"))
-				            {			            	
-				            	update.setUpdateLog(xmlParser.nextText());
-				            }
-			    		}
-			    		break;
-			    	case XmlPullParser.END_TAG:		    		
-				       	break; 
-			    }
-			    //如果xml没有结束，则导航到下一个节点
-			    evtType=xmlParser.next();
-			}		
-        } catch (XmlPullParserException e) {
-			throw AppException.xml(e);
-        } finally {
-        	inputStream.close();	
-        }      
-        return update;       
+	public static Update parse(String data) throws IOException, AppException {
+		return new Gson().fromJson(data, Update.class);
 	}
 }

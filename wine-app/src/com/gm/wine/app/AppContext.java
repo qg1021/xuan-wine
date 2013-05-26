@@ -9,13 +9,19 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.UUID;
 
 
+
+
+
+
+
 import com.gm.wine.app.api.ApiClient;
+import com.gm.wine.app.bean.User;
+import com.gm.wine.app.common.CyptoUtils;
 import com.gm.wine.app.common.StringUtils;
 import com.gm.wine.app.common.UIHelper;
 
@@ -636,4 +642,52 @@ public class AppContext extends Application {
 	public void removeProperty(String...key){
 		AppConfig.getAppConfig(this).remove(key);
 	}	
+	/**
+	 * 用户登录验证
+	 * @param account
+	 * @param pwd
+	 * @return
+	 * @throws AppException
+	 */
+	public User loginVerify(String account, String pwd) throws AppException {
+		return ApiClient.login(this, account, pwd);
+	}
+	/**
+	 * 获取登录信息
+	 * @return
+	 */
+	public User getLoginInfo() {		
+		User lu = new User();		
+		lu.setUid(StringUtils.toInt(getProperty("user.uid"), 0));
+		lu.setName(getProperty("user.name"));
+		lu.setFace(getProperty("user.face"));
+		lu.setAccount(getProperty("user.account"));
+		lu.setPwd(CyptoUtils.decode("oschinaApp",getProperty("user.pwd")));
+		lu.setLocation(getProperty("user.location"));
+		lu.setFollowers(StringUtils.toInt(getProperty("user.followers"), 0));
+		lu.setFans(StringUtils.toInt(getProperty("user.fans"), 0));
+		lu.setScore(StringUtils.toInt(getProperty("user.score"), 0));
+		lu.setRememberMe(StringUtils.toBool(getProperty("user.isRememberMe")));
+		return lu;
+	}
+	/**
+	 * 保存登录信息
+	 * @param username
+	 * @param pwd
+	 */
+	public void saveLoginInfo(final User user) {
+		this.loginUid = user.getUid();
+		this.login = true;
+		setProperties(new Properties(){{
+			setProperty("user.uid", String.valueOf(user.getUid()));
+			setProperty("user.name", user.getName());
+			setProperty("user.account", user.getAccount());
+			setProperty("user.pwd", CyptoUtils.encode("oschinaApp",user.getPwd()));
+			setProperty("user.location", user.getLocation());
+			setProperty("user.followers", String.valueOf(user.getFollowers()));
+			setProperty("user.fans", String.valueOf(user.getFans()));
+			setProperty("user.score", String.valueOf(user.getScore()));
+			setProperty("user.isRememberMe", String.valueOf(user.isRememberMe()));//是否记住我的信息
+		}});		
+	}
 }

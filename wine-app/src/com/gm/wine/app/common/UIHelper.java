@@ -11,6 +11,7 @@ import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppManager;
 import com.gm.wine.app.Main;
 import com.gm.wine.app.R;
+import com.gm.wine.app.ui.LoginDialog;
 
 
 import android.app.Activity;
@@ -654,25 +655,9 @@ public class UIHelper {
 		context.startActivity(intent);
 	}	
 	
-	/**
-	 * 显示搜索界面
-	 * @param context
-	 */
-	public static void showSearch(Context context)
-	{
-		Intent intent = new Intent(context, Search.class);
-		context.startActivity(intent);
-	}
+
 	
-	/**
-	 * 显示软件界面
-	 * @param context
-	 */
-	public static void showSoftware(Context context)
-	{
-		Intent intent = new Intent(context, SoftwareLib.class);
-		context.startActivity(intent);
-	}
+
 	
 	/**
 	 * 显示我的资料
