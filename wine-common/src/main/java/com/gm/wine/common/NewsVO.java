@@ -29,7 +29,6 @@ package com.gm.wine.common;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  * 新闻资讯vo
  * 
@@ -38,72 +37,61 @@ import java.util.Date;
  * @since 2013-5-19
  */
 
-public class NewsVO<T> implements Serializable
-{
+public class NewsVO implements Serializable {
 
-    /**
-     * serialVersionUID long
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * serialVersionUID long
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private Long              id;
+	private Long id;
 
-    private String            title;                // 标题
+	private String title; // 标题
 
-    private String            source;               // 来源
+	private String source; // 来源
 
-    private Date              publishdate;          // 发布时间
+	private Date publishdate; // 发布时间
 
-    private String            desciption;
+	private String desciption; // 内容
 
-    public Long getId()
-    {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getTitle()
-    {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getSource()
-    {
-        return source;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    public void setSource(String source)
-    {
-        this.source = source;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    public Date getPublishdate()
-    {
-        return publishdate;
-    }
+	public Date getPublishdate() {
+		return publishdate;
+	}
 
-    public void setPublishdate(Date publishdate)
-    {
-        this.publishdate = publishdate;
-    }
+	public void setPublishdate(Date publishdate) {
+		this.publishdate = publishdate;
+	}
 
-    public String getDesciption()
-    {
-        return desciption;
-    }
+	public String getDesciption() {
+		return desciption;
+	}
 
-    public void setDesciption(String desciption)
-    {
-        this.desciption = desciption;
-    }
+	public void setDesciption(String desciption) {
+		this.desciption = desciption;
+	}
 
 }

@@ -28,31 +28,27 @@ package com.gm.wine.common;
 
 import java.io.Serializable;
 
-
 /**
- * Description of the class
- *
- * @author            qingang
- * @version           1.0
- * @since             2013-5-25
+ * 用户从服务器端接收数据用
+ * 
+ * @author qingang
+ * @version 1.0
+ * @since 2013-5-25
  */
 
-public class Result implements Serializable
-{
-    /**
-     * serialVersionUID long
-     */
-    private static final long serialVersionUID = 1L;
+public class Result implements Serializable {
+	/**
+	 * serialVersionUID long
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private String            data;
+	private String data;
 
-    public String getData()
-    {
-        return data;
-    }
+	public String getData() {
+		return data;
+	}
 
-    public void setData(String data)
-    {
-        this.data = data;
-    }
+	public void setData(String data) {
+		this.data = data;
+	}
 }
