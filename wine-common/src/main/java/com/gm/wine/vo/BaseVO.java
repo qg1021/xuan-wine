@@ -24,31 +24,49 @@
 // SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR
 // HIGH RISK ACTIVITIES.
 //-------------------------------------------------------------------------
-package com.gm.wine.common;
+package com.gm.wine.vo;
 
 import java.io.Serializable;
 
 /**
- * 用户从服务器端接收数据用
+ * 
+ * vo父类
  * 
  * @author qingang
  * @version 1.0
- * @since 2013-5-25
+ * @since 2013-5-31
  */
-
-public class Result implements Serializable {
+public abstract class BaseVO implements Serializable {
 	/**
 	 * serialVersionUID long
 	 */
 	private static final long serialVersionUID = 1L;
+	protected String cacheKey;
+	protected int errorCode;
+	protected String errorMeassage;
 
-	private String data;
-
-	public String getData() {
-		return data;
+	public String getCacheKey() {
+		return cacheKey;
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public void setCacheKey(String cacheKey) {
+		this.cacheKey = cacheKey;
 	}
+
+	public int getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getErrorMeassage() {
+		return errorMeassage;
+	}
+
+	public void setErrorMeassage(String errorMeassage) {
+		this.errorMeassage = errorMeassage;
+	}
+
 }

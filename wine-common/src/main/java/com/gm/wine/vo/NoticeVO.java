@@ -1,6 +1,5 @@
-package com.gm.wine.common;
+package com.gm.wine.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * @version 1.0
  * @since 2012-7-24
  */
-public class NoticeVO implements Serializable {
+public class NoticeVO extends BaseVO {
 
 	/**
 	 * serialVersionUID long

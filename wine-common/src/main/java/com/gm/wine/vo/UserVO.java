@@ -1,12 +1,11 @@
-﻿package com.gm.wine.common;
+﻿package com.gm.wine.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 用户
  */
-public class UserVO implements Serializable {
+public class UserVO extends BaseVO {
 
 	/**
 	 * serialVersionUID long

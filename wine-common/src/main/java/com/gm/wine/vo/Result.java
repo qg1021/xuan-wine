@@ -24,74 +24,31 @@
 // SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR
 // HIGH RISK ACTIVITIES.
 //-------------------------------------------------------------------------
-package com.gm.wine.common;
+package com.gm.wine.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * 新闻资讯vo
+ * 用户从服务器端接收数据用
  * 
  * @author qingang
  * @version 1.0
- * @since 2013-5-19
+ * @since 2013-5-25
  */
 
-public class NewsVO implements Serializable {
-
+public class Result implements Serializable {
 	/**
 	 * serialVersionUID long
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private String data;
 
-	private String title; // 标题
-
-	private String source; // 来源
-
-	private Date publishdate; // 发布时间
-
-	private String desciption; // 内容
-
-	public Long getId() {
-		return id;
+	public String getData() {
+		return data;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setData(String data) {
+		this.data = data;
 	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	public Date getPublishdate() {
-		return publishdate;
-	}
-
-	public void setPublishdate(Date publishdate) {
-		this.publishdate = publishdate;
-	}
-
-	public String getDesciption() {
-		return desciption;
-	}
-
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
-	}
-
 }
