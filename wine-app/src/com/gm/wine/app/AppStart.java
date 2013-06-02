@@ -1,8 +1,11 @@
 package com.gm.wine.app;
 
 
-import com.gm.wine.app.Main;
+
+
 import com.gm.wine.app.R;
+import com.gm.wine.app.common.StringUtils;
+import com.gm.wine.app.ui.Main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +15,11 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
-
+/**
+ * APP启动程序
+ * @author qingang
+ *
+ */
 public class AppStart extends Activity {
     
     @Override
@@ -35,6 +42,18 @@ public class AppStart extends Activity {
 			public void onAnimationStart(Animation animation) {}
 			
 		});
+		//兼容低版本cookie（1.5版本以下，包括1.5.0,1.5.1）
+				AppContext appContext = (AppContext)getApplication();
+				String cookie = appContext.getProperty("cookie");
+				if(StringUtils.isEmpty(cookie)) {
+					String cookie_name = appContext.getProperty("cookie_name");
+					String cookie_value = appContext.getProperty("cookie_value");
+					if(!StringUtils.isEmpty(cookie_name) && !StringUtils.isEmpty(cookie_value)) {
+						cookie = cookie_name + "=" + cookie_value;
+						appContext.setProperty("cookie", cookie);
+						appContext.removeProperty("cookie_domain","cookie_name","cookie_value","cookie_version","cookie_path");
+					}
+				}
 		
 
     }

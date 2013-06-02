@@ -205,7 +205,7 @@ public class Setting extends PreferenceActivity{
 		feedback = (Preference)findPreference("feedback");
 		feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				UIHelper.showFeedBack(Setting.this);
+				//UIHelper.showFeedBack(Setting.this);
 				return true;
 			}
 		});
@@ -223,7 +223,7 @@ public class Setting extends PreferenceActivity{
 		about = (Preference)findPreference("about");
 		about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				UIHelper.showAbout(Setting.this);
+				//UIHelper.showAbout(Setting.this);
 				return true;
 			}
 		});

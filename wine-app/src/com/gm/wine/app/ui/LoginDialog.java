@@ -3,7 +3,6 @@ package com.gm.wine.app.ui;
 
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
-import com.gm.wine.app.Main;
 import com.gm.wine.app.R;
 import com.gm.wine.app.api.ApiClient;
 import com.gm.wine.app.bean.User;

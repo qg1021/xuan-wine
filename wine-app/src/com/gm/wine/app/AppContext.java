@@ -19,11 +19,13 @@ import java.util.UUID;
 
 
 
+
 import com.gm.wine.app.api.ApiClient;
 import com.gm.wine.app.bean.User;
 import com.gm.wine.app.common.CyptoUtils;
 import com.gm.wine.app.common.StringUtils;
 import com.gm.wine.app.common.UIHelper;
+import com.gm.wine.vo.NewsList;
 
 
 import android.app.Application;
@@ -190,6 +192,37 @@ public class AppContext extends Application {
 	 */
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
+	}
+	/**
+	 * 新闻列表
+	 * @param catalog
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 * @throws ApiException
+	 */
+	public NewsList getNewsList(int pageIndex, boolean isRefresh) throws AppException {
+		NewsList list = null;
+		String key = "newslist_"+"_"+pageIndex+"_"+PAGE_SIZE;
+		if(isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try{
+				list = ApiClient.getNewsList(this, pageIndex, PAGE_SIZE);
+				if(list != null && pageIndex == 0){
+				
+					list.setCacheKey(key);
+					saveObject(list, key);
+				}
+			}catch(AppException e){
+				list = (NewsList)readObject(key);
+				if(list == null)
+					throw e;
+			}		
+		} else {
+			list = (NewsList)readObject(key);
+			if(list == null)
+				list = new NewsList();
+		}
+		return list;
 	}
 	
 

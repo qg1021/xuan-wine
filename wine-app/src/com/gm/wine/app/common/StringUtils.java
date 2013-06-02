@@ -30,8 +30,8 @@ public class StringUtils {
 	 * @param sdate
 	 * @return
 	 */
-	public static String friendly_time(String sdate) {
-		Date time = toDate(sdate);
+	public static String friendly_time(Date time) {
+	
 		if(time == null) {
 			return "Unknown";
 		}
@@ -80,9 +80,8 @@ public class StringUtils {
 	 * @param sdate
 	 * @return boolean
 	 */
-	public static boolean isToday(String sdate){
+	public static boolean isToday(Date time){
 		boolean b = false;
-		Date time = toDate(sdate);
 		Date today = new Date();
 		if(time != null){
 			String nowDate = dateFormater2.format(today);

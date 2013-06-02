@@ -1,6 +1,7 @@
 package com.gm.wine.app.widget;
 
 
+
 import com.gm.wine.app.R;
 
 import android.content.Context;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * 
+ * 新数据Toast提示控件(带音乐播放)
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-8-30
@@ -52,17 +53,17 @@ public class NewDataToast extends Toast{
 	}
 	
 	/**
-	 * 璁剧疆鏄惁鎾斁澹伴煶
+	 * 设置是否播放声音
 	 */
 	public void setIsSound(boolean isSound) {
 		this.isSound = isSound;
 	}
 	
 	/**
-	 * 鑾峰彇鎺т欢瀹炰緥
+	 * 获取控件实例
 	 * @param context
-	 * @param text 鎻愮ず娑堟伅
-	 * @param isSound 鏄惁鎾斁澹伴煶
+	 * @param text 提示消息
+	 * @param isSound 是否播放声音
 	 * @return
 	 */
 	public static NewDataToast makeText(Context context, CharSequence text, boolean isSound) {
@@ -73,7 +74,7 @@ public class NewDataToast extends Toast{
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         
         View v = inflate.inflate(R.layout.new_data_toast, null);
-        v.setMinimumWidth(dm.widthPixels);//璁剧疆鎺т欢鏈?皬瀹藉害涓烘墜鏈哄睆骞曞搴?
+        v.setMinimumWidth(dm.widthPixels);//设置控件最小宽度为手机屏幕宽度
         
         TextView tv = (TextView)v.findViewById(R.id.new_data_toast_message);
         tv.setText(text);

@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dip">   
        	
-       	<TextView android:id="@+id/news_listitem_author"  
+       	<TextView android:id="@+id/news_listitem_source"  
     		android:layout_width="wrap_content" 
            	android:layout_height="wrap_content" 
            	android:textSize="@dimen/text_size_10"
@@ -59,20 +59,7 @@
            	android:layout_marginLeft="2dip" 
            	android:textSize="@dimen/text_size_10"
             android:textColor="@color/listitem_gray"/>
-            
-	    <ImageView 
-	      	android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dip"
-	        android:layout_gravity="center_vertical"
-	        android:src="@drawable/widget_comment_count_icon"/>
-	        
-       	<TextView android:id="@+id/news_listitem_commentCount"  
-    		android:layout_width="wrap_content" 
-           	android:layout_height="wrap_content" 
-           	android:layout_marginLeft="3dip"
-           	android:textSize="@dimen/text_size_10"
-            android:textColor="@color/listitem_gray"/>
+
        	
     </LinearLayout>
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal" 
 	android:id="@+id/main_linearlayout_footer"
 	android:layout_width="fill_parent" 
@@ -14,26 +13,20 @@
 		style="@style/main_footbar_cutline"
 		android:src="@drawable/widget_bar_cut_off"/>
 	<RadioButton 
-		android:id="@+id/main_footbar_question"
+		android:id="@+id/main_footbar_product"
 		style="@style/main_footbar_radio"
 		android:drawableTop="@drawable/widget_bar_question"/>
 	<ImageView
 		style="@style/main_footbar_cutline"
 		android:src="@drawable/widget_bar_cut_off"/>
 	<RadioButton 
-		android:id="@+id/main_footbar_tweet"
+		android:id="@+id/main_footbar_notice"
 		style="@style/main_footbar_radio"
 		android:drawableTop="@drawable/widget_bar_tweet"/>
 	<ImageView
 		style="@style/main_footbar_cutline"
 		android:src="@drawable/widget_bar_cut_off"/>
-	<RadioButton
-		android:id="@+id/main_footbar_active"
-		style="@style/main_footbar_radio"
-		android:drawableTop="@drawable/widget_bar_active"/>
-	<ImageView
-		style="@style/main_footbar_cutline"
-		android:src="@drawable/widget_bar_cut_off"/>
+
 	<ImageView
 		android:id="@+id/main_footbar_setting"
 		style="@style/main_footbar_image"

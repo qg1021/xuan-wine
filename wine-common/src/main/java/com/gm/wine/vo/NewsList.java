@@ -26,84 +26,58 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.vo;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * 新闻资讯vo
+ * 资讯列表实体
  * 
  * @author qingang
  * @version 1.0
- * @since 2013-5-19
+ * @since 2013-5-31
  */
 
-public class NewsVO extends BaseVO {
-
+public class NewsList extends BaseVO
+{
     /**
      * serialVersionUID long
      */
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private int               pageSize;
 
-    private String title; // 标题
+    private long              totalSize;
 
-    private String source; // 来源
+    private List<NewsVO>      newsList         = new ArrayList<NewsVO>();
 
-    private Date publishdate; // 发布时间
-
-    private String desciption; // 内容
-
-    private String            linkurl;               // 外部链接url
-
-    public String getLinkurl()
+    public int getPageSize()
     {
-        return linkurl;
+        return pageSize;
     }
 
-    public void setLinkurl(String linkurl)
+    public void setPageSize(int pageSize)
     {
-        this.linkurl = linkurl;
+        this.pageSize = pageSize;
     }
 
-    public Long getId()
+    public long getTotalSize()
     {
-        return id;
+        return totalSize;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTotalSize(long totalSize)
+    {
+        this.totalSize = totalSize;
     }
 
-    public String getTitle() {
-        return title;
+    public List<NewsVO> getNewsList()
+    {
+        return newsList;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setNewsList(List<NewsVO> newsList)
+    {
+        this.newsList = newsList;
     }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public Date getPublishdate() {
-        return publishdate;
-    }
-
-    public void setPublishdate(Date publishdate) {
-        this.publishdate = publishdate;
-    }
-
-    public String getDesciption() {
-        return desciption;
-    }
-
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
-    }
-
 }

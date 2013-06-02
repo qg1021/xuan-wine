@@ -37,36 +37,41 @@ import java.io.Serializable;
  * @since 2013-5-31
  */
 public abstract class BaseVO implements Serializable {
-	/**
-	 * serialVersionUID long
-	 */
-	private static final long serialVersionUID = 1L;
-	protected String cacheKey;
-	protected int errorCode;
-	protected String errorMeassage;
+    /**
+     * serialVersionUID long
+     */
+    private static final long serialVersionUID = 1L;
+    protected String cacheKey;
+    protected int errorCode;
+    protected String          errorMessage;
 
-	public String getCacheKey() {
-		return cacheKey;
-	}
+    public String getErrorMessage()
+    {
+        return errorMessage;
+    }
 
-	public void setCacheKey(String cacheKey) {
-		this.cacheKey = cacheKey;
-	}
+    public void setErrorMessage(String errorMessage)
+    {
+        this.errorMessage = errorMessage;
+    }
 
-	public int getErrorCode() {
-		return errorCode;
-	}
+    public String getCacheKey()
+    {
+        return cacheKey;
+    }
 
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
-	}
+    public void setCacheKey(String cacheKey) {
+        this.cacheKey = cacheKey;
+    }
 
-	public String getErrorMeassage() {
-		return errorMeassage;
-	}
+    public int getErrorCode() {
+        return errorCode;
+    }
 
-	public void setErrorMeassage(String errorMeassage) {
-		this.errorMeassage = errorMeassage;
-	}
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+
 
 }

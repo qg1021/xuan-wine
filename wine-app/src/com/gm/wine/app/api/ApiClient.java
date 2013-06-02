@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.Gson;
-
+import com.google.gson.reflect.TypeToken;
 
 
 import org.apache.commons.httpclient.Cookie;
@@ -32,6 +32,8 @@ import com.gm.wine.app.bean.Result;
 import com.gm.wine.app.bean.URLs;
 import com.gm.wine.app.bean.Update;
 import com.gm.wine.app.bean.User;
+import com.gm.wine.vo.NewsList;
+import com.gm.wine.vo.NewsVO;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -356,6 +358,49 @@ public class ApiClient {
 			}			
 		}
 		return data;
+	}
+	/**
+	 * 获取资讯列表
+	 * @param url
+	 * @param catalog
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 * @throws AppException
+	 */
+	public static NewsList getNewsList(AppContext appContext,  final int pageIndex, final int pageSize) throws AppException {
+		String newUrl = _MakeURL(URLs.NEWS_LIST, new HashMap<String, Object>(){{
+			put("pageNo", pageIndex);
+			put("pageSize", pageSize);
+		}});
+		
+		try{
+			return new Gson().fromJson(http_get(appContext, newUrl), new TypeToken<NewsList>(){}.getType());		
+		}catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * 获取资讯的详情
+	 * @param url
+	 * @param news_id
+	 * @return
+	 * @throws AppException
+	 */
+	public static NewsVO getNewsDetail(AppContext appContext, final int news_id) throws AppException {
+		String newUrl = _MakeURL(URLs.NEWS_DETAIL, new HashMap<String, Object>(){{
+			put("id", news_id);
+		}});
+		
+		try{
+			return new Gson().fromJson(http_get(appContext, newUrl),NewsVO.class);			
+		}catch(Exception e){
+			if(e instanceof AppException)
+				throw (AppException)e;
+			throw AppException.network(e);
+		}
 	}
 	/**
 	 * 登录， 自动处理cookie

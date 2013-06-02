@@ -26,15 +26,28 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.web;
 
-import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.json.annotations.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springside.modules.orm.Page;
+import org.springside.modules.orm.PropertyFilter;
+import org.springside.modules.utils.web.struts2.Struts2Utils;
 
+import cn.common.lib.springside.util.ParamPropertyUtils;
+
+import com.gm.wine.core.NewsManager;
 import com.gm.wine.entity.News;
+import com.gm.wine.vo.GlobalMessage;
+import com.gm.wine.vo.NewsList;
+import com.gm.wine.vo.NewsVO;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -60,24 +73,105 @@ import com.opensymphony.xwork2.ActionSupport;
      * serialVersionUID long
      */
     private static final long serialVersionUID = 1L;
-    private String groupinfo;
+
+    private String            data;
+
+    @Autowired
+    private NewsManager       newsManager;
 
     @Override
     public String execute() throws Exception
     {
-        News s = new News();
-        s.setId(1l);
-        s.setPublishdate(new Date());
-        s.setTitle("title");
-        Gson g = new Gson();
-        this.groupinfo = g.toJson(s);
+        HttpServletRequest request = Struts2Utils.getRequest();
+        Page<News> page = new Page<News>(Integer.parseInt(request
+                .getParameter("pageSize")));
+        page.setPageNo(Integer.parseInt(request.getParameter("pageNo")));
+        NewsList nl = new NewsList();
+
+        try
+        {
+            List<PropertyFilter> filters = PropertyFilter
+            .buildFromHttpRequest(request);
+            ParamPropertyUtils.replacePropertyRule(filters);
+            filters.add(new PropertyFilter("EQB_ispublish", "true"));
+
+            page.setOrderBy("id");
+            page.setOrder(Page.DESC);
+
+            page = newsManager.search(page, filters);
+            nl.setPageSize(page.getPageSize());
+            nl.setTotalSize(page.getTotalCount());
+            nl.setNewsList(this.convertToListVO(page.getResult()));
+            nl.setErrorCode(GlobalMessage.SUCCESS_CODE);
+            nl.setErrorMessage(GlobalMessage.SUCCESS_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            nl.setErrorCode(GlobalMessage.ERROR_CODE);
+            nl.setErrorMessage(GlobalMessage.ERROR_MESSAGE);
+        }
+
+        data = new Gson().toJson(nl);
         return SUCCESS;
     }
 
-    @JSON(name="data")
-    public String getGroupinfo()
+    public String detail() throws Exception
     {
-        return groupinfo;
+        HttpServletRequest request = Struts2Utils.getRequest();
+        NewsVO nv = null;
+
+        try
+        {
+
+
+            nv = convertToVO(newsManager.get(Long.parseLong(request
+                    .getParameter("id"))));
+
+            nv.setErrorCode(GlobalMessage.SUCCESS_CODE);
+            nv.setErrorMessage(GlobalMessage.SUCCESS_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            nv = new NewsVO();
+            e.printStackTrace();
+            nv.setErrorCode(GlobalMessage.ERROR_CODE);
+            nv.setErrorMessage(GlobalMessage.ERROR_MESSAGE);
+        }
+
+        data = new Gson().toJson(nv);
+        return SUCCESS;
+    }
+
+    private NewsVO convertToVO(News news)
+    {
+        NewsVO n = new NewsVO();
+        n.setId(news.getId());
+        n.setTitle(news.getTitle());
+        n.setDesciption(news.getDesciption());
+        n.setPublishdate(news.getPublishdate());
+        n.setSource(news.getSource());
+        return n;
+    }
+
+    private List<NewsVO> convertToListVO(List<News> newsList)
+    {
+        List<NewsVO> vos = Lists.newArrayList();
+        if (newsList != null && !newsList.isEmpty())
+        {
+            for (News v : newsList)
+            {
+                v.setDesciption(null);
+                vos.add(this.convertToVO(v));
+            }
+        }
+        return vos;
+    }
+
+    @JSON(name="data")
+    public String getData()
+    {
+        return data;
     }
 
 
