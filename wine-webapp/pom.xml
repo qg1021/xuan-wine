@@ -149,17 +149,11 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-
 		<dependency>
-		<groupId>org.codehaus.jackson</groupId> 
-		<artifactId>jackson-core-lgpl</artifactId> 
-		<version>1.8.5</version> 
-	</dependency>    
-	<dependency>
-		<groupId>org.codehaus.jackson</groupId> 
-		<artifactId>jackson-mapper-asl</artifactId> 
-		<version>1.8.5</version> 		
-	</dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+		</dependency>    
+	
 		<!-- web end -->
 
 		<!-- spring security -->
@@ -341,11 +335,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-tools</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.tuckey</groupId>
-			<artifactId>urlrewritefilter</artifactId>
-			<version>4.0.3</version>
-		</dependency>
+
 		<dependency>
   			<groupId>com.gm.wine.common</groupId>
   			<artifactId>wine-common</artifactId>

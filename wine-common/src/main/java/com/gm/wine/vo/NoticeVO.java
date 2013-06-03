@@ -13,58 +13,71 @@ import java.util.List;
  */
 public class NoticeVO extends BaseVO {
 
-	/**
-	 * serialVersionUID long
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * serialVersionUID long
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String title; // 留言标题
+    private Long              id;
 
-	private String content; // 留言内容
+    private String title; // 留言标题
 
-	private UserVO user; // 留言人
-	private List<NoticeVO> childs;
+    private String content; // 留言内容
 
-	private Date createdate;
+    private UserVO user; // 留言人
+    private List<NoticeVO> childs;
 
-	public UserVO getUser() {
-		return user;
-	}
+    private Date createdate;
 
-	public void setUser(UserVO user) {
-		this.user = user;
-	}
+    public Long getId()
+    {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public UserVO getUser()
+    {
+        return user;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setUser(UserVO user) {
+        this.user = user;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Date getCreatedate() {
-		return createdate;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public List<NoticeVO> getChilds() {
-		return childs;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setChilds(List<NoticeVO> childs) {
-		this.childs = childs;
-	}
+    public Date getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
+    }
+
+    public List<NoticeVO> getChilds() {
+        return childs;
+    }
+
+    public void setChilds(List<NoticeVO> childs) {
+        this.childs = childs;
+    }
 
 }

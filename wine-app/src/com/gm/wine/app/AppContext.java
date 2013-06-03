@@ -40,13 +40,13 @@ public class AppContext extends Application {
 	public static final int NETTYPE_CMWAP = 0x02;
 	public static final int NETTYPE_CMNET = 0x03;
 
-	public static final int PAGE_SIZE = 20;// Ĭ�Ϸ�ҳ��С
+	public static final int PAGE_SIZE = 20;// 默锟较凤拷页锟斤拷小
 
 	public static final int PAGE_SIZE_10 = 10;
-	private static final int CACHE_TIME = 60 * 60000;// ����ʧЧʱ��
+	private static final int CACHE_TIME = 60 * 60000;// 锟斤拷锟斤拷失效时锟斤拷
 
-	private boolean login = false; // ��¼״̬
-	private int loginUid = 0; // ��¼�û���id
+	private boolean login = false; // 锟斤拷录状态
+	private int loginUid = 0; // 锟斤拷录锟矫伙拷锟斤拷id
 	private final Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
 
 	private final Handler unLoginHandler = new Handler() {
@@ -63,13 +63,13 @@ public class AppContext extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// ע��App�쳣����������
+		// 注锟斤拷App锟届常锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
 		Thread.setDefaultUncaughtExceptionHandler(AppException
 				.getAppExceptionHandler());
 	}
 
 	/**
-	 * ��⵱ǰϵͳ�����Ƿ�Ϊ��ģʽ
+	 * 锟斤拷獾鼻跋低筹拷锟斤拷锟斤拷欠锟轿拷锟侥Ｊ�
 	 * 
 	 * @return
 	 */
@@ -79,7 +79,7 @@ public class AppContext extends Application {
 	}
 
 	/**
-	 * Ӧ�ó����Ƿ񷢳���ʾ��
+	 * 应锟矫筹拷锟斤拷锟角否发筹拷锟斤拷示锟斤拷
 	 * 
 	 * @return
 	 */
@@ -88,7 +88,7 @@ public class AppContext extends Application {
 	}
 
 	/**
-	 * ��������Ƿ����
+	 * 锟斤拷锟斤拷锟斤拷锟斤拷欠锟斤拷锟斤拷
 	 * 
 	 * @return
 	 */
@@ -98,11 +98,7 @@ public class AppContext extends Application {
 		return ni != null && ni.isConnectedOrConnecting();
 	}
 
-	/**
-	 * ��ȡ��ǰ��������
-	 * 
-	 * @return 0��û������ 1��WIFI���� 2��WAP���� 3��NET����
-	 */
+
 	public int getNetworkType() {
 		int netType = 0;
 		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -126,22 +122,13 @@ public class AppContext extends Application {
 		return netType;
 	}
 
-	/**
-	 * �жϵ�ǰ�汾�Ƿ����Ŀ��汾�ķ���
-	 * 
-	 * @param VersionCode
-	 * @return
-	 */
+
 	public static boolean isMethodsCompat(int VersionCode) {
 		int currentVersion = android.os.Build.VERSION.SDK_INT;
 		return currentVersion >= VersionCode;
 	}
 
-	/**
-	 * ��ȡApp��װ����Ϣ
-	 * 
-	 * @return
-	 */
+
 	public PackageInfo getPackageInfo() {
 		PackageInfo info = null;
 		try {
@@ -155,11 +142,7 @@ public class AppContext extends Application {
 		return info;
 	}
 
-	/**
-	 * ��ȡAppΨһ��ʶ
-	 * 
-	 * @return
-	 */
+
 	public String getAppId() {
 		String uniqueID = getProperty(AppConfig.CONF_APP_UNIQUEID);
 		if (StringUtils.isEmpty(uniqueID)) {
@@ -169,27 +152,17 @@ public class AppContext extends Application {
 		return uniqueID;
 	}
 
-	/**
-	 * �û��Ƿ��¼
-	 * 
-	 * @return
-	 */
+
 	public boolean isLogin() {
 		return login;
 	}
 
-	/**
-	 * ��ȡ��¼�û�id
-	 * 
-	 * @return
-	 */
+
 	public int getLoginUid() {
 		return this.loginUid;
 	}
 
-	/**
-	 * �û�ע��
-	 */
+
 	public void Logout() {
 		ApiClient.cleanCookie();
 		this.cleanCookie();
@@ -197,23 +170,11 @@ public class AppContext extends Application {
 		this.loginUid = 0;
 	}
 
-	/**
-	 * δ��¼���޸������Ĵ���
-	 */
+
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
 	}
-	/**
-	 * 
-	 * 新闻列表
-	 * 
-	 * @since 2013-6-3
-	 * @author qingang
-	 * @param pageIndex
-	 * @param isRefresh
-	 * @return
-	 * @throws AppException
-	 */
+
 	public NewsList getNewsList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		NewsList list = null;
@@ -227,6 +188,7 @@ public class AppContext extends Application {
 					saveObject(list, key);
 				}
 			} catch (AppException e) {
+				e.printStackTrace();
 				list = (NewsList) readObject(key);
 				if (list == null) {
 					throw e;
@@ -240,17 +202,7 @@ public class AppContext extends Application {
 		}
 		return list;
 	}
-	/**
-	 * 
-	 * 产品信息列表
-	 * 
-	 * @since 2013-6-3
-	 * @author qingang
-	 * @param pageIndex
-	 * @param isRefresh
-	 * @return
-	 * @throws AppException
-	 */
+
 	public ProductList getProductList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		ProductList list = null;
@@ -277,17 +229,7 @@ public class AppContext extends Application {
 		}
 		return list;
 	}
-	/**
-	 * 
-	 * 留言公告信息列表
-	 * 
-	 * @since 2013-6-3
-	 * @author qingang
-	 * @param pageIndex
-	 * @param isRefresh
-	 * @return
-	 * @throws AppException
-	 */
+
 	public NoticeList getNoticeList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		NoticeList list = null;
@@ -315,9 +257,7 @@ public class AppContext extends Application {
 		return list;
 	}
 
-	/**
-	 * 清除登录信息
-	 */
+
 	public void cleanLoginInfo() {
 		this.loginUid = 0;
 		this.login = false;
@@ -326,13 +266,7 @@ public class AppContext extends Application {
 				"user.score", "user.isRememberMe");
 	}
 
-	/**
-	 * ��ȡ�û�ͷ��
-	 * 
-	 * @param key
-	 * @return
-	 * @throws AppException
-	 */
+
 	public Bitmap getUserFace(String key) throws AppException {
 		FileInputStream fis = null;
 		try {
@@ -348,14 +282,9 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �Ƿ������ʾ����ͼƬ
-	 * 
-	 * @return
-	 */
 	public boolean isLoadImage() {
 		String perf_loadimage = getProperty(AppConfig.CONF_LOAD_IMAGE);
-		// Ĭ���Ǽ��ص�
+		// 默锟斤拷锟角硷拷锟截碉拷
 		if (StringUtils.isEmpty(perf_loadimage)) {
 			return true;
 		} else {
@@ -363,23 +292,15 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �����Ƿ��������ͼƬ
-	 * 
-	 * @param b
-	 */
+
 	public void setConfigLoadimage(boolean b) {
 		setProperty(AppConfig.CONF_LOAD_IMAGE, String.valueOf(b));
 	}
 
-	/**
-	 * �Ƿ񷢳���ʾ��
-	 * 
-	 * @return
-	 */
+
 	public boolean isVoice() {
 		String perf_voice = getProperty(AppConfig.CONF_VOICE);
-		// Ĭ���ǿ�����ʾ����
+		// 默锟斤拷锟角匡拷锟斤拷锟斤拷示锟斤拷锟斤拷
 		if (StringUtils.isEmpty(perf_voice)) {
 			return true;
 		} else {
@@ -387,23 +308,15 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �����Ƿ񷢳���ʾ��
-	 * 
-	 * @param b
-	 */
+
 	public void setConfigVoice(boolean b) {
 		setProperty(AppConfig.CONF_VOICE, String.valueOf(b));
 	}
 
-	/**
-	 * �Ƿ�����������
-	 * 
-	 * @return
-	 */
+
 	public boolean isCheckUp() {
 		String perf_checkup = getProperty(AppConfig.CONF_CHECKUP);
-		// Ĭ���ǿ���
+
 		if (StringUtils.isEmpty(perf_checkup)) {
 			return true;
 		} else {
@@ -411,23 +324,15 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * ��������������
-	 * 
-	 * @param b
-	 */
+
 	public void setConfigCheckUp(boolean b) {
 		setProperty(AppConfig.CONF_CHECKUP, String.valueOf(b));
 	}
 
-	/**
-	 * �Ƿ����һ���
-	 * 
-	 * @return
-	 */
+
 	public boolean isScroll() {
 		String perf_scroll = getProperty(AppConfig.CONF_SCROLL);
-		// Ĭ���ǹر����һ���
+
 		if (StringUtils.isEmpty(perf_scroll)) {
 			return false;
 		} else {
@@ -435,23 +340,15 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �����Ƿ����һ���
-	 * 
-	 * @param b
-	 */
+
 	public void setConfigScroll(boolean b) {
 		setProperty(AppConfig.CONF_SCROLL, String.valueOf(b));
 	}
 
-	/**
-	 * �Ƿ�Https��¼
-	 * 
-	 * @return
-	 */
+
 	public boolean isHttpsLogin() {
 		String perf_httpslogin = getProperty(AppConfig.CONF_HTTPS_LOGIN);
-		// Ĭ����http
+
 		if (StringUtils.isEmpty(perf_httpslogin)) {
 			return false;
 		} else {
@@ -459,38 +356,20 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �������Ƿ�Https��¼
-	 * 
-	 * @param b
-	 */
 	public void setConfigHttpsLogin(boolean b) {
 		setProperty(AppConfig.CONF_HTTPS_LOGIN, String.valueOf(b));
 	}
 
-	/**
-	 * ����Ļ���
-	 */
 	public void cleanCookie() {
 		removeProperty(AppConfig.CONF_COOKIE);
 	}
 
-	/**
-	 * �жϻ�������Ƿ�ɶ�
-	 * 
-	 * @param cachefile
-	 * @return
-	 */
+
 	private boolean isReadDataCache(String cachefile) {
 		return readObject(cachefile) != null;
 	}
 
-	/**
-	 * �жϻ����Ƿ����
-	 * 
-	 * @param cachefile
-	 * @return
-	 */
+
 	private boolean isExistDataCache(String cachefile) {
 		boolean exist = false;
 		File data = getFileStreamPath(cachefile);
@@ -500,12 +379,6 @@ public class AppContext extends Application {
 		return exist;
 	}
 
-	/**
-	 * �жϻ����Ƿ�ʧЧ
-	 * 
-	 * @param cachefile
-	 * @return
-	 */
 	public boolean isCacheDataFailure(String cachefile) {
 		boolean failure = false;
 		File data = getFileStreamPath(cachefile);
@@ -518,11 +391,9 @@ public class AppContext extends Application {
 		return failure;
 	}
 
-	/**
-	 * ���app����
-	 */
+
 	public void clearAppCache() {
-		// ���webview����
+		// 锟斤拷锟絯ebview锟斤拷锟斤拷
 		File file = CacheManager.getCacheFileBaseDir();
 		if (file != null && file.exists() && file.isDirectory()) {
 			for (File item : file.listFiles()) {
@@ -536,14 +407,10 @@ public class AppContext extends Application {
 		deleteDatabase("webviewCache.db");
 		deleteDatabase("webviewCache.db-shm");
 		deleteDatabase("webviewCache.db-wal");
-		// �����ݻ���
+	
 		clearCacheFolder(getFilesDir(), System.currentTimeMillis());
 		clearCacheFolder(getCacheDir(), System.currentTimeMillis());
-		// 2.2�汾���н�Ӧ�û���ת�Ƶ�sd���Ĺ���
-		// if(isMethodsCompat(android.os.Build.VERSION_CODES.DONUT)){
-		// clearCacheFolder(MethodsCompat.getExternalCacheDir(this),System.currentTimeMillis());
-		// }
-		// ���༭���������ʱ����
+
 		Properties props = getProperties();
 		for (Object key : props.keySet()) {
 			String _key = key.toString();
@@ -553,15 +420,7 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * ����Ŀ¼
-	 * 
-	 * @param dir
-	 *            Ŀ¼
-	 * @param numDays
-	 *            ��ǰϵͳʱ��
-	 * @return
-	 */
+
 	private int clearCacheFolder(File dir, long curTime) {
 		int deletedFiles = 0;
 		if (dir != null && dir.isDirectory()) {
@@ -583,33 +442,16 @@ public class AppContext extends Application {
 		return deletedFiles;
 	}
 
-	/**
-	 * �����󱣴浽�ڴ滺����
-	 * 
-	 * @param key
-	 * @param value
-	 */
+
 	public void setMemCache(String key, Object value) {
 		memCacheRegion.put(key, value);
 	}
 
-	/**
-	 * ���ڴ滺���л�ȡ����
-	 * 
-	 * @param key
-	 * @return
-	 */
 	public Object getMemCache(String key) {
 		return memCacheRegion.get(key);
 	}
 
-	/**
-	 * ������̻���
-	 * 
-	 * @param key
-	 * @param value
-	 * @throws IOException
-	 */
+
 	public void setDiskCache(String key, String value) throws IOException {
 		FileOutputStream fos = null;
 		try {
@@ -624,13 +466,7 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * ��ȡ���̻������
-	 * 
-	 * @param key
-	 * @return
-	 * @throws IOException
-	 */
+
 	public String getDiskCache(String key) throws IOException {
 		FileInputStream fis = null;
 		try {
@@ -646,13 +482,7 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * �������
-	 * 
-	 * @param ser
-	 * @param file
-	 * @throws IOException
-	 */
+
 	public boolean saveObject(Serializable ser, String file) {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
@@ -677,13 +507,7 @@ public class AppContext extends Application {
 		}
 	}
 
-	/**
-	 * ��ȡ����
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
+
 	public Serializable readObject(String file) {
 		if (!isExistDataCache(file)) {
 			return null;
@@ -697,7 +521,7 @@ public class AppContext extends Application {
 		} catch (FileNotFoundException e) {
 		} catch (Exception e) {
 			e.printStackTrace();
-			// �����л�ʧ�� - ɾ����ļ�
+	
 			if (e instanceof InvalidClassException) {
 				File data = getFileStreamPath(file);
 				data.delete();
@@ -738,22 +562,11 @@ public class AppContext extends Application {
 	public void removeProperty(String... key) {
 		AppConfig.getAppConfig(this).remove(key);
 	}
-	/**
-	 * �û���¼��֤
-	 * 
-	 * @param account
-	 * @param pwd
-	 * @return
-	 * @throws AppException
-	 */
+
 	public User loginVerify(String account, String pwd) throws AppException {
 		return ApiClient.login(this, account, pwd);
 	}
-	/**
-	 * ��ȡ��¼��Ϣ
-	 * 
-	 * @return
-	 */
+
 	public User getLoginInfo() {
 		User lu = new User();
 		lu.setUid(StringUtils.toInt(getProperty("user.uid"), 0));
@@ -768,12 +581,7 @@ public class AppContext extends Application {
 		lu.setRememberMe(StringUtils.toBool(getProperty("user.isRememberMe")));
 		return lu;
 	}
-	/**
-	 * �����¼��Ϣ
-	 * 
-	 * @param username
-	 * @param pwd
-	 */
+
 	public void saveLoginInfo(final User user) {
 		this.loginUid = user.getUid();
 		this.login = true;
@@ -790,8 +598,7 @@ public class AppContext extends Application {
 				setProperty("user.fans", String.valueOf(user.getFans()));
 				setProperty("user.score", String.valueOf(user.getScore()));
 				setProperty("user.isRememberMe",
-						String.valueOf(user.isRememberMe()));// �Ƿ��ס�ҵ���Ϣ
-			}
+						String.valueOf(user.isRememberMe()));		}
 		});
 	}
 }

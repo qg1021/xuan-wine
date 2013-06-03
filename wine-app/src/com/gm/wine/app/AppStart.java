@@ -16,7 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
 /**
- * APPÆô¶¯³ÌĞò
+ * APPå¯åŠ¨ç¨‹åº
  * @author qingang
  *
  */
@@ -34,7 +34,7 @@ public class AppStart extends Activity {
 		{
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				redirectTo();
+				//redirectTo();
 			}
 			@Override
 			public void onAnimationRepeat(Animation animation) {}
@@ -42,7 +42,7 @@ public class AppStart extends Activity {
 			public void onAnimationStart(Animation animation) {}
 			
 		});
-		//¼æÈİµÍ°æ±¾cookie£¨1.5°æ±¾ÒÔÏÂ£¬°üÀ¨1.5.0,1.5.1£©
+		//å…¼å®¹ä½ç‰ˆæœ¬cookieï¼ˆ1.5ç‰ˆæœ¬ä»¥ä¸‹ï¼ŒåŒ…æ‹¬1.5.0,1.5.1ï¼‰
 				AppContext appContext = (AppContext)getApplication();
 				String cookie = appContext.getProperty("cookie");
 				if(StringUtils.isEmpty(cookie)) {
@@ -59,7 +59,7 @@ public class AppStart extends Activity {
     }
     
    /**
-    * Ìø×ª
+    * è·³è½¬
     */
     private void redirectTo(){        
         Intent intent = new Intent(this, Main.class);

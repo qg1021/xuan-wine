@@ -48,7 +48,7 @@ private final static String APP_CONFIG = "config";
 	}
 	
 	/**
-	 * »ñÈ¡PreferenceÉèÖÃ
+	 * è·å–Preferenceè®¾ç½®
 	 */
 	public static SharedPreferences getSharedPreferences(Context context)
 	{
@@ -56,7 +56,7 @@ private final static String APP_CONFIG = "config";
 	}
 	
 	/**
-	 * ÊÇ·ñ¼ÓÔØÏÔÊ¾ÎÄÕÂÍ¼Æ¬
+	 * æ˜¯å¦åŠ è½½æ˜¾ç¤ºæ–‡ç« å›¾ç‰‡
 	 */
 	public static boolean isLoadImage(Context context)
 	{
@@ -99,7 +99,7 @@ private final static String APP_CONFIG = "config";
 		accessInfo.setAccessToken(accessToken);
 		accessInfo.setAccessSecret(accessSecret);
 		accessInfo.setExpiresIn(expiresIn);
-		//±£´æµ½ÅäÖÃ
+		//ä¿å­˜åˆ°é…ç½®
 		this.setAccessToken(accessToken);
 		this.setAccessSecret(accessSecret);
 		this.setExpiresIn(expiresIn);
@@ -127,10 +127,10 @@ private final static String APP_CONFIG = "config";
 		FileInputStream fis = null;
 		Properties props = new Properties();
 		try{
-			//¶ÁÈ¡filesÄ¿Â¼ÏÂµÄconfig
+			//è¯»å–filesç›®å½•ä¸‹çš„config
 			//fis = activity.openFileInput(APP_CONFIG);
 			
-			//¶ÁÈ¡app_configÄ¿Â¼ÏÂµÄconfig
+			//è¯»å–app_configç›®å½•ä¸‹çš„config
 			File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
 			fis = new FileInputStream(dirConf.getPath() + File.separator + APP_CONFIG);
 			
@@ -147,10 +147,10 @@ private final static String APP_CONFIG = "config";
 	private void setProps(Properties p) {
 		FileOutputStream fos = null;
 		try{
-			//°Ñconfig½¨ÔÚfilesÄ¿Â¼ÏÂ
+			//æŠŠconfigå»ºåœ¨filesç›®å½•ä¸‹
 			//fos = activity.openFileOutput(APP_CONFIG, Context.MODE_PRIVATE);
 			
-			//°Ñconfig½¨ÔÚ(×Ô¶¨Òå)app_configµÄÄ¿Â¼ÏÂ
+			//æŠŠconfigå»ºåœ¨(è‡ªå®šä¹‰)app_configçš„ç›®å½•ä¸‹
 			File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
 			File conf = new File(dirConf, APP_CONFIG);
 			fos = new FileOutputStream(conf);

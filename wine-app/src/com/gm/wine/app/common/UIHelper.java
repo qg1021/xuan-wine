@@ -65,26 +65,23 @@ public class UIHelper {
 	public final static int LISTVIEW_DATA_EMPTY = 0x04;
 	
 	public final static int LISTVIEW_DATATYPE_NEWS = 0x01;
-	public final static int LISTVIEW_DATATYPE_BLOG = 0x02;
-	public final static int LISTVIEW_DATATYPE_POST = 0x03;
-	public final static int LISTVIEW_DATATYPE_TWEET = 0x04;
-	public final static int LISTVIEW_DATATYPE_ACTIVE = 0x05;
-	public final static int LISTVIEW_DATATYPE_MESSAGE = 0x06;
-	public final static int LISTVIEW_DATATYPE_COMMENT = 0x07;
+	public final static int LISTVIEW_DATATYPE_PRODUCT = 0x02;
+	public final static int LISTVIEW_DATATYPE_MESSAGE = 0x03;
+	
 	
 	public final static int REQUEST_CODE_FOR_RESULT = 0x01;
 	public final static int REQUEST_CODE_FOR_REPLY = 0x02;
 	
-	/** ±íÇéÍ¼Æ¬Æ¥Åä */
+	/** ï¿½ï¿½ï¿½ï¿½Í¼Æ¬Æ¥ï¿½ï¿½ */
 	private static Pattern facePattern = Pattern.compile("\\[{1}([0-9]\\d*)\\]{1}");
 	
-	/** È«¾ÖwebÑùÊ½ */
+	/** È«ï¿½ï¿½webï¿½ï¿½Ê½ */
 	public final static String WEB_STYLE = "<style>* {font-size:16px;line-height:20px;} p {color:#333;} a {color:#3E62A6;} img {max-width:310px;} " +
 			"img.alignleft {float:left;max-width:120px;margin:0 10px 5px 0;border:1px solid #ccc;background:#fff;padding:2px;} " +
 			"pre {font-size:9pt;line-height:12pt;font-family:Courier New,Arial;border:1px solid #ddd;border-left:5px solid #6CE26C;background:#f6f6f6;padding:5px;} " +
 			"a.tag {font-size:15px;text-decoration:none;background-color:#bbd6f3;border-bottom:2px solid #3E6D8E;border-right:2px solid #7F9FB6;color:#284a7b;margin:2px 2px 2px 0;padding:2px 4px;white-space:nowrap;}</style>";
 	/**
-	 * ÏÔÊ¾Ê×Ò³
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½Ò³
 	 * @param activity
 	 */
 	public static void showHome(Activity activity)
@@ -95,7 +92,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ÏÔÊ¾µÇÂ¼Ò³Ãæ
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½Â¼Ò³ï¿½ï¿½
 	 * @param activity
 	 */
 	public static void showLoginDialog(Context context)
@@ -111,7 +108,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ÏÔÊ¾ÐÂÎÅÏêÇé
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param newsId
 	 */
@@ -128,7 +125,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ÏÔÊ¾Èí¼þÏêÇé
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param ident
 	 */
@@ -148,7 +145,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ÏÔÊ¾ÁôÑÔ¶Ô»°Ò³Ãæ
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ô¶Ô»ï¿½Ò³ï¿½ï¿½
 	 * @param context
 	 * @param catalog
 	 * @param friendid
@@ -162,7 +159,7 @@ public class UIHelper {
 //	}
 
 	/**
-	 * µ÷ÓÃÏµÍ³°²×°ÁËµÄÓ¦ÓÃ·ÖÏí
+	 * ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½×°ï¿½Ëµï¿½Ó¦ï¿½Ã·ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param title
 	 * @param url
@@ -171,15 +168,15 @@ public class UIHelper {
 	{
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_SUBJECT, "·ÖÏí£º" + title);
+		intent.putExtra(Intent.EXTRA_SUBJECT, "ï¿½ï¿½ï¿½?" + title);
 		intent.putExtra(Intent.EXTRA_TEXT, title + " " +url);
-		context.startActivity(Intent.createChooser(intent, "Ñ¡Ôñ·ÖÏí"));
+		context.startActivity(Intent.createChooser(intent, "Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½"));
 	}
 	
 
 	
 	/**
-	 * ÊÕ²Ø²Ù×÷Ñ¡Ôñ¿ò
+	 * ï¿½Õ²Ø²ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param thread
 	 */
@@ -191,7 +188,7 @@ public class UIHelper {
 		builder.setItems(R.array.favorite_options,new DialogInterface.OnClickListener(){
 			public void onClick(DialogInterface arg0, int arg1) {
 				switch (arg1) {
-					case 0://É¾³ý
+					case 0://É¾ï¿½ï¿½
 						thread.start();
 						break;
 				}				
@@ -203,7 +200,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ²©¿ÍÁÐ±í²Ù×÷
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param thread
 	 */
@@ -230,7 +227,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ¶¯µ¯²Ù×÷Ñ¡Ôñ¿ò
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param thread
 	 */
@@ -259,7 +256,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ÏÔÊ¾Í¼Æ¬¶Ô»°¿ò
+	 * ï¿½ï¿½Ê¾Í¼Æ¬ï¿½Ô»ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param imgUrl
 	 */
@@ -277,7 +274,7 @@ public class UIHelper {
 //	}
 	
 	/**
-	 * ÏÔÊ¾ÏµÍ³ÉèÖÃ½çÃæ
+	 * ï¿½ï¿½Ê¾ÏµÍ³ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½
 	 * @param context
 	 */
 	public static void showSetting(Context context)
@@ -291,7 +288,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ÏÔÊ¾ÎÒµÄ×ÊÁÏ
+	 * ï¿½ï¿½Ê¾ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 */
 	public static void showUserInfo(Activity context)
@@ -307,7 +304,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ¼ÓÔØÏÔÊ¾ÓÃ»§Í·Ïñ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ã»ï¿½Í·ï¿½ï¿½
 	 * @param imgFace
 	 * @param faceURL
 	 */
@@ -317,23 +314,23 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ¼ÓÔØÏÔÊ¾Í¼Æ¬
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Í¼Æ¬
 	 * @param imgFace
 	 * @param faceURL
 	 * @param errMsg
 	 */
 	public static void showLoadImage(final ImageView imgView,final String imgURL,final String errMsg)
 	{
-		//¶ÁÈ¡±¾µØÍ¼Æ¬
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
 		if(StringUtils.isEmpty(imgURL) || imgURL.endsWith("portrait.gif")){
 			Bitmap bmp = BitmapFactory.decodeResource(imgView.getResources(), R.drawable.widget_dface);
 			imgView.setImageBitmap(bmp);
 			return;
 		}
 		
-		//ÊÇ·ñÓÐ»º´æÍ¼Æ¬
+		//ï¿½Ç·ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Í¼Æ¬
     	final String filename = FileUtils.getFileName(imgURL);
-    	//Environment.getExternalStorageDirectory();·µ»Ø/sdcard
+    	//Environment.getExternalStorageDirectory();ï¿½ï¿½ï¿½ï¿½/sdcard
     	String filepath = imgView.getContext().getFilesDir() + File.separator + filename;
 		File file = new File(filepath);
 		if(file.exists()){
@@ -342,7 +339,7 @@ public class UIHelper {
 			return;
     	}
 		
-		//´ÓÍøÂç»ñÈ¡&Ð´ÈëÍ¼Æ¬»º´æ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡&Ð´ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
 		String _errMsg = imgView.getContext().getString(R.string.msg_load_image_fail);
 		if(!StringUtils.isEmpty(errMsg))
 			_errMsg = errMsg;
@@ -352,7 +349,7 @@ public class UIHelper {
 				if(msg.what==1 && msg.obj != null){
 					imgView.setImageBitmap((Bitmap)msg.obj);
 					try {
-                    	//Ð´Í¼Æ¬»º´æ
+                    	//Ð´Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
 						ImageUtils.saveImage(imgView.getContext(), filename, (Bitmap)msg.obj);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -380,7 +377,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * urlÌø×ª
+	 * urlï¿½ï¿½×ª
 	 * @param context
 	 * @param url
 	 */
@@ -411,7 +408,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ´ò¿ªä¯ÀÀÆ÷
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param url
 	 */
@@ -422,12 +419,12 @@ public class UIHelper {
 			context.startActivity(it);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ToastMessage(context, "ÎÞ·¨ä¯ÀÀ´ËÍøÒ³", 500);
+			ToastMessage(context, "ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³", 500);
 		} 
 	}
 		
 	/**
-	 * »ñÈ¡webviewClient¶ÔÏó
+	 * ï¿½ï¿½È¡webviewClientï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public static WebViewClient getWebViewClient(){
@@ -441,7 +438,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * »ñÈ¡TextWatcher¶ÔÏó
+	 * ï¿½ï¿½È¡TextWatcherï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param tmlKey
 	 * @return
@@ -449,7 +446,7 @@ public class UIHelper {
 	public static TextWatcher getTextWatcher(final Activity context, final String temlKey) {
 		return new TextWatcher() {		
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				//±£´æµ±Ç°EditTextÕýÔÚ±à¼­µÄÄÚÈÝ
+				//ï¿½ï¿½ï¿½æµ±Ç°EditTextï¿½ï¿½ï¿½Ú±à¼­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				((AppContext)context.getApplication()).setProperty(temlKey, s.toString());
 			}		
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}		
@@ -458,7 +455,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ±à¼­Æ÷ÏÔÊ¾±£´æµÄ²Ý¸å
+	 * ï¿½à¼­ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ä²Ý¸ï¿½
 	 * @param context
 	 * @param editer
 	 * @param temlKey
@@ -468,12 +465,12 @@ public class UIHelper {
 //		if(!StringUtils.isEmpty(tempContent)) {
 //			SpannableStringBuilder builder = parseFaceByText(context, tempContent);
 //			editer.setText(builder);
-//			editer.setSelection(tempContent.length());//ÉèÖÃ¹â±êÎ»ÖÃ
+//			editer.setSelection(tempContent.length());//ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½Î»ï¿½ï¿½
 //		}
 //	}
 	
 	/**
-	 * ½«[12]Ö®ÀàµÄ×Ö·û´®Ìæ»»Îª±íÇé
+	 * ï¿½ï¿½[12]Ö®ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½æ»»Îªï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 * @param content
 	 */
@@ -481,7 +478,7 @@ public class UIHelper {
 //		SpannableStringBuilder builder = new SpannableStringBuilder(content);
 //		Matcher matcher = facePattern.matcher(content);
 //		while (matcher.find()) {
-//			//Ê¹ÓÃÕýÔò±í´ïÊ½ÕÒ³öÆäÖÐµÄÊý×Ö
+//			//Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
 //			int position = StringUtils.toInt(matcher.group(1));
 //			int resId = 0;
 //			try {
@@ -491,7 +488,7 @@ public class UIHelper {
 //					position = position-2;
 //				resId = GridViewFaceAdapter.getImageIds()[position];
 //				Drawable d = context.getResources().getDrawable(resId);
-//				d.setBounds(0, 0, 35, 35);//ÉèÖÃ±íÇéÍ¼Æ¬µÄÏÔÊ¾´óÐ¡
+//				d.setBounds(0, 0, 35, 35);//ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ð¡
 //				ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BOTTOM);
 //				builder.setSpan(span, matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //			} catch (Exception e) {
@@ -501,7 +498,7 @@ public class UIHelper {
 //	}
 	
 	/**
-	 * Çå³ýÎÄ×Ö
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param cont
 	 * @param editer
 	 */
@@ -512,7 +509,7 @@ public class UIHelper {
 		builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//Çå³ýÎÄ×Ö
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				editer.setText("");
 				numwords.setText("160");
 			}
@@ -526,7 +523,7 @@ public class UIHelper {
 	}
 	
 //	/**
-//	 * ·¢ËÍÍ¨Öª¹ã²¥
+//	 * ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ã²¥
 //	 * @param context
 //	 * @param notice
 //	 */
@@ -544,21 +541,21 @@ public class UIHelper {
 
 	
 	/**
-	 * ×éºÏ¶¯Ì¬µÄ»Ø¸´ÎÄ±¾
+	 * ï¿½ï¿½Ï¶ï¿½Ì¬ï¿½Ä»Ø¸ï¿½ï¿½Ä±ï¿½
 	 * @param name
 	 * @param body
 	 * @return
 	 */
 	public static SpannableString parseActiveReply(String name,String body){
-		SpannableString sp = new SpannableString(name+"£º"+body);
-		//ÉèÖÃÓÃ»§Ãû×ÖÌå¼Ó´Ö¡¢¸ßÁÁ 
+		SpannableString sp = new SpannableString(name+"ï¿½ï¿½"+body);
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * ×éºÏÏûÏ¢ÎÄ±¾
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä±ï¿½
 	 * @param name
 	 * @param body
 	 * @return
@@ -568,35 +565,35 @@ public class UIHelper {
 		int start = 0;
 		int end = 0;
 		if(StringUtils.isEmpty(action)){
-			sp = new SpannableString(name + "£º" + body);
+			sp = new SpannableString(name + "ï¿½ï¿½" + body);
 			end = name.length();
 		}else{
-			sp = new SpannableString(action + name + "£º" + body);
+			sp = new SpannableString(action + name + "ï¿½ï¿½" + body);
 			start = action.length();
 			end = start + name.length();
 		}
-		//ÉèÖÃÓÃ»§Ãû×ÖÌå¼Ó´Ö¡¢¸ßÁÁ 
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * ×éºÏ»Ø¸´ÒýÓÃÎÄ±¾
+	 * ï¿½ï¿½Ï»Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
 	 * @param name
 	 * @param body
 	 * @return
 	 */
 	public static SpannableString parseQuoteSpan(String name,String body){
-		SpannableString sp = new SpannableString("»Ø¸´£º"+name+"\n"+body);
-		//ÉèÖÃÓÃ»§Ãû×ÖÌå¼Ó´Ö¡¢¸ßÁÁ 
+		SpannableString sp = new SpannableString("ï¿½Ø¸ï¿½ï¿½ï¿½"+name+"\n"+body);
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 3, 3+name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 3, 3+name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * µ¯³öToastÏûÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Toastï¿½ï¿½Ï¢
 	 * @param msg
 	 */
 	public static void ToastMessage(Context cont,String msg)
@@ -613,7 +610,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * µã»÷·µ»Ø¼àÌýÊÂ¼þ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	 * @param activity
 	 * @return
 	 */
@@ -627,7 +624,7 @@ public class UIHelper {
 	}	
 	
 	/**
-	 * ÏÔÊ¾¹ØÓÚÎÒÃÇ
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param context
 	 */
 //	public static void showAbout(Context context)
@@ -639,7 +636,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ²Ëµ¥ÏÔÊ¾µÇÂ¼»òµÇ³ö
+	 * ï¿½Ëµï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Â¼ï¿½ï¿½Ç³ï¿½
 	 * @param activity
 	 * @param menu
 	 */
@@ -655,7 +652,7 @@ public class UIHelper {
 //	}
 	
 	/**
-	 * ¿ì½ÝÀ¸ÏÔÊ¾µÇÂ¼ÓëµÇ³ö
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Â¼ï¿½ï¿½Ç³ï¿½
 	 * @param activity
 	 * @param qa
 	 */
@@ -671,7 +668,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ¿ì½ÝÀ¸ÊÇ·ñÏÔÊ¾ÎÄÕÂÍ¼Æ¬
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
 	 * @param activity
 	 * @param qa
 	 */
@@ -687,7 +684,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ÓÃ»§µÇÂ¼»ò×¢Ïú
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½×¢ï¿½ï¿½
 	 * @param activity
 	 */
 	public static void loginOrLogout(Activity activity)
@@ -695,14 +692,14 @@ public class UIHelper {
 		AppContext ac = (AppContext)activity.getApplication();
 		if(ac.isLogin()){
 			ac.Logout();
-			ToastMessage(activity, "ÒÑÍË³öµÇÂ¼");
+			ToastMessage(activity, "ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Â¼");
 		}else{
 			showLoginDialog(activity);
 		}
 	}
 	
 	/**
-	 * ÎÄÕÂÊÇ·ñ¼ÓÔØÍ¼Æ¬ÏÔÊ¾
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Ê¾
 	 * @param activity
 	 */
 	public static void changeSettingIsLoadImage(Activity activity)
@@ -710,10 +707,10 @@ public class UIHelper {
 		AppContext ac = (AppContext)activity.getApplication();
 		if(ac.isLoadImage()){
 			ac.setConfigLoadimage(false);
-			ToastMessage(activity, "ÒÑÉèÖÃÎÄÕÂ²»¼ÓÔØÍ¼Æ¬");
+			ToastMessage(activity, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬");
 		}else{
 			ac.setConfigLoadimage(true);
-			ToastMessage(activity, "ÒÑÉèÖÃÎÄÕÂ¼ÓÔØÍ¼Æ¬");
+			ToastMessage(activity, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Í¼Æ¬");
 		}
 	}
 	public static void changeSettingIsLoadImage(Activity activity,boolean b)
@@ -723,7 +720,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * Çå³ýapp»º´æ
+	 * ï¿½ï¿½ï¿½appï¿½ï¿½ï¿½ï¿½
 	 * @param activity
 	 */
 	public static void clearAppCache(Activity activity)
@@ -732,9 +729,9 @@ public class UIHelper {
 		final Handler handler = new Handler(){
 			public void handleMessage(Message msg) {
 				if(msg.what==1){
-					ToastMessage(ac, "»º´æÇå³ý³É¹¦");
+					ToastMessage(ac, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½");
 				}else{
-					ToastMessage(ac, "»º´æÇå³ýÊ§°Ü");
+					ToastMessage(ac, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½");
 				}
 			}
 		};
@@ -754,7 +751,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ·¢ËÍAppÒì³£±ÀÀ£±¨¸æ
+	 * ï¿½ï¿½ï¿½ï¿½Appï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param cont
 	 * @param crashReport
 	 */
@@ -767,22 +764,22 @@ public class UIHelper {
 		builder.setPositiveButton(R.string.submit_report, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//·¢ËÍÒì³£±¨¸æ
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½
 				Intent i = new Intent(Intent.ACTION_SEND);
-				//i.setType("text/plain"); //Ä£ÄâÆ÷
-				i.setType("message/rfc822") ; //Õæ»ú
+				//i.setType("text/plain"); //Ä£ï¿½ï¿½ï¿½ï¿½
+				i.setType("message/rfc822") ; //ï¿½ï¿½ï¿½
 				i.putExtra(Intent.EXTRA_EMAIL, new String[]{"jxsmallmouse@163.com"});
-				i.putExtra(Intent.EXTRA_SUBJECT,"¿ªÔ´ÖÐ¹úAndroid¿Í»§¶Ë - ´íÎó±¨¸æ");
+				i.putExtra(Intent.EXTRA_SUBJECT,"ï¿½ï¿½Ô´ï¿½Ð¹ï¿½Androidï¿½Í»ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ó±¨¸ï¿½");
 				i.putExtra(Intent.EXTRA_TEXT,crashReport);
-				cont.startActivity(Intent.createChooser(i, "·¢ËÍ´íÎó±¨¸æ"));
-				//ÍË³ö
+				cont.startActivity(Intent.createChooser(i, "ï¿½ï¿½ï¿½Í´ï¿½ï¿½ó±¨¸ï¿½"));
+				//ï¿½Ë³ï¿½
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});
 		builder.setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//ÍË³ö
+				//ï¿½Ë³ï¿½
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});
@@ -790,7 +787,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ÍË³ö³ÌÐò
+	 * ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param cont
 	 */
 	public static void Exit(final Context cont)
@@ -801,7 +798,7 @@ public class UIHelper {
 		builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//ÍË³ö
+				//ï¿½Ë³ï¿½
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});

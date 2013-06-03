@@ -12,59 +12,72 @@ import java.util.Date;
  */
 public class ProductVO extends BaseVO {
 
-	/**
-	 * serialVersionUID long
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * serialVersionUID long
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String name; // 名称
+    private Long              id;
 
-	private String remark; // 简介
+    private String name; // 名称
 
-	private String price; // 价格
+    private String remark; // 简介
 
-	private Date pubdate; // 发布时间
+    private String price; // 价格
 
-	private String picurl; // 图片路径
+    private Date pubdate; // 发布时间
 
-	public String getPicurl() {
-		return picurl;
-	}
+    private String picurl; // 图片路径
 
-	public void setPicurl(String picurl) {
-		this.picurl = picurl;
-	}
+    public Long getId()
+    {
+        return id;
+    }
 
-	public String getPrice() {
-		return price;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public String getPicurl()
+    {
+        return picurl;
+    }
 
-	public Date getPubdate() {
-		return pubdate;
-	}
+    public void setPicurl(String picurl) {
+        this.picurl = picurl;
+    }
 
-	public void setPubdate(Date pubdate) {
-		this.pubdate = pubdate;
-	}
+    public String getPrice() {
+        return price;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Date getPubdate() {
+        return pubdate;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setPubdate(Date pubdate) {
+        this.pubdate = pubdate;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
 }

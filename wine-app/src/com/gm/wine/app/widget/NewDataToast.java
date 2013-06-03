@@ -1,7 +1,6 @@
 package com.gm.wine.app.widget;
 
 
-
 import com.gm.wine.app.R;
 
 import android.content.Context;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * ĞÂÊı¾İToastÌáÊ¾¿Ø¼ş(´øÒôÀÖ²¥·Å)
+ * æ–°æ•°æ®Toastæç¤ºæ§ä»¶(å¸¦éŸ³ä¹æ’­æ”¾)
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-8-30
@@ -53,17 +52,17 @@ public class NewDataToast extends Toast{
 	}
 	
 	/**
-	 * ÉèÖÃÊÇ·ñ²¥·ÅÉùÒô
+	 * è®¾ç½®æ˜¯å¦æ’­æ”¾å£°éŸ³
 	 */
 	public void setIsSound(boolean isSound) {
 		this.isSound = isSound;
 	}
 	
 	/**
-	 * »ñÈ¡¿Ø¼şÊµÀı
+	 * è·å–æ§ä»¶å®ä¾‹
 	 * @param context
-	 * @param text ÌáÊ¾ÏûÏ¢
-	 * @param isSound ÊÇ·ñ²¥·ÅÉùÒô
+	 * @param text æç¤ºæ¶ˆæ¯
+	 * @param isSound æ˜¯å¦æ’­æ”¾å£°éŸ³
 	 * @return
 	 */
 	public static NewDataToast makeText(Context context, CharSequence text, boolean isSound) {
@@ -74,7 +73,7 @@ public class NewDataToast extends Toast{
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         
         View v = inflate.inflate(R.layout.new_data_toast, null);
-        v.setMinimumWidth(dm.widthPixels);//ÉèÖÃ¿Ø¼ş×îĞ¡¿í¶ÈÎªÊÖ»úÆÁÄ»¿í¶È
+        v.setMinimumWidth(dm.widthPixels);//è®¾ç½®æ§ä»¶æœ€å°å®½åº¦ä¸ºæ‰‹æœºå±å¹•å®½åº¦
         
         TextView tv = (TextView)v.findViewById(R.id.new_data_toast_message);
         tv.setText(text);

@@ -10,7 +10,7 @@ import com.gm.wine.app.common.StringUtils;
 
 
 /**
- * ½Ó¿ÚURLÊµÌåÀà
+ * æ¥å£URLå®ä½“ç±»
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
@@ -27,17 +27,17 @@ public class URLs implements Serializable {
 	private final static String URL_UNDERLINE = "_";
 	
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
-	public final static String LOGIN_VALIDATE_HTTP = URL_API_HOST + "loginvalidate.action";//µÇÂ¼ÑéÖ¤
-	public final static String NEWS_LIST = URL_API_HOST+"news.action";//ĞÂÎÅ×ÊÑ¶ÁĞ±í
-	public final static String NEWS_DETAIL = URL_API_HOST+"news!detail.action";//ĞÂÎÅÃ÷Ï¸
+	public final static String LOGIN_VALIDATE_HTTP = URL_API_HOST + "loginvalidate.action";//ç™»å½•éªŒè¯
+	public final static String NEWS_LIST = URL_API_HOST+"news.action";//æ–°é—»èµ„è®¯åˆ—è¡¨
+	public final static String NEWS_DETAIL = URL_API_HOST+"news!detail.action";//æ–°é—»æ˜ç»†
 	
-	public final static String NOTICE_LIST = URL_API_HOST+"notice.action";//ÁôÑÔ¹«¸æ
+	public final static String NOTICE_LIST = URL_API_HOST+"notice.action";//ç•™è¨€å…¬å‘Š
 	
-	public final static String USER_REGISTER=URL_API_HOST+"register.action";//ÓÃ»§×¢²á
-	public final static String USER_PASSWORD=URL_API_HOST+"modifypass.action";//ĞŞ¸ÄÃÜÂë
+	public final static String USER_REGISTER=URL_API_HOST+"register.action";//ç”¨æˆ·æ³¨å†Œ
+	public final static String USER_PASSWORD=URL_API_HOST+"modifypass.action";//ä¿®æ”¹å¯†ç 
 	
-	public final static String PRODUCT_LIST = URL_API_HOST+"product.action";//²úÆ·ÁĞ±í
-	public final static String PRODUCT_DETAIL = URL_API_HOST+"product!detail.action";//ĞÂÎÅÃ÷Ï¸
+	public final static String PRODUCT_LIST = URL_API_HOST+"product.action";//äº§å“åˆ—è¡¨
+	public final static String PRODUCT_DETAIL = URL_API_HOST+"product!detail.action";//æ–°é—»æ˜ç»†
 	
 
 	public final static String UPDATE_VERSION = URL_API_HOST+"appversion.action";
@@ -70,9 +70,9 @@ public class URLs implements Serializable {
 		this.objType = objType;
 	}
 	/**
-	 * ×ª»¯URLÎªURLsÊµÌå
+	 * è½¬åŒ–URLä¸ºURLså®ä½“
 	 * @param path
-	 * @return ²»ÄÜ×ª»¯µÄÁ´½Ó·µ»Ønull
+	 * @return ä¸èƒ½è½¬åŒ–çš„é“¾æ¥è¿”å›null
 	 */
 	public final static URLs parseURL(String path) {
 		if(StringUtils.isEmpty(path))return null;
@@ -86,7 +86,7 @@ public class URLs implements Serializable {
 	}
 
 	/**
-	 * ½âÎöurl»ñµÃobjId
+	 * è§£æurlè·å¾—objId
 	 * @param path
 	 * @param url_type
 	 * @return
@@ -108,7 +108,7 @@ public class URLs implements Serializable {
 	}
 	
 	/**
-	 * ½âÎöurl»ñµÃobjKey
+	 * è§£æurlè·å¾—objKey
 	 * @param path
 	 * @param url_type
 	 * @return
@@ -131,7 +131,7 @@ public class URLs implements Serializable {
 	}
 	
 	/**
-	 * ¶ÔURL½øĞĞ¸ñÊ½´¦Àí
+	 * å¯¹URLè¿›è¡Œæ ¼å¼å¤„ç†
 	 * @param path
 	 * @return
 	 */

@@ -49,7 +49,7 @@ public class NoticeList extends BaseVO
 
     private int               totalSize;
 
-    private List<NoticeVO>    productList      = new ArrayList<NoticeVO>();
+    private List<NoticeVO>    noticeList       = new ArrayList<NoticeVO>();
 
     public int getPageSize()
     {
@@ -71,14 +71,14 @@ public class NoticeList extends BaseVO
         this.totalSize = totalSize;
     }
 
-    public List<NoticeVO> getProductList()
+    public List<NoticeVO> getNoticeList()
     {
-        return productList;
+        return noticeList;
     }
 
-    public void setProductList(List<NoticeVO> productList)
+    public void setNoticeList(List<NoticeVO> noticeList)
     {
-        this.productList = productList;
+        this.noticeList = noticeList;
     }
 
 }

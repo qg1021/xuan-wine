@@ -11,7 +11,11 @@ import java.net.UnknownHostException;
 import java.util.Date;
 
 
+
+
 import org.apache.commons.httpclient.HttpException;
+
+import com.gm.wine.app.common.UIHelper;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -19,10 +23,17 @@ import android.os.Environment;
 import android.os.Looper;
 import android.widget.Toast;
 
+/**
+ * åº”ç”¨ç¨‹åºå¼‚å¸¸ç±»ï¼šç”¨äºæ•è·å¼‚å¸¸å’Œæç¤ºé”™è¯¯ä¿¡æ¯
+ * @author liux (http://my.oschina.net/liux)
+ * @version 1.0
+ * @created 2012-3-21
+ */
 public class AppException extends Exception implements UncaughtExceptionHandler{
-private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
+
+	private final static boolean Debug = false;//æ˜¯å¦ä¿å­˜é”™è¯¯æ—¥å¿—
 	
-	/** ¶¨ÒåÒì³£ÀàĞÍ */
+	/** å®šä¹‰å¼‚å¸¸ç±»å‹ */
 	public final static byte TYPE_NETWORK 	= 0x01;
 	public final static byte TYPE_SOCKET	= 0x02;
 	public final static byte TYPE_HTTP_CODE	= 0x03;
@@ -34,7 +45,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 	private byte type;
 	private int code;
 	
-	/** ÏµÍ³Ä¬ÈÏµÄUncaughtException´¦ÀíÀà */
+	/** ç³»ç»Ÿé»˜è®¤çš„UncaughtExceptionå¤„ç†ç±» */
 	private Thread.UncaughtExceptionHandler mDefaultHandler;
 	
 	private AppException(){
@@ -57,7 +68,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 	}
 	
 	/**
-	 * ÌáÊ¾ÓÑºÃµÄ´íÎóĞÅÏ¢
+	 * æç¤ºå‹å¥½çš„é”™è¯¯ä¿¡æ¯
 	 * @param ctx
 	 */
 	public void makeToast(Context ctx){
@@ -88,7 +99,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 	}
 	
 	/**
-	 * ±£´æÒì³£ÈÕÖ¾
+	 * ä¿å­˜å¼‚å¸¸æ—¥å¿—
 	 * @param excp
 	 */
 	public void saveErrorLog(Exception excp) {
@@ -98,7 +109,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 		FileWriter fw = null;
 		PrintWriter pw = null;
 		try {
-			//ÅĞ¶ÏÊÇ·ñ¹ÒÔØÁËSD¿¨
+			//åˆ¤æ–­æ˜¯å¦æŒ‚è½½äº†SDå¡
 			String storageState = Environment.getExternalStorageState();		
 			if(storageState.equals(Environment.MEDIA_MOUNTED)){
 				savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/OSChina/Log/";
@@ -108,7 +119,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 				}
 				logFilePath = savePath + errorlog;
 			}
-			//Ã»ÓĞ¹ÒÔØSD¿¨£¬ÎŞ·¨Ğ´ÎÄ¼ş
+			//æ²¡æœ‰æŒ‚è½½SDå¡ï¼Œæ— æ³•å†™æ–‡ä»¶
 			if(logFilePath == ""){
 				return;
 			}
@@ -175,7 +186,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 	}
 
 	/**
-	 * »ñÈ¡APPÒì³£±ÀÀ£´¦Àí¶ÔÏó
+	 * è·å–APPå¼‚å¸¸å´©æºƒå¤„ç†å¯¹è±¡
 	 * @param context
 	 * @return
 	 */
@@ -192,9 +203,9 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 
 	}
 	/**
-	 * ×Ô¶¨ÒåÒì³£´¦Àí:ÊÕ¼¯´íÎóĞÅÏ¢&·¢ËÍ´íÎó±¨¸æ
+	 * è‡ªå®šä¹‰å¼‚å¸¸å¤„ç†:æ”¶é›†é”™è¯¯ä¿¡æ¯&å‘é€é”™è¯¯æŠ¥å‘Š
 	 * @param ex
-	 * @return true:´¦ÀíÁË¸ÃÒì³£ĞÅÏ¢;·ñÔò·µ»Øfalse
+	 * @return true:å¤„ç†äº†è¯¥å¼‚å¸¸ä¿¡æ¯;å¦åˆ™è¿”å›false
 	 */
 	private boolean handleException(Throwable ex) {
 		if(ex == null) {
@@ -208,11 +219,11 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 		}
 		
 		final String crashReport = getCrashReport(context, ex);
-		//ÏÔÊ¾Òì³£ĞÅÏ¢&·¢ËÍ±¨¸æ
+		//æ˜¾ç¤ºå¼‚å¸¸ä¿¡æ¯&å‘é€æŠ¥å‘Š
 		new Thread() {
 			public void run() {
 				Looper.prepare();
-				//UIHelper.sendAppCrashReport(context, crashReport);
+				UIHelper.sendAppCrashReport(context, crashReport);
 				Looper.loop();
 			}
 
@@ -220,7 +231,7 @@ private final static boolean Debug = false;//ÊÇ·ñ±£´æ´íÎóÈÕÖ¾
 		return true;
 	}
 	/**
-	 * »ñÈ¡APP±ÀÀ£Òì³£±¨¸æ
+	 * è·å–APPå´©æºƒå¼‚å¸¸æŠ¥å‘Š
 	 * @param ex
 	 * @return
 	 */

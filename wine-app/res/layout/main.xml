@@ -17,7 +17,7 @@
       
 	  <include layout="@layout/frame_question" />
 	  
-	  <include layout="@layout/frame_tweet" />
+	  <include layout="@layout/frame_active" />
 
        
 	</com.gm.wine.app.widget.ScrollLayout> 
