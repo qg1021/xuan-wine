@@ -6,6 +6,6 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="/android-app-master/libs/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/qingang/.m2/repository/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar" sourcepath="C:/Users/qingang/.m2/repository/com/google/code/gson/gson/2.2.2/gson-2.2.2-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/qingang/.m2/repository/com/gm/wine/common/wine-common/1.0/wine-common-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/qingang/.m2/repository/com/gm/wine/common/wine-common/1.0/wine-common-1.0.jar" sourcepath="C:/Users/qingang/.m2/repository/com/gm/wine/common/wine-common/1.0/wine-common-1.0-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

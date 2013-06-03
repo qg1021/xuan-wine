@@ -1,9 +1,5 @@
 package com.gm.wine.app.ui;
 
-
-
-
-
 import greendroid.widget.MyQuickAction;
 import greendroid.widget.QuickActionGrid;
 import greendroid.widget.QuickActionWidget;
@@ -12,25 +8,6 @@ import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-
-
-
-
-
-
-
-
-import com.gm.wine.app.AppContext;
-import com.gm.wine.app.AppException;
-import com.gm.wine.app.R;
-import com.gm.wine.app.adapter.ListViewNewsAdapter;
-import com.gm.wine.app.common.StringUtils;
-import com.gm.wine.app.common.UIHelper;
-import com.gm.wine.app.widget.NewDataToast;
-import com.gm.wine.app.widget.PullToRefreshListView;
-import com.gm.wine.vo.NewsList;
-import com.gm.wine.vo.NewsVO;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,45 +23,95 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.gm.wine.app.AppContext;
+import com.gm.wine.app.AppException;
+import com.gm.wine.app.R;
+import com.gm.wine.app.adapter.ListViewMessageAdapter;
+import com.gm.wine.app.adapter.ListViewNewsAdapter;
+import com.gm.wine.app.adapter.ListViewProductAdapter;
+import com.gm.wine.app.common.StringUtils;
+import com.gm.wine.app.common.UIHelper;
+import com.gm.wine.app.widget.NewDataToast;
+import com.gm.wine.app.widget.PullToRefreshListView;
+import com.gm.wine.app.widget.ScrollLayout;
+import com.gm.wine.vo.NewsList;
+import com.gm.wine.vo.NewsVO;
+import com.gm.wine.vo.NoticeVO;
+import com.gm.wine.vo.ProductList;
+import com.gm.wine.vo.ProductVO;
+
+/**
+ * Â∫îÁî®Á®ãÂ∫èÈ¶ñÈ°µ
+ * 
+ * @author liux (http://my.oschina.net/liux)
+ * @version 1.0
+ * @created 2012-3-21
+ */
 public class Main extends BaseActivity {
-    public static final int QUICKACTION_LOGIN_OR_LOGOUT = 0;
-    public static final int QUICKACTION_USERINFO = 1;
-    public static final int QUICKACTION_SETTING = 2;
-    public static final int QUICKACTION_EXIT = 3;
-    
-	private AppContext appContext;//»´æ÷Context
-	
+	public static final int QUICKACTION_LOGIN_OR_LOGOUT = 0;
+	public static final int QUICKACTION_USERINFO = 1;
+	public static final int QUICKACTION_SETTING = 2;
+	public static final int QUICKACTION_EXIT = 3;
+
+	private AppContext appContext; // ÂÖ®Â±ÄContext
+
+	private ScrollLayout mScrollLayout;
+	private int mViewCount;
+	private int mCurSel;
+
 	private ImageView mHeadLogo;
 	private TextView mHeadTitle;
 	private ProgressBar mHeadProgress;
 	private ImageButton mHeadPub_post;
-	
-	private RadioButton fbNews;//◊ —∂
-	private RadioButton fbProduct;//≤˙∆∑÷––ƒ
-	private RadioButton fbNotice;//¡Ù—‘π´∏Ê
-	private ImageView fbSetting;
-	
-	private ListViewNewsAdapter lvNewsAdapter;
-	private PullToRefreshListView lvNews;
-	private List<NewsVO> lvNewsData = new ArrayList<NewsVO>();
-	private View lvNews_footer;
-	private TextView lvNews_foot_more;
-	private ProgressBar lvNews_foot_progress;
-	private int lvNewsSumData;
-	private Handler lvNewsHandler;
-	
-	private QuickActionWidget mGrid;//øÏΩ›¿∏øÿº˛
-	
 
+	private RadioButton fbNews; // Êñ∞ÈóªËµÑËÆØ
+	private RadioButton fbProduct; // ‰∫ßÂìÅ‰∏≠ÂøÉ
+	private RadioButton fbNotice; // ÁïôË®ÄÂÖ¨Âëä
+	private ImageView fbSetting;
+
+	private ListViewNewsAdapter lvNewsAdapter;
+	private ListViewProductAdapter lvProductAdapter;
+	private ListViewMessageAdapter lvMessageAdapter;
+
+	private PullToRefreshListView lvNews;
+	private PullToRefreshListView lvProduct;
+	private PullToRefreshListView lvMessage;
+
+	private final List<NewsVO> lvNewsData = new ArrayList<NewsVO>();
+	private final List<ProductVO> lvProductData = new ArrayList<ProductVO>();
+	private final List<NoticeVO> lvMessageData = new ArrayList<NoticeVO>();
+
+	private View lvNews_footer;
+	private View lvProduct_footer;
+	private View lvMessage_footer;
+
+	private TextView lvNews_foot_more;
+	private TextView lvProduct_foot_more;
+	private TextView lvMessage_foot_more;
+
+	private ProgressBar lvNews_foot_progress;
+	private ProgressBar lvProduct_foot_progress;
+	private ProgressBar lvMessage_foot_progress;
+
+	private int lvNewsSumData;
+	private int lvProductSumData;
+	private int lvMessageSumData;
+
+	private Handler lvNewsHandler;
+	private Handler lvProductHandler;
+	private Handler lvMessageHandler;
+
+	private QuickActionWidget mGrid; // Âø´Êç∑Ê†èÊéß‰ª∂
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		appContext = (AppContext)getApplication();
-	        //Õ¯¬Á¡¨Ω”≈–∂œ
-		if(!appContext.isNetworkConnected())
+		appContext = (AppContext) getApplication();
+		// ÁΩëÁªúËøûÊé•Âà§Êñ≠
+		if (!appContext.isNetworkConnected()) {
 			UIHelper.ToastMessage(this, R.string.network_not_connected);
+		}
 		this.initHeadView();
 		this.initFootBar();
 		this.initQuickActionGrid();
@@ -95,320 +122,526 @@ public class Main extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mViewCount == 0) {
+			mViewCount = 4;
+		}
+		if (mCurSel == 0 && !fbNews.isChecked()) {
+			fbNews.setChecked(true);
+			fbProduct.setChecked(false);
+			fbNotice.setChecked(false);
+		}
+		// ËØªÂèñÂ∑¶Âè≥ÊªëÂä®ÈÖçÁΩÆ
+		mScrollLayout.setIsScroll(appContext.isScroll());
+	}
+
 	/**
-     * ≥ı ºªØ–¬Œ≈¡–±Ì
-     */
-    private void initNewsListView()
-    {
-        lvNewsAdapter = new ListViewNewsAdapter(this, lvNewsData, R.layout.news_listitem);        
-        lvNews_footer = getLayoutInflater().inflate(R.layout.listview_footer, null);
-        lvNews_foot_more = (TextView)lvNews_footer.findViewById(R.id.listview_foot_more);
-        lvNews_foot_progress = (ProgressBar)lvNews_footer.findViewById(R.id.listview_foot_progress);
-        lvNews = (PullToRefreshListView)findViewById(R.id.frame_listview_news);
-        lvNews.addFooterView(lvNews_footer);//ÃÌº”µ◊≤ø ”Õº  ±ÿ–Î‘⁄setAdapter«∞
-        lvNews.setAdapter(lvNewsAdapter); 
-        lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		//µ„ª˜Õ∑≤ø°¢µ◊≤ø¿∏Œﬁ–ß
-        		if(position == 0 || view == lvNews_footer) return;
-        		
-        		NewsVO news = null;        		
-        		//≈–∂œ «∑Ò «TextView
-        		if(view instanceof TextView){
-        			news = (NewsVO)view.getTag();
-        		}else{
-        			TextView tv = (TextView)view.findViewById(R.id.news_listitem_title);
-        			news = (NewsVO)tv.getTag();
-        		}
-        		if(news == null) return;
-        		
-        		//Ã¯◊™µΩ–¬Œ≈œÍ«È
-        		//UIHelper.showNewsRedirect(view.getContext(), news);
-        	}        	
+	 * ÂàùÂßãÂåñÊñ∞ÈóªÂàóË°®
+	 */
+	private void initNewsListView() {
+		lvNewsAdapter = new ListViewNewsAdapter(this, lvNewsData,
+				R.layout.news_listitem);
+		lvNews_footer = getLayoutInflater().inflate(R.layout.listview_footer,
+				null);
+		lvNews_foot_more = (TextView) lvNews_footer
+				.findViewById(R.id.listview_foot_more);
+		lvNews_foot_progress = (ProgressBar) lvNews_footer
+				.findViewById(R.id.listview_foot_progress);
+		lvNews = (PullToRefreshListView) findViewById(R.id.frame_listview_news);
+		lvNews.addFooterView(lvNews_footer);// Ê∑ªÂä†Â∫ïÈÉ®ËßÜÂõæ ÂøÖÈ°ªÂú®setAdapterÂâç
+		lvNews.setAdapter(lvNewsAdapter);
+		lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// ÁÇπÂáªÂ§¥ÈÉ®„ÄÅÂ∫ïÈÉ®Ê†èÊó†Êïà
+				if (position == 0 || view == lvNews_footer) {
+					return;
+				}
+
+				NewsVO news = null;
+				// Âà§Êñ≠ÊòØÂê¶ÊòØTextView
+				if (view instanceof TextView) {
+					news = (NewsVO) view.getTag();
+				} else {
+					TextView tv = (TextView) view
+							.findViewById(R.id.news_listitem_title);
+					news = (NewsVO) tv.getTag();
+				}
+				if (news == null) {
+					return;
+				}
+
+				// ÔøΩÔøΩ◊™ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+				// UIHelper.showNewsRedirect(view.getContext(), news);
+			}
 		});
-        lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+		lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				lvNews.onScrollStateChanged(view, scrollState);
-				
-				// ˝æ›Œ™ø’--≤ª”√ºÃ–¯œ¬√Ê¥˙¬Î¡À
-				if(lvNewsData.isEmpty()) return;
-				
-				//≈–∂œ «∑Òπˆ∂ØµΩµ◊≤ø
+
+				// Êï∞ÊçÆ‰∏∫Á©∫--‰∏çÁî®ÁªßÁª≠‰∏ãÈù¢‰ª£Á†Å‰∫Ü
+				if (lvNewsData.isEmpty()) {
+					return;
+				}
+
+				// Âà§Êñ≠ÊòØÂê¶ÊªöÂä®Âà∞Â∫ïÈÉ®
 				boolean scrollEnd = false;
 				try {
-					if(view.getPositionForView(lvNews_footer) == view.getLastVisiblePosition())
+					if (view.getPositionForView(lvNews_footer) == view
+							.getLastVisiblePosition()) {
 						scrollEnd = true;
+					}
 				} catch (Exception e) {
 					scrollEnd = false;
 				}
-				
+
 				int lvDataState = StringUtils.toInt(lvNews.getTag());
-				if(scrollEnd && lvDataState==UIHelper.LISTVIEW_DATA_MORE)
-				{
+				if (scrollEnd && lvDataState == UIHelper.LISTVIEW_DATA_MORE) {
 					lvNews.setTag(UIHelper.LISTVIEW_DATA_LOADING);
 					lvNews_foot_more.setText(R.string.load_ing);
 					lvNews_foot_progress.setVisibility(View.VISIBLE);
-					//µ±«∞pageIndex
-					int pageIndex = lvNewsSumData/AppContext.PAGE_SIZE;
-					loadLvNewsData( pageIndex, lvNewsHandler, UIHelper.LISTVIEW_ACTION_SCROLL);
+					// ÂΩìÂâçpageIndex
+					int pageIndex = lvNewsSumData / AppContext.PAGE_SIZE;
+					loadLvNewsData(pageIndex, lvNewsHandler,
+							UIHelper.LISTVIEW_ACTION_SCROLL);
 				}
 			}
-			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
-				lvNews.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				lvNews.onScroll(view, firstVisibleItem, visibleItemCount,
+						totalItemCount);
 			}
 		});
-        lvNews.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
-            public void onRefresh() {
-            	loadLvNewsData( 0, lvNewsHandler, UIHelper.LISTVIEW_ACTION_REFRESH);
-            }
-        });					
-    }
+		lvNews.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				loadLvNewsData(0, lvNewsHandler,
+						UIHelper.LISTVIEW_ACTION_REFRESH);
+			}
+		});
+	}
 	/**
-     * œﬂ≥Ãº”‘ÿ–¬Œ≈ ˝æ›
-     * @param catalog ∑÷¿‡
-     * @param pageIndex µ±«∞“≥ ˝
-     * @param handler ¥¶¿Ì∆˜
-     * @param action ∂Ø◊˜±Í ∂
-     */
-	private void loadLvNewsData(final int pageIndex,final Handler handler,final int action){ 
-		mHeadProgress.setVisibility(ProgressBar.VISIBLE);		
-		new Thread(){
-			public void run() {				
+	 * ÂàùÂßãÂåñ‰∫ßÂìÅÂàóË°®
+	 */
+	private void initProductsListView() {
+		lvProductAdapter = new ListViewProductAdapter(this, lvProductData,
+				R.layout.question_listitem);
+		lvProduct_footer = getLayoutInflater().inflate(
+				R.layout.listview_footer, null);
+		lvProduct_foot_more = (TextView) lvNews_footer
+				.findViewById(R.id.listview_foot_more);
+		lvProduct_foot_progress = (ProgressBar) lvNews_footer
+				.findViewById(R.id.listview_foot_progress);
+		lvProduct = (PullToRefreshListView) findViewById(R.id.frame_listview_question);
+		lvProduct.addFooterView(lvProduct_footer);// Ê∑ªÂä†Â∫ïÈÉ®ËßÜÂõæ ÂøÖÈ°ªÂú®setAdapterÂâç
+		lvProduct.setAdapter(lvProductAdapter);
+		lvProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// ÁÇπÂáªÂ§¥ÈÉ®„ÄÅÂ∫ïÈÉ®Ê†èÊó†Êïà
+				if (position == 0 || view == lvProduct_footer) {
+					return;
+				}
+
+				ProductVO p = null;
+				// Âà§Êñ≠ÊòØÂê¶ÊòØTextView
+				if (view instanceof TextView) {
+					p = (ProductVO) view.getTag();
+				} else {
+					TextView tv = (TextView) view
+							.findViewById(R.id.question_listitem_name);
+					p = (ProductVO) tv.getTag();
+				}
+				if (p == null) {
+					return;
+				}
+
+				// Ë∑≥ËΩ¨Âà∞ÈóÆÁ≠îËØ¶ÊÉÖ
+				// UIHelper.showQuestionDetail(view.getContext(), post.getId());
+			}
+		});
+		lvProduct.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				lvProduct.onScrollStateChanged(view, scrollState);
+
+				// Êï∞ÊçÆ‰∏∫Á©∫--‰∏çÁî®ÁªßÁª≠‰∏ãÈù¢‰ª£Á†Å‰∫Ü
+				if (lvProductData.isEmpty()) {
+					return;
+				}
+
+				// Âà§Êñ≠ÊòØÂê¶ÊªöÂä®Âà∞Â∫ïÈÉ®
+				boolean scrollEnd = false;
+				try {
+					if (view.getPositionForView(lvProduct_footer) == view
+							.getLastVisiblePosition()) {
+						scrollEnd = true;
+					}
+				} catch (Exception e) {
+					scrollEnd = false;
+				}
+
+				int lvDataState = StringUtils.toInt(lvProduct.getTag());
+				if (scrollEnd && lvDataState == UIHelper.LISTVIEW_DATA_MORE) {
+					lvProduct.setTag(UIHelper.LISTVIEW_DATA_LOADING);
+					lvProduct_foot_more.setText(R.string.load_ing);
+					lvProduct_foot_progress.setVisibility(View.VISIBLE);
+					// ÂΩìÂâçpageIndex
+					int pageIndex = lvProductSumData / AppContext.PAGE_SIZE_10;
+					loadLvProductData(pageIndex, lvProductHandler,
+							UIHelper.LISTVIEW_ACTION_SCROLL);
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				lvProduct.onScroll(view, firstVisibleItem, visibleItemCount,
+						totalItemCount);
+			}
+		});
+		lvProduct
+				.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+					@Override
+					public void onRefresh() {
+						loadLvProductData(0, lvProductHandler,
+								UIHelper.LISTVIEW_ACTION_REFRESH);
+					}
+				});
+	}
+
+	/**
+	 * 
+	 * Á∫øÁ®ãÂä†ËΩΩÊñ∞ÈóªÂàóË°®‰ø°ÊÅØ
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param pageIndex
+	 * @param handler
+	 * @param action
+	 */
+	private void loadLvNewsData(final int pageIndex, final Handler handler,
+			final int action) {
+		mHeadProgress.setVisibility(ProgressBar.VISIBLE);
+		new Thread() {
+			@Override
+			public void run() {
 				Message msg = new Message();
 				boolean isRefresh = false;
-				if(action == UIHelper.LISTVIEW_ACTION_REFRESH || action == UIHelper.LISTVIEW_ACTION_SCROLL)
+				if (action == UIHelper.LISTVIEW_ACTION_REFRESH
+						|| action == UIHelper.LISTVIEW_ACTION_SCROLL) {
 					isRefresh = true;
-				try {					
-					NewsList list = appContext.getNewsList(pageIndex, isRefresh);				
+				}
+				try {
+					NewsList list = appContext
+							.getNewsList(pageIndex, isRefresh);
 					msg.what = list.getPageSize();
 					msg.obj = list;
-	            } catch (AppException e) {
-	            	e.printStackTrace();
-	            	msg.what = -1;
-	            	msg.obj = e;
-	            }
+				} catch (AppException e) {
+					e.printStackTrace();
+					msg.what = -1;
+					msg.obj = e;
+				}
 				msg.arg1 = action;
 				msg.arg2 = UIHelper.LISTVIEW_DATATYPE_NEWS;
-                handler.sendMessage(msg);
+				handler.sendMessage(msg);
 			}
 		}.start();
 	}
-	 /**
-     * ≥ı ºªØÕ∑≤ø ”Õº
-     */
-    private void initHeadView()
-    {
-    	mHeadLogo = (ImageView)findViewById(R.id.main_head_logo);
-    	mHeadTitle = (TextView)findViewById(R.id.main_head_title);
-    	mHeadProgress = (ProgressBar)findViewById(R.id.main_head_progress);
-    	mHeadPub_post = (ImageButton)findViewById(R.id.main_head_pub_post);
-    	
+	/**
+	 * 
+	 * Á∫øÁ®ãÂä†ËΩΩ‰∫ßÂìÅ‰ø°ÊÅØ
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param pageIndex
+	 * @param handler
+	 * @param action
+	 */
+	private void loadLvProductData(final int pageIndex, final Handler handler,
+			final int action) {
+		mHeadProgress.setVisibility(ProgressBar.VISIBLE);
+		new Thread() {
+			@Override
+			public void run() {
+				Message msg = new Message();
+				boolean isRefresh = false;
+				if (action == UIHelper.LISTVIEW_ACTION_REFRESH
+						|| action == UIHelper.LISTVIEW_ACTION_SCROLL) {
+					isRefresh = true;
+				}
+				try {
+					ProductList list = appContext.getProductList(pageIndex,
+							isRefresh);
+					msg.what = list.getPageSize();
+					msg.obj = list;
+				} catch (AppException e) {
+					e.printStackTrace();
+					msg.what = -1;
+					msg.obj = e;
+				}
+				msg.arg1 = action;
+				msg.arg2 = UIHelper.LISTVIEW_DATATYPE_NEWS;
+				handler.sendMessage(msg);
+			}
+		}.start();
+	}
 
-    	mHeadPub_post.setOnClickListener(new View.OnClickListener() {
+	/**
+	 * 
+	 * ÂàùÂßãÂåñÂ§¥ÈÉ®Êéß‰ª∂
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 */
+	private void initHeadView() {
+		mHeadLogo = (ImageView) findViewById(R.id.main_head_logo);
+		mHeadTitle = (TextView) findViewById(R.id.main_head_title);
+		mHeadProgress = (ProgressBar) findViewById(R.id.main_head_progress);
+		mHeadPub_post = (ImageButton) findViewById(R.id.main_head_pub_post);
+
+		mHeadPub_post.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
-				//UIHelper.showQuestionPub(v.getContext());
+				// UIHelper.showQuestionPub(v.getContext());
 			}
 		});
 
-    }
-    /**
-     * ≥ı ºªØµ◊≤ø¿∏
-     */
-    private void initFootBar()
-    {
-    	fbNews = (RadioButton)findViewById(R.id.main_footbar_news);
-    	fbProduct = (RadioButton)findViewById(R.id.main_footbar_product);
-    	fbNotice = (RadioButton)findViewById(R.id.main_footbar_notice);
-    	fbSetting = (ImageView)findViewById(R.id.main_footbar_setting);
-    	fbSetting.setOnClickListener(new View.OnClickListener() {
-    		public void onClick(View v) {    			
-    			//’π æøÏΩ›¿∏&≈–∂œ «∑Òµ«¬º& «∑Òº”‘ÿŒƒ’¬Õº∆¨
-    			UIHelper.showSettingLoginOrLogout(Main.this, mGrid.getQuickAction(0));
-    			mGrid.show(v);
-    		}
-    	});    	
-    }
-    /**
-     * ≥ı ºªØøÏΩ›¿∏
-     */
-    private void initQuickActionGrid() {
-        mGrid = new QuickActionGrid(this);
-        mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_login, R.string.main_menu_login));
-        mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_myinfo, R.string.main_menu_myinfo));
-        mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_setting, R.string.main_menu_setting));
-        mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_exit, R.string.main_menu_exit));
-        
-        mGrid.setOnQuickActionClickListener(mActionListener);
-    }
-    
-    /**
-     * øÏΩ›¿∏itemµ„ª˜ ¬º˛
-     */
-    private OnQuickActionClickListener mActionListener = new OnQuickActionClickListener() {
-        public void onQuickActionClicked(QuickActionWidget widget, int position) {
-    		switch (position) {
-    		case QUICKACTION_LOGIN_OR_LOGOUT://”√ªßµ«¬º-◊¢œ˙
-    			UIHelper.loginOrLogout(Main.this);
-    			break;
-    		case QUICKACTION_USERINFO://Œ“µƒ◊ ¡œ
-    			UIHelper.showUserInfo(Main.this);
-    			break;
-    		case QUICKACTION_SETTING://…Ë÷√
-    			UIHelper.showSetting(Main.this);
-    			break;
-    		case QUICKACTION_EXIT://ÕÀ≥ˆ
-    			UIHelper.Exit(Main.this);
-    			break;
-    		}
-        }
-    };
-    /**
-     * ≥ı ºªØÀ˘”–ListView
-     */
-    private void initFrameListView()
-    {
-    	//≥ı ºªØlistviewøÿº˛
-		this.initNewsListView();
-		//º”‘ÿlistview ˝æ›
-		this.initFrameListViewData();
-    }
-    /**
-     * ≥ı ºªØÀ˘”–ListView ˝æ›
-     */
-    private void initFrameListViewData()
-    {
-        //≥ı ºªØHandler
-        lvNewsHandler = this.getLvHandler(lvNews, lvNewsAdapter, lvNews_foot_more, lvNews_foot_progress, AppContext.PAGE_SIZE);
-     	
-    	
-        //º”‘ÿ◊ —∂ ˝æ›
-		if(lvNewsData.isEmpty()) {
-			loadLvNewsData( 0, lvNewsHandler, UIHelper.LISTVIEW_ACTION_INIT);
+	}
+
+	/**
+	 * ÔøΩÔøΩ ºÔøΩÔøΩÔøΩ◊≤ÔøΩÔøΩÔøΩ
+	 */
+	private void initFootBar() {
+		fbNews = (RadioButton) findViewById(R.id.main_footbar_news);
+		fbProduct = (RadioButton) findViewById(R.id.main_footbar_product);
+		fbNotice = (RadioButton) findViewById(R.id.main_footbar_notice);
+		fbSetting = (ImageView) findViewById(R.id.main_footbar_setting);
+		fbSetting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// ’π æÔøΩÔøΩÔøΩÔøΩÔøΩ&ÔøΩ–∂ÔøΩÔøΩ«∑ÔøΩÔøΩ¬º&ÔøΩ«∑ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÕº∆¨
+				UIHelper.showSettingLoginOrLogout(Main.this,
+						mGrid.getQuickAction(0));
+				mGrid.show(v);
+			}
+		});
+	}
+
+	/**
+	 * ÔøΩÔøΩ ºÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+	 */
+	private void initQuickActionGrid() {
+		mGrid = new QuickActionGrid(this);
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_login,
+				R.string.main_menu_login));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_myinfo,
+				R.string.main_menu_myinfo));
+		mGrid.addQuickAction(new MyQuickAction(this,
+				R.drawable.ic_menu_setting, R.string.main_menu_setting));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_exit,
+				R.string.main_menu_exit));
+
+		mGrid.setOnQuickActionClickListener(mActionListener);
+	}
+
+	/**
+	 * ÔøΩÔøΩÔøΩÔøΩÔøΩitemÔøΩÔøΩÔøΩÔøΩ¬ºÔøΩ
+	 */
+	private final OnQuickActionClickListener mActionListener = new OnQuickActionClickListener() {
+		@Override
+		public void onQuickActionClicked(QuickActionWidget widget, int position) {
+			switch (position) {
+				case QUICKACTION_LOGIN_OR_LOGOUT :// ÔøΩ√ªÔøΩÔøΩÔøΩ¬º-◊¢ÔøΩÔøΩ
+					UIHelper.loginOrLogout(Main.this);
+					break;
+				case QUICKACTION_USERINFO :// ÔøΩ“µÔøΩÔøΩÔøΩÔøΩÔøΩ
+					UIHelper.showUserInfo(Main.this);
+					break;
+				case QUICKACTION_SETTING :// ÔøΩÔøΩÔøΩÔøΩ
+					UIHelper.showSetting(Main.this);
+					break;
+				case QUICKACTION_EXIT :// ÔøΩÀ≥ÔøΩ
+					UIHelper.Exit(Main.this);
+					break;
+			}
 		}
-    }
-    /**
-     * ªÒ»°listviewµƒ≥ı ºªØHandler
-     * @param lv
-     * @param adapter
-     * @return
-     */
-    private Handler getLvHandler(final PullToRefreshListView lv,final BaseAdapter adapter,final TextView more,final ProgressBar progress,final int pageSize){
-    	return new Handler(){
+	};
+
+	/**
+	 * ÔøΩÔøΩ ºÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩListView
+	 */
+	private void initFrameListView() {
+		// ÔøΩÔøΩ ºÔøΩÔøΩlistviewÔøΩÿºÔøΩ
+		this.initNewsListView();
+		// ÔøΩÔøΩÔøΩÔøΩlistviewÔøΩÔøΩÔøΩ
+		this.initFrameListViewData();
+	}
+
+	/**
+	 * ÔøΩÔøΩ ºÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩListViewÔøΩÔøΩÔøΩ
+	 */
+	private void initFrameListViewData() {
+		// ÔøΩÔøΩ ºÔøΩÔøΩHandler
+		lvNewsHandler = this.getLvHandler(lvNews, lvNewsAdapter,
+				lvNews_foot_more, lvNews_foot_progress, AppContext.PAGE_SIZE);
+
+		// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ—∂ÔøΩÔøΩÔøΩ
+		if (lvNewsData.isEmpty()) {
+			loadLvNewsData(0, lvNewsHandler, UIHelper.LISTVIEW_ACTION_INIT);
+		}
+	}
+
+	/**
+	 * ÔøΩÔøΩ»°listviewÔøΩƒ≥ÔøΩ ºÔøΩÔøΩHandler
+	 * 
+	 * @param lv
+	 * @param adapter
+	 * @return
+	 */
+	private Handler getLvHandler(final PullToRefreshListView lv,
+			final BaseAdapter adapter, final TextView more,
+			final ProgressBar progress, final int pageSize) {
+		return new Handler() {
+			@Override
 			public void handleMessage(Message msg) {
-				if(msg.what >= 0){
-					//listview ˝æ›¥¶¿Ì
-				 handleLvData(msg.what, msg.obj, msg.arg2, msg.arg1);
-					
-					if(msg.what < pageSize){
+				if (msg.what >= 0) {
+					// listviewÔøΩÔøΩ›¥ÔøΩÔøΩÔøΩ
+					handleLvData(msg.what, msg.obj, msg.arg2, msg.arg1);
+
+					if (msg.what < pageSize) {
 						lv.setTag(UIHelper.LISTVIEW_DATA_FULL);
 						adapter.notifyDataSetChanged();
 						more.setText(R.string.load_full);
-					}else if(msg.what == pageSize){
+					} else if (msg.what == pageSize) {
 						lv.setTag(UIHelper.LISTVIEW_DATA_MORE);
 						adapter.notifyDataSetChanged();
 
 					}
-					//∑¢ÀÕÕ®÷™π„≤•
-//					if(notice != null){
-//						UIHelper.sendBroadCast(lv.getContext(), notice);
-//					}
-//					// «∑Ò«Â≥˝Õ®÷™–≈œ¢
-//					if(isClearNotice){
-//						ClearNotice(curClearNoticeType);
-//						isClearNotice = false;//÷ÿ÷√
-//						curClearNoticeType = 0;
-//					}
-				}
-				else if(msg.what == -1){
-					//”–“Ï≥£--œ‘ æº”‘ÿ≥ˆ¥Ì & µØ≥ˆ¥ÌŒÛœ˚œ¢
+					// ÔøΩÔøΩÔøΩÔøΩÕ®÷™ÔøΩ„≤•
+					// if(notice != null){
+					// UIHelper.sendBroadCast(lv.getContext(), notice);
+					// }
+					// //ÔøΩ«∑ÔøΩÔøΩÔøΩÔøΩÕ®÷™ÔøΩÔøΩœ¢
+					// if(isClearNotice){
+					// ClearNotice(curClearNoticeType);
+					// isClearNotice = false;//ÔøΩÔøΩÔøΩÔøΩ
+					// curClearNoticeType = 0;
+					// }
+				} else if (msg.what == -1) {
+					// ÔøΩÔøΩÔøΩÏ≥£--ÔøΩÔøΩ æÔøΩÔøΩÔøΩÿ≥ÔøΩÔøΩÔøΩ & ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩœ¢
 					lv.setTag(UIHelper.LISTVIEW_DATA_MORE);
 					more.setText(R.string.load_error);
-					((AppException)msg.obj).makeToast(Main.this);
+					((AppException) msg.obj).makeToast(Main.this);
 				}
-				if(adapter.getCount()==0){
+				if (adapter.getCount() == 0) {
 					lv.setTag(UIHelper.LISTVIEW_DATA_EMPTY);
 					more.setText(R.string.load_empty);
 				}
 				progress.setVisibility(ProgressBar.GONE);
 				mHeadProgress.setVisibility(ProgressBar.GONE);
-				if(msg.arg1 == UIHelper.LISTVIEW_ACTION_REFRESH){
-					lv.onRefreshComplete(getString(R.string.pull_to_refresh_update) + new Date().toLocaleString());
+				if (msg.arg1 == UIHelper.LISTVIEW_ACTION_REFRESH) {
+					lv.onRefreshComplete(getString(R.string.pull_to_refresh_update)
+							+ new Date().toLocaleString());
 					lv.setSelection(0);
-				}else if(msg.arg1 == UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG){
+				} else if (msg.arg1 == UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG) {
 					lv.onRefreshComplete();
 					lv.setSelection(0);
 				}
 			}
 		};
-    }
-    /**
-     * listview ˝æ›¥¶¿Ì
-     * @param what  ˝¡ø
-     * @param obj  ˝æ›
-     * @param objtype  ˝æ›¿‡–Õ
-     * @param actiontype ≤Ÿ◊˜¿‡–Õ
-     * @return notice Õ®÷™–≈œ¢
-     */
-    private void handleLvData(int what,Object obj,int objtype,int actiontype){
-    	//Notice notice = null;
+	}
+
+	/**
+	 * listviewÔøΩÔøΩ›¥ÔøΩÔøΩÔøΩ
+	 * 
+	 * @param what
+	 *            ÔøΩÔøΩÔøΩÔøΩ
+	 * @param obj
+	 *            ÔøΩÔøΩÔøΩ
+	 * @param objtype
+	 *            ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+	 * @param actiontype
+	 *            ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+	 * @return notice Õ®÷™ÔøΩÔøΩœ¢
+	 */
+	private void handleLvData(int what, Object obj, int objtype, int actiontype) {
+		// Notice notice = null;
 		switch (actiontype) {
-			case UIHelper.LISTVIEW_ACTION_INIT:
-			case UIHelper.LISTVIEW_ACTION_REFRESH:
-			case UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG:
-				int newdata = 0;//–¬º”‘ÿ ˝æ›-÷ª”–À¢–¬∂Ø◊˜≤≈ª· π”√µΩ
+			case UIHelper.LISTVIEW_ACTION_INIT :
+			case UIHelper.LISTVIEW_ACTION_REFRESH :
+			case UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG :
+				int newdata = 0;// ÔøΩ¬ºÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ-÷ªÔøΩÔøΩÀ¢ÔøΩ¬∂ÔøΩÔøΩÔøΩÔøΩ≈ªÔøΩ πÔøΩ√µÔøΩ
 				switch (objtype) {
-					case UIHelper.LISTVIEW_DATATYPE_NEWS:
-						NewsList nlist = (NewsList)obj;
-						//notice = nlist.getNotice();
+					case UIHelper.LISTVIEW_DATATYPE_NEWS :
+						NewsList nlist = (NewsList) obj;
+						// notice = nlist.getNotice();
 						lvNewsSumData = what;
-						if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
-							if(lvNewsData.size() > 0){
-								for(NewsVO news1 : nlist.getNewsList()){
+						if (actiontype == UIHelper.LISTVIEW_ACTION_REFRESH) {
+							if (lvNewsData.size() > 0) {
+								for (NewsVO news1 : nlist.getNewsList()) {
 									boolean b = false;
-									for(NewsVO news2 : lvNewsData){
-										if(news1.getId() == news2.getId()){
+									for (NewsVO news2 : lvNewsData) {
+										if (news1.getId() == news2.getId()) {
 											b = true;
 											break;
 										}
 									}
-									if(!b) newdata++;
+									if (!b) {
+										newdata++;
+									}
 								}
-							}else{
+							} else {
 								newdata = what;
 							}
 						}
-						lvNewsData.clear();//œ»«Â≥˝‘≠”– ˝æ›
+						lvNewsData.clear();// ÔøΩÔøΩÔøΩÔøΩÔøΩ‘≠ÔøΩÔøΩÔøΩÔøΩÔøΩ
 						lvNewsData.addAll(nlist.getNewsList());
 						break;
 
 				}
-				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
-					//Ã· æ–¬º”‘ÿ ˝æ›
-					if(newdata >0){
-						NewDataToast.makeText(this, getString(R.string.new_data_toast_message, newdata), appContext.isAppSound()).show();
-					}else{
-						NewDataToast.makeText(this, getString(R.string.new_data_toast_none), false).show();
+				if (actiontype == UIHelper.LISTVIEW_ACTION_REFRESH) {
+					// ÔøΩÔøΩ æÔøΩ¬ºÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+					if (newdata > 0) {
+						NewDataToast.makeText(
+								this,
+								getString(R.string.new_data_toast_message,
+										newdata), appContext.isAppSound())
+								.show();
+					} else {
+						NewDataToast.makeText(this,
+								getString(R.string.new_data_toast_none), false)
+								.show();
 					}
 				}
 				break;
-			case UIHelper.LISTVIEW_ACTION_SCROLL:
+			case UIHelper.LISTVIEW_ACTION_SCROLL :
 				switch (objtype) {
-					case UIHelper.LISTVIEW_DATATYPE_NEWS:
-						NewsList list = (NewsList)obj;
-						//notice = list.getNotice();
+					case UIHelper.LISTVIEW_DATATYPE_NEWS :
+						NewsList list = (NewsList) obj;
+						// notice = list.getNotice();
 						lvNewsSumData += what;
-						if(lvNewsData.size() > 0){
-							for(NewsVO news1 : list.getNewsList()){
+						if (lvNewsData.size() > 0) {
+							for (NewsVO news1 : list.getNewsList()) {
 								boolean b = false;
-								for(NewsVO news2 : lvNewsData){
-									if(news1.getId() == news2.getId()){
+								for (NewsVO news2 : lvNewsData) {
+									if (news1.getId() == news2.getId()) {
 										b = true;
 										break;
 									}
 								}
-								if(!b) lvNewsData.add(news1);
+								if (!b) {
+									lvNewsData.add(news1);
+								}
 							}
-						}else{
+						} else {
 							lvNewsData.addAll(list.getNewsList());
 						}
 						break;
@@ -416,6 +649,6 @@ public class Main extends BaseActivity {
 				}
 				break;
 		}
-    }
+	}
 
 }

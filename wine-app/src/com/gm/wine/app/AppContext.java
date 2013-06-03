@@ -13,21 +13,6 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.UUID;
 
-
-
-
-
-
-
-
-import com.gm.wine.app.api.ApiClient;
-import com.gm.wine.app.bean.User;
-import com.gm.wine.app.common.CyptoUtils;
-import com.gm.wine.app.common.StringUtils;
-import com.gm.wine.app.common.UIHelper;
-import com.gm.wine.vo.NewsList;
-
-
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -41,53 +26,70 @@ import android.os.Handler;
 import android.os.Message;
 import android.webkit.CacheManager;
 
+import com.gm.wine.app.api.ApiClient;
+import com.gm.wine.app.bean.User;
+import com.gm.wine.app.common.CyptoUtils;
+import com.gm.wine.app.common.StringUtils;
+import com.gm.wine.app.common.UIHelper;
+import com.gm.wine.vo.NewsList;
+import com.gm.wine.vo.NoticeList;
+import com.gm.wine.vo.ProductList;
+
 public class AppContext extends Application {
 	public static final int NETTYPE_WIFI = 0x01;
 	public static final int NETTYPE_CMWAP = 0x02;
 	public static final int NETTYPE_CMNET = 0x03;
-	
-	public static final int PAGE_SIZE = 20;//Ä¬ÈÏ·ÖÒ³´óÐ¡
-	private static final int CACHE_TIME = 60*60000;//»º´æÊ§Ð§Ê±¼ä
-	
-	private boolean login = false;	//µÇÂ¼×´Ì¬
-	private int loginUid = 0;	//µÇÂ¼ÓÃ»§µÄid
-	private Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
-	
-	private Handler unLoginHandler = new Handler(){
+
+	public static final int PAGE_SIZE = 20;// Ä¬ï¿½Ï·ï¿½Ò³ï¿½ï¿½Ð¡
+
+	public static final int PAGE_SIZE_10 = 10;
+	private static final int CACHE_TIME = 60 * 60000;// ï¿½ï¿½ï¿½ï¿½Ê§Ð§Ê±ï¿½ï¿½
+
+	private boolean login = false; // ï¿½ï¿½Â¼×´Ì¬
+	private int loginUid = 0; // ï¿½ï¿½Â¼ï¿½Ã»ï¿½ï¿½ï¿½id
+	private final Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
+
+	private final Handler unLoginHandler = new Handler() {
+		@Override
 		public void handleMessage(Message msg) {
-			if(msg.what == 1){
-				UIHelper.ToastMessage(AppContext.this, getString(R.string.msg_login_error));
+			if (msg.what == 1) {
+				UIHelper.ToastMessage(AppContext.this,
+						getString(R.string.msg_login_error));
 				UIHelper.showLoginDialog(AppContext.this);
 			}
-		}		
+		}
 	};
-	
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-        //×¢²áAppÒì³£±ÀÀ£´¦ÀíÆ÷
-        Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+		// ×¢ï¿½ï¿½Appï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		Thread.setDefaultUncaughtExceptionHandler(AppException
+				.getAppExceptionHandler());
 	}
 
 	/**
-	 * ¼ì²âµ±Ç°ÏµÍ³ÉùÒôÊÇ·ñÎªÕý³£Ä£Ê½
+	 * ï¿½ï¿½âµ±Ç°ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ä£Ê½
+	 * 
 	 * @return
 	 */
 	public boolean isAudioNormal() {
-		AudioManager mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE); 
+		AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		return mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
 	}
-	
+
 	/**
-	 * Ó¦ÓÃ³ÌÐòÊÇ·ñ·¢³öÌáÊ¾Òô
+	 * Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½Ç·ñ·¢³ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+	 * 
 	 * @return
 	 */
 	public boolean isAppSound() {
 		return isAudioNormal() && isVoice();
 	}
-	
+
 	/**
-	 * ¼ì²âÍøÂçÊÇ·ñ¿ÉÓÃ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
 	public boolean isNetworkConnected() {
@@ -97,8 +99,9 @@ public class AppContext extends Application {
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°ÍøÂçÀàÐÍ
-	 * @return 0£ºÃ»ÓÐÍøÂç   1£ºWIFIÍøÂç   2£ºWAPÍøÂç    3£ºNETÍøÂç
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
+	 * @return 0ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½WIFIï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½WAPï¿½ï¿½ï¿½ï¿½ 3ï¿½ï¿½NETï¿½ï¿½ï¿½ï¿½
 	 */
 	public int getNetworkType() {
 		int netType = 0;
@@ -106,11 +109,11 @@ public class AppContext extends Application {
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 		if (networkInfo == null) {
 			return netType;
-		}		
+		}
 		int nType = networkInfo.getType();
 		if (nType == ConnectivityManager.TYPE_MOBILE) {
 			String extraInfo = networkInfo.getExtraInfo();
-			if(!StringUtils.isEmpty(extraInfo)){
+			if (!StringUtils.isEmpty(extraInfo)) {
 				if (extraInfo.toLowerCase().equals("cmnet")) {
 					netType = NETTYPE_CMNET;
 				} else {
@@ -122,9 +125,10 @@ public class AppContext extends Application {
 		}
 		return netType;
 	}
-	
+
 	/**
-	 * ÅÐ¶Ïµ±Ç°°æ±¾ÊÇ·ñ¼æÈÝÄ¿±ê°æ±¾µÄ·½·¨
+	 * ï¿½Ð¶Ïµï¿½Ç°ï¿½æ±¾ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½æ±¾ï¿½Ä·ï¿½ï¿½ï¿½
+	 * 
 	 * @param VersionCode
 	 * @return
 	 */
@@ -132,53 +136,59 @@ public class AppContext extends Application {
 		int currentVersion = android.os.Build.VERSION.SDK_INT;
 		return currentVersion >= VersionCode;
 	}
-	
+
 	/**
-	 * »ñÈ¡App°²×°°üÐÅÏ¢
+	 * ï¿½ï¿½È¡Appï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
 	public PackageInfo getPackageInfo() {
 		PackageInfo info = null;
-		try { 
+		try {
 			info = getPackageManager().getPackageInfo(getPackageName(), 0);
-		} catch (NameNotFoundException e) {    
+		} catch (NameNotFoundException e) {
 			e.printStackTrace(System.err);
-		} 
-		if(info == null) info = new PackageInfo();
+		}
+		if (info == null) {
+			info = new PackageInfo();
+		}
 		return info;
 	}
-	
+
 	/**
-	 * »ñÈ¡AppÎ¨Ò»±êÊ¶
+	 * ï¿½ï¿½È¡AppÎ¨Ò»ï¿½ï¿½Ê¶
+	 * 
 	 * @return
 	 */
 	public String getAppId() {
 		String uniqueID = getProperty(AppConfig.CONF_APP_UNIQUEID);
-		if(StringUtils.isEmpty(uniqueID)){
+		if (StringUtils.isEmpty(uniqueID)) {
 			uniqueID = UUID.randomUUID().toString();
 			setProperty(AppConfig.CONF_APP_UNIQUEID, uniqueID);
 		}
 		return uniqueID;
 	}
-	
+
 	/**
-	 * ÓÃ»§ÊÇ·ñµÇÂ¼
+	 * ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Â¼
+	 * 
 	 * @return
 	 */
 	public boolean isLogin() {
 		return login;
 	}
-	
+
 	/**
-	 * »ñÈ¡µÇÂ¼ÓÃ»§id
+	 * ï¿½ï¿½È¡ï¿½ï¿½Â¼ï¿½Ã»ï¿½id
+	 * 
 	 * @return
 	 */
 	public int getLoginUid() {
 		return this.loginUid;
 	}
-	
+
 	/**
-	 * ÓÃ»§×¢Ïú
+	 * ï¿½Ã»ï¿½×¢ï¿½ï¿½
 	 */
 	public void Logout() {
 		ApiClient.cleanCookie();
@@ -186,412 +196,459 @@ public class AppContext extends Application {
 		this.login = false;
 		this.loginUid = 0;
 	}
-	
+
 	/**
-	 * Î´µÇÂ¼»òÐÞ¸ÄÃÜÂëºóµÄ´¦Àí
+	 * Î´ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 	 */
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
 	}
 	/**
-	 * ÐÂÎÅÁÐ±í
-	 * @param catalog
+	 * 
+	 * æ–°é—»åˆ—è¡¨
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
 	 * @param pageIndex
-	 * @param pageSize
+	 * @param isRefresh
 	 * @return
-	 * @throws ApiException
+	 * @throws AppException
 	 */
-	public NewsList getNewsList(int pageIndex, boolean isRefresh) throws AppException {
+	public NewsList getNewsList(int pageIndex, boolean isRefresh)
+			throws AppException {
 		NewsList list = null;
-		String key = "newslist_"+"_"+pageIndex+"_"+PAGE_SIZE;
-		if(isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
-			try{
+		String key = "newslist_" + "_" + pageIndex + "_" + PAGE_SIZE;
+		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try {
 				list = ApiClient.getNewsList(this, pageIndex, PAGE_SIZE);
-				if(list != null && pageIndex == 0){
-				
+				if (list != null && pageIndex == 0) {
+
 					list.setCacheKey(key);
 					saveObject(list, key);
 				}
-			}catch(AppException e){
-				list = (NewsList)readObject(key);
-				if(list == null)
+			} catch (AppException e) {
+				list = (NewsList) readObject(key);
+				if (list == null) {
 					throw e;
-			}		
+				}
+			}
 		} else {
-			list = (NewsList)readObject(key);
-			if(list == null)
+			list = (NewsList) readObject(key);
+			if (list == null) {
 				list = new NewsList();
+			}
 		}
 		return list;
 	}
-	
-
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-
-
-
-	
-
-	
-
-	
 	/**
-	 * Çå³ýµÇÂ¼ÐÅÏ¢
+	 * 
+	 * äº§å“ä¿¡æ¯åˆ—è¡¨
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param pageIndex
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
+	public ProductList getProductList(int pageIndex, boolean isRefresh)
+			throws AppException {
+		ProductList list = null;
+		String key = "productlist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
+		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try {
+				list = ApiClient.getProductList(this, pageIndex, PAGE_SIZE_10);
+				if (list != null && pageIndex == 0) {
+
+					list.setCacheKey(key);
+					saveObject(list, key);
+				}
+			} catch (AppException e) {
+				list = (ProductList) readObject(key);
+				if (list == null) {
+					throw e;
+				}
+			}
+		} else {
+			list = (ProductList) readObject(key);
+			if (list == null) {
+				list = new ProductList();
+			}
+		}
+		return list;
+	}
+	/**
+	 * 
+	 * ç•™è¨€å…¬å‘Šä¿¡æ¯åˆ—è¡¨
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param pageIndex
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
+	public NoticeList getNoticeList(int pageIndex, boolean isRefresh)
+			throws AppException {
+		NoticeList list = null;
+		String key = "noticelist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
+		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try {
+				list = ApiClient.getNoticeList(this, pageIndex, PAGE_SIZE_10);
+				if (list != null && pageIndex == 0) {
+
+					list.setCacheKey(key);
+					saveObject(list, key);
+				}
+			} catch (AppException e) {
+				list = (NoticeList) readObject(key);
+				if (list == null) {
+					throw e;
+				}
+			}
+		} else {
+			list = (NoticeList) readObject(key);
+			if (list == null) {
+				list = new NoticeList();
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * æ¸…é™¤ç™»å½•ä¿¡æ¯
 	 */
 	public void cleanLoginInfo() {
 		this.loginUid = 0;
 		this.login = false;
-		removeProperty("user.uid","user.name","user.face","user.account","user.pwd",
-				"user.location","user.followers","user.fans","user.score","user.isRememberMe");
+		removeProperty("user.uid", "user.name", "user.face", "user.account",
+				"user.pwd", "user.location", "user.followers", "user.fans",
+				"user.score", "user.isRememberMe");
 	}
 
-	
-
-	
 	/**
-	 * »ñÈ¡ÓÃ»§Í·Ïñ
+	 * ï¿½ï¿½È¡ï¿½Ã»ï¿½Í·ï¿½ï¿½
+	 * 
 	 * @param key
 	 * @return
 	 * @throws AppException
 	 */
 	public Bitmap getUserFace(String key) throws AppException {
 		FileInputStream fis = null;
-		try{
+		try {
 			fis = openFileInput(key);
 			return BitmapFactory.decodeStream(fis);
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw AppException.run(e);
-		}finally{
+		} finally {
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	/**
-	 * ÊÇ·ñ¼ÓÔØÏÔÊ¾ÎÄÕÂÍ¼Æ¬
+	 * ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
+	 * 
 	 * @return
 	 */
-	public boolean isLoadImage()
-	{
+	public boolean isLoadImage() {
 		String perf_loadimage = getProperty(AppConfig.CONF_LOAD_IMAGE);
-		//Ä¬ÈÏÊÇ¼ÓÔØµÄ
-		if(StringUtils.isEmpty(perf_loadimage))
+		// Ä¬ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½Øµï¿½
+		if (StringUtils.isEmpty(perf_loadimage)) {
 			return true;
-		else
+		} else {
 			return StringUtils.toBool(perf_loadimage);
+		}
 	}
-	
+
 	/**
-	 * ÉèÖÃÊÇ·ñ¼ÓÔØÎÄÕÂÍ¼Æ¬
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
+	 * 
 	 * @param b
 	 */
-	public void setConfigLoadimage(boolean b)
-	{
+	public void setConfigLoadimage(boolean b) {
 		setProperty(AppConfig.CONF_LOAD_IMAGE, String.valueOf(b));
 	}
-	
+
 	/**
-	 * ÊÇ·ñ·¢³öÌáÊ¾Òô
+	 * ï¿½Ç·ñ·¢³ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public boolean isVoice()
-	{
+	public boolean isVoice() {
 		String perf_voice = getProperty(AppConfig.CONF_VOICE);
-		//Ä¬ÈÏÊÇ¿ªÆôÌáÊ¾ÉùÒô
-		if(StringUtils.isEmpty(perf_voice))
+		// Ä¬ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+		if (StringUtils.isEmpty(perf_voice)) {
 			return true;
-		else
+		} else {
 			return StringUtils.toBool(perf_voice);
+		}
 	}
-	
+
 	/**
-	 * ÉèÖÃÊÇ·ñ·¢³öÌáÊ¾Òô
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ·¢³ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+	 * 
 	 * @param b
 	 */
-	public void setConfigVoice(boolean b)
-	{
+	public void setConfigVoice(boolean b) {
 		setProperty(AppConfig.CONF_VOICE, String.valueOf(b));
 	}
-	
+
 	/**
-	 * ÊÇ·ñÆô¶¯¼ì²é¸üÐÂ
+	 * ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public boolean isCheckUp()
-	{
+	public boolean isCheckUp() {
 		String perf_checkup = getProperty(AppConfig.CONF_CHECKUP);
-		//Ä¬ÈÏÊÇ¿ªÆô
-		if(StringUtils.isEmpty(perf_checkup))
+		// Ä¬ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½
+		if (StringUtils.isEmpty(perf_checkup)) {
 			return true;
-		else
+		} else {
 			return StringUtils.toBool(perf_checkup);
+		}
 	}
-	
+
 	/**
-	 * ÉèÖÃÆô¶¯¼ì²é¸üÐÂ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param b
 	 */
-	public void setConfigCheckUp(boolean b)
-	{
+	public void setConfigCheckUp(boolean b) {
 		setProperty(AppConfig.CONF_CHECKUP, String.valueOf(b));
 	}
-	
+
 	/**
-	 * ÊÇ·ñ×óÓÒ»¬¶¯
+	 * ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public boolean isScroll()
-	{
+	public boolean isScroll() {
 		String perf_scroll = getProperty(AppConfig.CONF_SCROLL);
-		//Ä¬ÈÏÊÇ¹Ø±Õ×óÓÒ»¬¶¯
-		if(StringUtils.isEmpty(perf_scroll))
+		// Ä¬ï¿½ï¿½ï¿½Ç¹Ø±ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½
+		if (StringUtils.isEmpty(perf_scroll)) {
 			return false;
-		else
+		} else {
 			return StringUtils.toBool(perf_scroll);
+		}
 	}
-	
+
 	/**
-	 * ÉèÖÃÊÇ·ñ×óÓÒ»¬¶¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½
+	 * 
 	 * @param b
 	 */
-	public void setConfigScroll(boolean b)
-	{
+	public void setConfigScroll(boolean b) {
 		setProperty(AppConfig.CONF_SCROLL, String.valueOf(b));
 	}
-	
+
 	/**
-	 * ÊÇ·ñHttpsµÇÂ¼
+	 * ï¿½Ç·ï¿½Httpsï¿½ï¿½Â¼
+	 * 
 	 * @return
 	 */
-	public boolean isHttpsLogin()
-	{
+	public boolean isHttpsLogin() {
 		String perf_httpslogin = getProperty(AppConfig.CONF_HTTPS_LOGIN);
-		//Ä¬ÈÏÊÇhttp
-		if(StringUtils.isEmpty(perf_httpslogin))
+		// Ä¬ï¿½ï¿½ï¿½ï¿½http
+		if (StringUtils.isEmpty(perf_httpslogin)) {
 			return false;
-		else
+		} else {
 			return StringUtils.toBool(perf_httpslogin);
+		}
 	}
-	
+
 	/**
-	 * ÉèÖÃÊÇÊÇ·ñHttpsµÇÂ¼
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Httpsï¿½ï¿½Â¼
+	 * 
 	 * @param b
 	 */
-	public void setConfigHttpsLogin(boolean b)
-	{
+	public void setConfigHttpsLogin(boolean b) {
 		setProperty(AppConfig.CONF_HTTPS_LOGIN, String.valueOf(b));
 	}
-	
+
 	/**
-	 * Çå³ý±£´æµÄ»º´æ
+	 * ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½
 	 */
-	public void cleanCookie()
-	{
+	public void cleanCookie() {
 		removeProperty(AppConfig.CONF_COOKIE);
 	}
-	
+
 	/**
-	 * ÅÐ¶Ï»º´æÊý¾ÝÊÇ·ñ¿É¶Á
+	 * ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½É¶ï¿½
+	 * 
 	 * @param cachefile
 	 * @return
 	 */
-	private boolean isReadDataCache(String cachefile)
-	{
+	private boolean isReadDataCache(String cachefile) {
 		return readObject(cachefile) != null;
 	}
-	
+
 	/**
-	 * ÅÐ¶Ï»º´æÊÇ·ñ´æÔÚ
+	 * ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param cachefile
 	 * @return
 	 */
-	private boolean isExistDataCache(String cachefile)
-	{
+	private boolean isExistDataCache(String cachefile) {
 		boolean exist = false;
 		File data = getFileStreamPath(cachefile);
-		if(data.exists())
+		if (data.exists()) {
 			exist = true;
+		}
 		return exist;
 	}
-	
+
 	/**
-	 * ÅÐ¶Ï»º´æÊÇ·ñÊ§Ð§
+	 * ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ê§Ð§
+	 * 
 	 * @param cachefile
 	 * @return
 	 */
-	public boolean isCacheDataFailure(String cachefile)
-	{
+	public boolean isCacheDataFailure(String cachefile) {
 		boolean failure = false;
 		File data = getFileStreamPath(cachefile);
-		if(data.exists() && (System.currentTimeMillis() - data.lastModified()) > CACHE_TIME)
+		if (data.exists()
+				&& (System.currentTimeMillis() - data.lastModified()) > CACHE_TIME) {
 			failure = true;
-		else if(!data.exists())
+		} else if (!data.exists()) {
 			failure = true;
+		}
 		return failure;
 	}
-	
+
 	/**
-	 * Çå³ýapp»º´æ
+	 * ï¿½ï¿½ï¿½appï¿½ï¿½ï¿½ï¿½
 	 */
-	public void clearAppCache()
-	{
-		//Çå³ýwebview»º´æ
-		File file = CacheManager.getCacheFileBaseDir();  
-		if (file != null && file.exists() && file.isDirectory()) {  
-		    for (File item : file.listFiles()) {  
-		    	item.delete();  
-		    }  
-		    file.delete();  
-		}  		  
-		deleteDatabase("webview.db");  
-		deleteDatabase("webview.db-shm");  
-		deleteDatabase("webview.db-wal");  
-		deleteDatabase("webviewCache.db");  
-		deleteDatabase("webviewCache.db-shm");  
-		deleteDatabase("webviewCache.db-wal");  
-		//Çå³ýÊý¾Ý»º´æ
-		clearCacheFolder(getFilesDir(),System.currentTimeMillis());
-		clearCacheFolder(getCacheDir(),System.currentTimeMillis());
-		//2.2°æ±¾²ÅÓÐ½«Ó¦ÓÃ»º´æ×ªÒÆµ½sd¿¨µÄ¹¦ÄÜ
-		//if(isMethodsCompat(android.os.Build.VERSION_CODES.DONUT)){
-		//	clearCacheFolder(MethodsCompat.getExternalCacheDir(this),System.currentTimeMillis());
-		//}
-		//Çå³ý±à¼­Æ÷±£´æµÄÁÙÊ±ÄÚÈÝ
-		Properties props = getProperties();
-		for(Object key : props.keySet()) {
-			String _key = key.toString();
-			if(_key.startsWith("temp"))
-				removeProperty(_key);
+	public void clearAppCache() {
+		// ï¿½ï¿½ï¿½webviewï¿½ï¿½ï¿½ï¿½
+		File file = CacheManager.getCacheFileBaseDir();
+		if (file != null && file.exists() && file.isDirectory()) {
+			for (File item : file.listFiles()) {
+				item.delete();
+			}
+			file.delete();
 		}
-	}	
-	
+		deleteDatabase("webview.db");
+		deleteDatabase("webview.db-shm");
+		deleteDatabase("webview.db-wal");
+		deleteDatabase("webviewCache.db");
+		deleteDatabase("webviewCache.db-shm");
+		deleteDatabase("webviewCache.db-wal");
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ý»ï¿½ï¿½ï¿½
+		clearCacheFolder(getFilesDir(), System.currentTimeMillis());
+		clearCacheFolder(getCacheDir(), System.currentTimeMillis());
+		// 2.2ï¿½æ±¾ï¿½ï¿½ï¿½Ð½ï¿½Ó¦ï¿½Ã»ï¿½ï¿½ï¿½×ªï¿½Æµï¿½sdï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½
+		// if(isMethodsCompat(android.os.Build.VERSION_CODES.DONUT)){
+		// clearCacheFolder(MethodsCompat.getExternalCacheDir(this),System.currentTimeMillis());
+		// }
+		// ï¿½ï¿½ï¿½à¼­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+		Properties props = getProperties();
+		for (Object key : props.keySet()) {
+			String _key = key.toString();
+			if (_key.startsWith("temp")) {
+				removeProperty(_key);
+			}
+		}
+	}
+
 	/**
-	 * Çå³ý»º´æÄ¿Â¼
-	 * @param dir Ä¿Â¼
-	 * @param numDays µ±Ç°ÏµÍ³Ê±¼ä
+	 * ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
+	 * 
+	 * @param dir
+	 *            Ä¿Â¼
+	 * @param numDays
+	 *            ï¿½ï¿½Ç°ÏµÍ³Ê±ï¿½ï¿½
 	 * @return
 	 */
-	private int clearCacheFolder(File dir, long curTime) {          
-	    int deletedFiles = 0;         
-	    if (dir!= null && dir.isDirectory()) {             
-	        try {                
-	            for (File child:dir.listFiles()) {    
-	                if (child.isDirectory()) {              
-	                    deletedFiles += clearCacheFolder(child, curTime);          
-	                }  
-	                if (child.lastModified() < curTime) {     
-	                    if (child.delete()) {                   
-	                        deletedFiles++;           
-	                    }    
-	                }    
-	            }             
-	        } catch(Exception e) {       
-	            e.printStackTrace();    
-	        }     
-	    }       
-	    return deletedFiles;     
+	private int clearCacheFolder(File dir, long curTime) {
+		int deletedFiles = 0;
+		if (dir != null && dir.isDirectory()) {
+			try {
+				for (File child : dir.listFiles()) {
+					if (child.isDirectory()) {
+						deletedFiles += clearCacheFolder(child, curTime);
+					}
+					if (child.lastModified() < curTime) {
+						if (child.delete()) {
+							deletedFiles++;
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return deletedFiles;
 	}
-	
+
 	/**
-	 * ½«¶ÔÏó±£´æµ½ÄÚ´æ»º´æÖÐ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ó±£´æµ½ï¿½Ú´æ»ºï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param key
 	 * @param value
 	 */
 	public void setMemCache(String key, Object value) {
 		memCacheRegion.put(key, value);
 	}
-	
+
 	/**
-	 * ´ÓÄÚ´æ»º´æÖÐ»ñÈ¡¶ÔÏó
+	 * ï¿½ï¿½ï¿½Ú´æ»ºï¿½ï¿½ï¿½Ð»ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public Object getMemCache(String key){
+	public Object getMemCache(String key) {
 		return memCacheRegion.get(key);
 	}
-	
+
 	/**
-	 * ±£´æ´ÅÅÌ»º´æ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½
+	 * 
 	 * @param key
 	 * @param value
 	 * @throws IOException
 	 */
 	public void setDiskCache(String key, String value) throws IOException {
 		FileOutputStream fos = null;
-		try{
-			fos = openFileOutput("cache_"+key+".data", Context.MODE_PRIVATE);
+		try {
+			fos = openFileOutput("cache_" + key + ".data", Context.MODE_PRIVATE);
 			fos.write(value.getBytes());
 			fos.flush();
-		}finally{
+		} finally {
 			try {
 				fos.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	/**
-	 * »ñÈ¡´ÅÅÌ»º´æÊý¾Ý
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param key
 	 * @return
 	 * @throws IOException
 	 */
 	public String getDiskCache(String key) throws IOException {
 		FileInputStream fis = null;
-		try{
-			fis = openFileInput("cache_"+key+".data");
+		try {
+			fis = openFileInput("cache_" + key + ".data");
 			byte[] datas = new byte[fis.available()];
 			fis.read(datas);
 			return new String(datas);
-		}finally{
+		} finally {
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	/**
-	 * ±£´æ¶ÔÏó
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param ser
 	 * @param file
 	 * @throws IOException
@@ -599,84 +656,91 @@ public class AppContext extends Application {
 	public boolean saveObject(Serializable ser, String file) {
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
-		try{
+		try {
 			fos = openFileOutput(file, MODE_PRIVATE);
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(ser);
 			oos.flush();
 			return true;
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		}finally{
+		} finally {
 			try {
 				oos.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			try {
 				fos.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 	}
-	
+
 	/**
-	 * ¶ÁÈ¡¶ÔÏó
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @param file
 	 * @return
 	 * @throws IOException
 	 */
-	public Serializable readObject(String file){
-		if(!isExistDataCache(file))
+	public Serializable readObject(String file) {
+		if (!isExistDataCache(file)) {
 			return null;
+		}
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
-		try{
+		try {
 			fis = openFileInput(file);
 			ois = new ObjectInputStream(fis);
-			return (Serializable)ois.readObject();
-		}catch(FileNotFoundException e){
-		}catch(Exception e){
+			return (Serializable) ois.readObject();
+		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			//·´ÐòÁÐ»¯Ê§°Ü - É¾³ý»º´æÎÄ¼þ
-			if(e instanceof InvalidClassException){
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½Ê§ï¿½ï¿½ - É¾ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+			if (e instanceof InvalidClassException) {
 				File data = getFileStreamPath(file);
 				data.delete();
 			}
-		}finally{
+		} finally {
 			try {
 				ois.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 		return null;
 	}
 
-	public boolean containsProperty(String key){
+	public boolean containsProperty(String key) {
 		Properties props = getProperties();
-		 return props.containsKey(key);
+		return props.containsKey(key);
 	}
-	
-	public void setProperties(Properties ps){
+
+	public void setProperties(Properties ps) {
 		AppConfig.getAppConfig(this).set(ps);
 	}
 
-	public Properties getProperties(){
+	public Properties getProperties() {
 		return AppConfig.getAppConfig(this).get();
 	}
-	
-	public void setProperty(String key,String value){
+
+	public void setProperty(String key, String value) {
 		AppConfig.getAppConfig(this).set(key, value);
 	}
-	
-	public String getProperty(String key){
+
+	public String getProperty(String key) {
 		return AppConfig.getAppConfig(this).get(key);
 	}
-	public void removeProperty(String...key){
+	public void removeProperty(String... key) {
 		AppConfig.getAppConfig(this).remove(key);
-	}	
+	}
 	/**
-	 * ÓÃ»§µÇÂ¼ÑéÖ¤
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ö¤
+	 * 
 	 * @param account
 	 * @param pwd
 	 * @return
@@ -686,16 +750,17 @@ public class AppContext extends Application {
 		return ApiClient.login(this, account, pwd);
 	}
 	/**
-	 * »ñÈ¡µÇÂ¼ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½Â¼ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public User getLoginInfo() {		
-		User lu = new User();		
+	public User getLoginInfo() {
+		User lu = new User();
 		lu.setUid(StringUtils.toInt(getProperty("user.uid"), 0));
 		lu.setName(getProperty("user.name"));
 		lu.setFace(getProperty("user.face"));
 		lu.setAccount(getProperty("user.account"));
-		lu.setPwd(CyptoUtils.decode("oschinaApp",getProperty("user.pwd")));
+		lu.setPwd(CyptoUtils.decode("oschinaApp", getProperty("user.pwd")));
 		lu.setLocation(getProperty("user.location"));
 		lu.setFollowers(StringUtils.toInt(getProperty("user.followers"), 0));
 		lu.setFans(StringUtils.toInt(getProperty("user.fans"), 0));
@@ -704,23 +769,29 @@ public class AppContext extends Application {
 		return lu;
 	}
 	/**
-	 * ±£´æµÇÂ¼ÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ï¢
+	 * 
 	 * @param username
 	 * @param pwd
 	 */
 	public void saveLoginInfo(final User user) {
 		this.loginUid = user.getUid();
 		this.login = true;
-		setProperties(new Properties(){{
-			setProperty("user.uid", String.valueOf(user.getUid()));
-			setProperty("user.name", user.getName());
-			setProperty("user.account", user.getAccount());
-			setProperty("user.pwd", CyptoUtils.encode("oschinaApp",user.getPwd()));
-			setProperty("user.location", user.getLocation());
-			setProperty("user.followers", String.valueOf(user.getFollowers()));
-			setProperty("user.fans", String.valueOf(user.getFans()));
-			setProperty("user.score", String.valueOf(user.getScore()));
-			setProperty("user.isRememberMe", String.valueOf(user.isRememberMe()));//ÊÇ·ñ¼Ç×¡ÎÒµÄÐÅÏ¢
-		}});		
+		setProperties(new Properties() {
+			{
+				setProperty("user.uid", String.valueOf(user.getUid()));
+				setProperty("user.name", user.getName());
+				setProperty("user.account", user.getAccount());
+				setProperty("user.pwd",
+						CyptoUtils.encode("oschinaApp", user.getPwd()));
+				setProperty("user.location", user.getLocation());
+				setProperty("user.followers",
+						String.valueOf(user.getFollowers()));
+				setProperty("user.fans", String.valueOf(user.getFans()));
+				setProperty("user.score", String.valueOf(user.getScore()));
+				setProperty("user.isRememberMe",
+						String.valueOf(user.isRememberMe()));// ï¿½Ç·ï¿½ï¿½×¡ï¿½Òµï¿½ï¿½ï¿½Ï¢
+			}
+		});
 	}
 }

@@ -1,16 +1,9 @@
 package com.gm.wine.app.api;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -20,11 +13,13 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
@@ -34,17 +29,19 @@ import com.gm.wine.app.bean.Update;
 import com.gm.wine.app.bean.User;
 import com.gm.wine.vo.NewsList;
 import com.gm.wine.vo.NewsVO;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
+import com.gm.wine.vo.NoticeList;
+import com.gm.wine.vo.NoticeVO;
+import com.gm.wine.vo.ProductList;
+import com.gm.wine.vo.ProductVO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ApiClient {
 
 	public static final String UTF_8 = "UTF-8";
 	public static final String DESC = "descend";
 	public static final String ASC = "ascend";
-	
+
 	private final static int TIMEOUT_CONNECTION = 20000;
 	private final static int TIMEOUT_SOCKET = 20000;
 	private final static int RETRY_TIME = 3;
@@ -55,382 +52,537 @@ public class ApiClient {
 	public static void cleanCookie() {
 		appCookie = "";
 	}
-	
+
 	private static String getCookie(AppContext appContext) {
-		if(appCookie == null || appCookie == "") {
+		if (appCookie == null || appCookie == "") {
 			appCookie = appContext.getProperty("cookie");
 		}
 		return appCookie;
 	}
-	
+
 	private static String getUserAgent(AppContext appContext) {
-		if(appUserAgent == null || appUserAgent == "") {
+		if (appUserAgent == null || appUserAgent == "") {
 			StringBuilder ua = new StringBuilder("OSChina.NET");
-			ua.append('/'+appContext.getPackageInfo().versionName+'_'+appContext.getPackageInfo().versionCode);//App∞Ê±æ
-			ua.append("/Android");// ÷ª˙œµÕ≥∆ΩÃ®
-			ua.append("/"+android.os.Build.VERSION.RELEASE);// ÷ª˙œµÕ≥∞Ê±æ
-			ua.append("/"+android.os.Build.MODEL); // ÷ª˙–Õ∫≈
-			ua.append("/"+appContext.getAppId());//øÕªß∂ÀŒ®“ª±Í ∂
+			ua.append('/' + appContext.getPackageInfo().versionName + '_'
+					+ appContext.getPackageInfo().versionCode);// AppÔøΩÊ±æ
+			ua.append("/Android");// ÔøΩ÷ªÔøΩœµÕ≥∆ΩÃ®
+			ua.append("/" + android.os.Build.VERSION.RELEASE);// ÔøΩ÷ªÔøΩœµÕ≥ÔøΩÊ±æ
+			ua.append("/" + android.os.Build.MODEL); // ÔøΩ÷ªÔøΩÔøΩÕ∫ÔøΩ
+			ua.append("/" + appContext.getAppId());// ÔøΩÕªÔøΩÔøΩÔøΩŒ®“ªÔøΩÔøΩ ∂
 			appUserAgent = ua.toString();
 		}
 		return appUserAgent;
 	}
-	
-	private static HttpClient getHttpClient() {        
-        HttpClient httpClient = new HttpClient();
-		// …Ë÷√ HttpClient Ω” ’ Cookie,”√”Î‰Ø¿¿∆˜“ª—˘µƒ≤ﬂ¬‘
-		httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-        // …Ë÷√ ƒ¨»œµƒ≥¨ ±÷ÿ ‘¥¶¿Ì≤ﬂ¬‘
-		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
-		// …Ë÷√ ¡¨Ω”≥¨ ± ±º‰
-		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT_CONNECTION);
-		// …Ë÷√ ∂¡ ˝æ›≥¨ ± ±º‰ 
-		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT_SOCKET);
-		// …Ë÷√ ◊÷∑˚ºØ
+
+	private static HttpClient getHttpClient() {
+		HttpClient httpClient = new HttpClient();
+		// ÔøΩÔøΩÔøΩÔøΩ HttpClient ÔøΩÔøΩÔøΩÔøΩ Cookie,ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ“ªÔøΩÔøΩƒ≤ÔøΩÔøΩÔøΩ
+		httpClient.getParams().setCookiePolicy(
+				CookiePolicy.BROWSER_COMPATIBILITY);
+		// ÔøΩÔøΩÔøΩÔøΩ ƒ¨ÔøΩœµƒ≥ÔøΩ ±ÔøΩÔøΩÔøΩ‘¥ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
+				new DefaultHttpMethodRetryHandler());
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ”≥ÔøΩ ± ±ÔøΩÔøΩ
+		httpClient.getHttpConnectionManager().getParams()
+				.setConnectionTimeout(TIMEOUT_CONNECTION);
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ›≥ÔøΩ ± ±ÔøΩÔøΩ
+		httpClient.getHttpConnectionManager().getParams()
+				.setSoTimeout(TIMEOUT_SOCKET);
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩ÷∑ÔøΩ
 		httpClient.getParams().setContentCharset(UTF_8);
 		return httpClient;
-	}	
-	
-	private static GetMethod getHttpGet(String url, String cookie, String userAgent) {
+	}
+
+	private static GetMethod getHttpGet(String url, String cookie,
+			String userAgent) {
 		GetMethod httpGet = new GetMethod(url);
-		// …Ë÷√ «Î«Û≥¨ ± ±º‰
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ± ±ÔøΩÔøΩ
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpGet.setRequestHeader("Host", URLs.HOST);
-		httpGet.setRequestHeader("Connection","Keep-Alive");
+		httpGet.setRequestHeader("Connection", "Keep-Alive");
 		httpGet.setRequestHeader("Cookie", cookie);
 		httpGet.setRequestHeader("User-Agent", userAgent);
 		return httpGet;
 	}
-	
-	private static PostMethod getHttpPost(String url, String cookie, String userAgent) {
+
+	private static PostMethod getHttpPost(String url, String cookie,
+			String userAgent) {
 		PostMethod httpPost = new PostMethod(url);
-		// …Ë÷√ «Î«Û≥¨ ± ±º‰
+		// ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ± ±ÔøΩÔøΩ
 		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
-		httpPost.setRequestHeader("Connection","Keep-Alive");
+		httpPost.setRequestHeader("Connection", "Keep-Alive");
 		httpPost.setRequestHeader("Cookie", cookie);
 		httpPost.setRequestHeader("User-Agent", userAgent);
 		return httpPost;
 	}
-	
+
 	private static String _MakeURL(String p_url, Map<String, Object> params) {
 		StringBuilder url = new StringBuilder(p_url);
-		if(url.indexOf("?")<0)
+		if (url.indexOf("?") < 0) {
 			url.append('?');
+		}
 
-		for(String name : params.keySet()){
+		for (String name : params.keySet()) {
 			url.append('&');
 			url.append(name);
 			url.append('=');
 			url.append(String.valueOf(params.get(name)));
-			//≤ª◊ˆURLEncoder¥¶¿Ì
-			//url.append(URLEncoder.encode(String.valueOf(params.get(name)), UTF_8));
+			// ÔøΩÔøΩÔøΩÔøΩURLEncoderÔøΩÔøΩÔøΩÔøΩ
+			// url.append(URLEncoder.encode(String.valueOf(params.get(name)),
+			// UTF_8));
 		}
 
 		return url.toString().replace("?&", "?");
 	}
 	/**
-	 * ªÒ»°Õ¯¬ÁÕº∆¨
+	 * ÔøΩÔøΩ»°ÔøΩÔøΩÔøΩÔøΩÕº∆¨
+	 * 
 	 * @param url
 	 * @return
 	 */
 	public static Bitmap getNetBitmap(String url) throws AppException {
-		//System.out.println("image_url==> "+url);
+		// System.out.println("image_url==> "+url);
 		HttpClient httpClient = null;
 		GetMethod httpGet = null;
 		Bitmap bitmap = null;
 		int time = 0;
-		do{
-			try 
-			{
+		do {
+			try {
 				httpClient = getHttpClient();
 				httpGet = getHttpGet(url, null, null);
 				int statusCode = httpClient.executeMethod(httpGet);
 				if (statusCode != HttpStatus.SC_OK) {
 					throw AppException.http(statusCode);
 				}
-		        InputStream inStream = httpGet.getResponseBodyAsStream();
-		        bitmap = BitmapFactory.decodeStream(inStream);
-		        inStream.close();
-		        break;
+				InputStream inStream = httpGet.getResponseBodyAsStream();
+				bitmap = BitmapFactory.decodeStream(inStream);
+				inStream.close();
+				break;
 			} catch (HttpException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙÷¬√¸µƒ“Ï≥££¨ø…ƒ‹ «–≠“È≤ª∂‘ªÚ’ﬂ∑µªÿµƒƒ⁄»›”–Œ Ã‚
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ–≠ÔøΩÈ≤ªÔøΩ‘ªÔøΩÔøΩﬂ∑ÔøΩÔøΩÿµÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙Õ¯¬Á“Ï≥£
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				//  Õ∑≈¡¨Ω”
+				// ÔøΩÕ∑ÔøΩÔøΩÔøΩÔøΩÔøΩ
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
-		}while(time < RETRY_TIME);
+		} while (time < RETRY_TIME);
 		return bitmap;
 	}
 	/**
-	 * ºÏ≤È∞Ê±æ∏¸–¬
+	 * ÔøΩÔøΩÔøΩÊ±æÔøΩÔøΩÔøΩÔøΩ
+	 * 
 	 * @param url
 	 * @return
 	 */
-	public static Update checkVersion(AppContext appContext) throws AppException {
-		try{
-			return Update.parse(http_get(appContext, URLs.UPDATE_VERSION));		
-		}catch(Exception e){
-			if(e instanceof AppException)
-				throw (AppException)e;
+	public static Update checkVersion(AppContext appContext)
+			throws AppException {
+		try {
+			return Update.parse(http_get(appContext, URLs.UPDATE_VERSION));
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
 			throw AppException.network(e);
 		}
 	}
 	/**
-	 * get«Î«ÛURL
+	 * getÔøΩÔøΩÔøΩÔøΩURL
+	 * 
 	 * @param url
-	 * @throws AppException 
+	 * @throws AppException
 	 */
-	private static String http_get(AppContext appContext, String url) throws AppException {	
+	private static String http_get(AppContext appContext, String url)
+			throws AppException {
 		String data = "";
 		String cookie = getCookie(appContext);
 		String userAgent = getUserAgent(appContext);
-		
+
 		HttpClient httpClient = null;
 		GetMethod httpGet = null;
 
 		String responseBody = "";
 		int time = 0;
-		do{
-			try 
-			{
+		do {
+			try {
 				httpClient = getHttpClient();
-				httpGet = getHttpGet(url, cookie, userAgent);			
+				httpGet = getHttpGet(url, cookie, userAgent);
 				int statusCode = httpClient.executeMethod(httpGet);
 				if (statusCode != HttpStatus.SC_OK) {
 					throw AppException.http(statusCode);
 				}
 				responseBody = httpGet.getResponseBodyAsString();
-				//System.out.println("XMLDATA=====>"+responseBody);
-				break;				
+				// System.out.println("XMLDATA=====>"+responseBody);
+				break;
 			} catch (HttpException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙÷¬√¸µƒ“Ï≥££¨ø…ƒ‹ «–≠“È≤ª∂‘ªÚ’ﬂ∑µªÿµƒƒ⁄»›”–Œ Ã‚
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ–≠ÔøΩÈ≤ªÔøΩ‘ªÔøΩÔøΩﬂ∑ÔøΩÔøΩÿµÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙Õ¯¬Á“Ï≥£
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				//  Õ∑≈¡¨Ω”
+				// ÔøΩÕ∑ÔøΩÔøΩÔøΩÔøΩÔøΩ
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
-		}while(time < RETRY_TIME);
-		
+		} while (time < RETRY_TIME);
 
-		if(responseBody.contains("data")){
+		if (responseBody.contains("data")) {
 			try {
 				Gson g = new Gson();
 				data = g.fromJson(responseBody, Result.class).getData();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}			
+			}
 		}
 		return data;
 	}
 	/**
-	 * π´”√post∑Ω∑®
+	 * ÔøΩÔøΩÔøΩÔøΩpostÔøΩÔøΩÔøΩÔøΩ
+	 * 
 	 * @param url
 	 * @param params
 	 * @param files
 	 * @throws AppException
 	 */
-	private static String _post(AppContext appContext, String url, Map<String, Object> params) throws AppException {
-		//System.out.println("post_url==> "+url);
-		String data="";
+	private static String _post(AppContext appContext, String url,
+			Map<String, Object> params) throws AppException {
+		// System.out.println("post_url==> "+url);
+		String data = "";
 		String cookie = getCookie(appContext);
 		String userAgent = getUserAgent(appContext);
-		
+
 		HttpClient httpClient = null;
 		PostMethod httpPost = null;
-		
-		//post±Ìµ•≤Œ ˝¥¶¿Ì
+
+		// postÔøΩ?ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 		int length = (params == null ? 0 : params.size());
 		Part[] parts = new Part[length];
 		int i = 0;
-        if(params != null)
-        for(String name : params.keySet()){
-        	parts[i++] = new StringPart(name, String.valueOf(params.get(name)), UTF_8);
-        	//System.out.println("post_key==> "+name+"    value==>"+String.valueOf(params.get(name)));
-        }
+		if (params != null) {
+			for (String name : params.keySet()) {
+				parts[i++] = new StringPart(name, String.valueOf(params
+						.get(name)), UTF_8);
+				// System.out.println("post_key==> "+name+"    value==>"+String.valueOf(params.get(name)));
+			}
+		}
 
-		
 		String responseBody = "";
 		int time = 0;
-		do{
-			try 
-			{
+		do {
+			try {
 				httpClient = getHttpClient();
-				httpPost = getHttpPost(url, cookie, userAgent);	        
-		        httpPost.setRequestEntity(new MultipartRequestEntity(parts,httpPost.getParams()));		        
-		        int statusCode = httpClient.executeMethod(httpPost);
-		        if(statusCode != HttpStatus.SC_OK) 
-		        {
-		        	throw AppException.http(statusCode);
-		        }
-		        else if(statusCode == HttpStatus.SC_OK) 
-		        {
-		            Cookie[] cookies = httpClient.getState().getCookies();
-		            String tmpcookies = "";
-		            for (Cookie ck : cookies) {
-		                tmpcookies += ck.toString()+";";
-		            }
-		            //±£¥Êcookie   
-	        		if(appContext != null && tmpcookies != ""){
-	        			appContext.setProperty("cookie", tmpcookies);
-	        			appCookie = tmpcookies;
-	        		}
-		        }
-		     	responseBody = httpPost.getResponseBodyAsString();
-		        //System.out.println("XMLDATA=====>"+responseBody);
-		     	break;	     	
+				httpPost = getHttpPost(url, cookie, userAgent);
+				httpPost.setRequestEntity(new MultipartRequestEntity(parts,
+						httpPost.getParams()));
+				int statusCode = httpClient.executeMethod(httpPost);
+				if (statusCode != HttpStatus.SC_OK) {
+					throw AppException.http(statusCode);
+				} else if (statusCode == HttpStatus.SC_OK) {
+					Cookie[] cookies = httpClient.getState().getCookies();
+					String tmpcookies = "";
+					for (Cookie ck : cookies) {
+						tmpcookies += ck.toString() + ";";
+					}
+					// ÔøΩÔøΩÔøΩÔøΩcookie
+					if (appContext != null && tmpcookies != "") {
+						appContext.setProperty("cookie", tmpcookies);
+						appCookie = tmpcookies;
+					}
+				}
+				responseBody = httpPost.getResponseBodyAsString();
+				// System.out.println("XMLDATA=====>"+responseBody);
+				break;
 			} catch (HttpException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙÷¬√¸µƒ“Ï≥££¨ø…ƒ‹ «–≠“È≤ª∂‘ªÚ’ﬂ∑µªÿµƒƒ⁄»›”–Œ Ã‚
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ–≠ÔøΩÈ≤ªÔøΩ‘ªÔøΩÔøΩﬂ∑ÔøΩÔøΩÿµÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
 				time++;
-				if(time < RETRY_TIME) {
+				if (time < RETRY_TIME) {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {} 
+					} catch (InterruptedException e1) {
+					}
 					continue;
 				}
-				// ∑¢…˙Õ¯¬Á“Ï≥£
+				// ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÏ≥£
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				//  Õ∑≈¡¨Ω”
+				// ÔøΩÕ∑ÔøΩÔøΩÔøΩÔøΩÔøΩ
 				httpPost.releaseConnection();
 				httpClient = null;
 			}
-		}while(time < RETRY_TIME);
-        
-		if(responseBody.contains("data")){
+		} while (time < RETRY_TIME);
+
+		if (responseBody.contains("data")) {
 			try {
 				Gson g = new Gson();
 				data = g.fromJson(responseBody, Result.class).getData();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}			
+			}
 		}
 		return data;
 	}
 	/**
-	 * ªÒ»°◊ —∂¡–±Ì
-	 * @param url
-	 * @param catalog
+	 * 
+	 * Êñ∞ÈóªÂàóË°®
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param appContext
 	 * @param pageIndex
 	 * @param pageSize
 	 * @return
 	 * @throws AppException
 	 */
-	public static NewsList getNewsList(AppContext appContext,  final int pageIndex, final int pageSize) throws AppException {
-		String newUrl = _MakeURL(URLs.NEWS_LIST, new HashMap<String, Object>(){{
-			put("pageNo", pageIndex);
-			put("pageSize", pageSize);
-		}});
-		
-		try{
-			return new Gson().fromJson(http_get(appContext, newUrl), new TypeToken<NewsList>(){}.getType());		
-		}catch(Exception e){
-			if(e instanceof AppException)
-				throw (AppException)e;
+	public static NewsList getNewsList(AppContext appContext,
+			final int pageIndex, final int pageSize) throws AppException {
+		String url = _MakeURL(URLs.NEWS_LIST, new HashMap<String, Object>() {
+			{
+				put("pageNo", pageIndex);
+				put("pageSize", pageSize);
+			}
+		});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url),
+					new TypeToken<NewsList>() {
+					}.getType());
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
 			throw AppException.network(e);
 		}
 	}
 	/**
-	 * ªÒ»°◊ —∂µƒœÍ«È
+	 * 
+	 * ‰∫ßÂìÅÂàóË°®
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param appContext
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 * @throws AppException
+	 */
+	public static ProductList getProductList(AppContext appContext,
+			final int pageIndex, final int pageSize) throws AppException {
+		String url = _MakeURL(URLs.PRODUCT_LIST, new HashMap<String, Object>() {
+			{
+				put("pageNo", pageIndex);
+				put("pageSize", pageSize);
+			}
+		});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url),
+					new TypeToken<ProductList>() {
+					}.getType());
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * 
+	 * ÁïôË®ÄÂÖ¨ÂëäÂàóË°®
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param appContext
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 * @throws AppException
+	 */
+	public static NoticeList getNoticeList(AppContext appContext,
+			final int pageIndex, final int pageSize) throws AppException {
+		String url = _MakeURL(URLs.NOTICE_LIST, new HashMap<String, Object>() {
+			{
+				put("pageNo", pageIndex);
+				put("pageSize", pageSize);
+			}
+		});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url),
+					new TypeToken<NoticeList>() {
+					}.getType());
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * Êñ∞ÈóªÊòéÁªÜ
+	 * 
 	 * @param url
 	 * @param news_id
 	 * @return
 	 * @throws AppException
 	 */
-	public static NewsVO getNewsDetail(AppContext appContext, final int news_id) throws AppException {
-		String newUrl = _MakeURL(URLs.NEWS_DETAIL, new HashMap<String, Object>(){{
-			put("id", news_id);
-		}});
-		
-		try{
-			return new Gson().fromJson(http_get(appContext, newUrl),NewsVO.class);			
-		}catch(Exception e){
-			if(e instanceof AppException)
-				throw (AppException)e;
+	public static NewsVO getNewsDetail(AppContext appContext, final long news_id)
+			throws AppException {
+		String url = _MakeURL(URLs.NEWS_DETAIL, new HashMap<String, Object>() {
+			{
+				put("id", news_id);
+			}
+		});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url), NewsVO.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
 			throw AppException.network(e);
 		}
 	}
 	/**
-	 * µ«¬º£¨ ◊‘∂Ø¥¶¿Ìcookie
+	 * 
+	 * ‰∫ßÂìÅËØ¶ÊÉÖ
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param appContext
+	 * @param product_id
+	 * @return
+	 * @throws AppException
+	 */
+	public static ProductVO getProductDetail(AppContext appContext,
+			final long product_id) throws AppException {
+		String url = _MakeURL(URLs.PRODUCT_DETAIL,
+				new HashMap<String, Object>() {
+					{
+						put("id", product_id);
+					}
+				});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url),
+					ProductVO.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * 
+	 * ÁïôË®ÄÊòéÁªÜ
+	 * 
+	 * @since 2013-6-3
+	 * @author qingang
+	 * @param appContext
+	 * @param product_id
+	 * @return
+	 * @throws AppException
+	 */
+	public static NoticeVO getNoticeDetail(AppContext appContext,
+			final long notice_id) throws AppException {
+		String url = _MakeURL(URLs.PRODUCT_DETAIL,
+				new HashMap<String, Object>() {
+					{
+						put("id", notice_id);
+					}
+				});
+
+		try {
+			return new Gson().fromJson(http_get(appContext, url),
+					new TypeToken<NoticeVO>() {
+					}.getType());
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * ÔøΩÔøΩ¬ºÔøΩÔøΩ ÔøΩ‘∂ÔøΩÔøΩÔøΩÔøΩÔøΩcookie
+	 * 
 	 * @param url
 	 * @param username
 	 * @param pwd
 	 * @return
 	 * @throws AppException
 	 */
-	public static User login(AppContext appContext, String username, String pwd) throws AppException {
-		Map<String,Object> params = new HashMap<String,Object>();
+	public static User login(AppContext appContext, String username, String pwd)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		params.put("pwd", pwd);
 		params.put("keep_login", 1);
-				
+
 		String loginurl = URLs.LOGIN_VALIDATE_HTTP;
 
-		
-		try{
-			return new Gson().fromJson(_post(appContext, loginurl, params),User.class);		
-		}catch(Exception e){
-			if(e instanceof AppException)
-				throw (AppException)e;
+		try {
+			return new Gson().fromJson(_post(appContext, loginurl, params),
+					User.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
 			throw AppException.network(e);
 		}
 	}
-	
-	
-	
-
-	
 
 }

@@ -10,7 +10,7 @@
     android:paddingBottom="9dip">   
 
     <ImageView 
-    	android:id="@+id/question_listitem_userface"
+    	android:id="@+id/question_listitem_pic"
       	style="@style/user_face_image"/>
 
 	<LinearLayout
@@ -19,7 +19,7 @@
     	android:orientation="vertical"
     	android:layout_marginLeft="6dip"> 
 
-	    <TextView android:id="@+id/question_listitem_title" 
+	    <TextView android:id="@+id/question_listitem_name" 
 	        android:layout_width="fill_parent" 
 	     	android:layout_height="wrap_content"
 	     	android:includeFontPadding="false"
@@ -34,12 +34,7 @@
 	        android:layout_width="fill_parent"  
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="8dip">   
-	        	       	
-	       	<TextView android:id="@+id/question_listitem_author"  
-	    		android:layout_width="wrap_content" 
-	           	android:layout_height="wrap_content" 
-	           	android:textSize="@dimen/text_size_10"
-	            android:textColor="@color/listitem_gray"/>
+
 	       	
 	       	<TextView android:id="@+id/question_listitem_date"  
 	    		android:layout_width="wrap_content" 
@@ -47,15 +42,8 @@
 	           	android:layout_marginLeft="10dip"
 	           	android:textSize="@dimen/text_size_10"
 	            android:textColor="@color/listitem_gray"/>
-	            
-		    <ImageView 
-		      	android:layout_width="wrap_content" 
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="10dip"
-		        android:layout_gravity="center_vertical"
-		        android:src="@drawable/widget_comment_count_icon"/>
 		        
-	       	<TextView android:id="@+id/question_listitem_count"  
+	       	<TextView android:id="@+id/question_listitem_price"  
 	    		android:layout_width="wrap_content" 
 	           	android:layout_height="wrap_content" 
 	           	android:layout_marginLeft="3dip"
