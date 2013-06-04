@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<%@ include file="/common/meta.jsp" %>
-	<title>东方农机商城(www.machine1688.com)-产品管理</title>
+	<title>宣酒特贡产品管理</title>
 	<meta content="product" name="activemenu" />
 	<link href="${ctx}/css/master.css" type="text/css" rel="stylesheet"/> 
 	<script src="${ctx}/js/jquery.js" type="text/javascript"></script>

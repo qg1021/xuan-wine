@@ -45,7 +45,7 @@ public class ProductList extends BaseVO
     private static final long serialVersionUID = 1L;
     private int               pageSize;
 
-    private int               totalSize;
+    private long              totalSize;
 
     private List<ProductVO>   productList      = new ArrayList<ProductVO>();
 
@@ -61,12 +61,12 @@ public class ProductList extends BaseVO
         this.pageSize = pageSize;
     }
 
-    public int getTotalSize()
+    public long getTotalSize()
     {
         return totalSize;
     }
 
-    public void setTotalSize(int totalSize)
+    public void setTotalSize(long totalSize)
     {
         this.totalSize = totalSize;
     }

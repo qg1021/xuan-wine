@@ -108,7 +108,7 @@ public class Global
     static
     {
         picpath = PropertyUtils.getProperty("upload.path");
-        appurl = PropertyUtils.getProperty("search.appurl");
+        appurl = PropertyUtils.getProperty("wine.appurl");
         newsTypeList.add(new LabelValue("zxxw", "资讯新闻"));
 
     }

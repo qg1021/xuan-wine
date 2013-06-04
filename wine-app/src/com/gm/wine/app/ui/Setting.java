@@ -2,6 +2,8 @@ package com.gm.wine.app.ui;
 
 import java.io.File;
 
+
+
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppManager;
 import com.gm.wine.app.R;
@@ -25,13 +27,10 @@ import android.widget.ListView;
 public class Setting extends PreferenceActivity{
 	
 	SharedPreferences mPreferences;
-	Preference account;
-	Preference myinfo;
 	Preference cache;
 	Preference feedback;
 	Preference update;
 	Preference about;
-	CheckBoxPreference httpslogin;
 	CheckBoxPreference loadimage;
 	CheckBoxPreference scroll;
 	CheckBoxPreference voice;
@@ -41,12 +40,12 @@ public class Setting extends PreferenceActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//Ìí¼ÓActivityµ½¶ÑÕ»
+		//æ·»åŠ Activityåˆ°å †æ ˆ
 		AppManager.getAppManager().addActivity(this);
 		
-		//ÉèÖÃÏÔÊ¾Preferences
+		//è®¾ç½®æ˜¾ç¤ºPreferences
 		addPreferencesFromResource(R.xml.preferences);
-		//»ñµÃSharedPreferences
+		//è·å¾—SharedPreferences
 		mPreferences = PreferenceManager.getDefaultSharedPreferences(this);		
 		
 		ListView localListView = getListView();
@@ -59,112 +58,71 @@ public class Setting extends PreferenceActivity{
 	      
 	    
 		final AppContext ac = (AppContext)getApplication();
+
 		
-		//µÇÂ¼¡¢×¢Ïú
-		account = (Preference)findPreference("account");
-		if(ac.isLogin()){
-			account.setTitle(R.string.main_menu_logout);
-		}else{
-			account.setTitle(R.string.main_menu_login);
-		}
-		account.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				UIHelper.loginOrLogout(Setting.this);
-				account.setTitle(R.string.main_menu_login);
-				return true;
-			}
-		});
+;
 		
-		//ÎÒµÄ×ÊÁÏ
-		myinfo = (Preference)findPreference("myinfo");
-		myinfo.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				UIHelper.showUserInfo(Setting.this);
-				return true;
-			}
-		});
-		
-		//httpsµÇÂ¼
-		httpslogin = (CheckBoxPreference)findPreference("httpslogin");
-		httpslogin.setChecked(ac.isHttpsLogin());
-		if(ac.isHttpsLogin()){
-			httpslogin.setSummary("µ±Ç°ÒÔ HTTPS µÇÂ¼");
-		}else{
-			httpslogin.setSummary("µ±Ç°ÒÔ HTTP µÇÂ¼");
-		}
-		httpslogin.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				ac.setConfigHttpsLogin(httpslogin.isChecked());
-				if(httpslogin.isChecked()){
-					httpslogin.setSummary("µ±Ç°ÒÔ HTTPS µÇÂ¼");
-				}else{
-					httpslogin.setSummary("µ±Ç°ÒÔ HTTP µÇÂ¼");
-				}
-				return true;
-			}
-		});
-		
-		//¼ÓÔØÍ¼Æ¬loadimage
+		//åŠ è½½å›¾ç‰‡loadimage
 		loadimage = (CheckBoxPreference)findPreference("loadimage");
 		loadimage.setChecked(ac.isLoadImage());
 		if(ac.isLoadImage()){
-			loadimage.setSummary("Ò³Ãæ¼ÓÔØÍ¼Æ¬ (Ä¬ÈÏÔÚWIFIÍøÂçÏÂ¼ÓÔØÍ¼Æ¬)");
+			loadimage.setSummary("é¡µé¢åŠ è½½å›¾ç‰‡ (é»˜è®¤åœ¨WIFIç½‘ç»œä¸‹åŠ è½½å›¾ç‰‡)");
 		}else{
-			loadimage.setSummary("Ò³Ãæ²»¼ÓÔØÍ¼Æ¬ (Ä¬ÈÏÔÚWIFIÍøÂçÏÂ¼ÓÔØÍ¼Æ¬)");
+			loadimage.setSummary("é¡µé¢ä¸åŠ è½½å›¾ç‰‡ (é»˜è®¤åœ¨WIFIç½‘ç»œä¸‹åŠ è½½å›¾ç‰‡)");
 		}
 		loadimage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 				UIHelper.changeSettingIsLoadImage(Setting.this,loadimage.isChecked());
 				if(loadimage.isChecked()){
-					loadimage.setSummary("Ò³Ãæ¼ÓÔØÍ¼Æ¬ (Ä¬ÈÏÔÚWIFIÍøÂçÏÂ¼ÓÔØÍ¼Æ¬)");
+					loadimage.setSummary("é¡µé¢åŠ è½½å›¾ç‰‡ (é»˜è®¤åœ¨WIFIç½‘ç»œä¸‹åŠ è½½å›¾ç‰‡)");
 				}else{
-					loadimage.setSummary("Ò³Ãæ²»¼ÓÔØÍ¼Æ¬ (Ä¬ÈÏÔÚWIFIÍøÂçÏÂ¼ÓÔØÍ¼Æ¬)");
+					loadimage.setSummary("é¡µé¢ä¸åŠ è½½å›¾ç‰‡ (é»˜è®¤åœ¨WIFIç½‘ç»œä¸‹åŠ è½½å›¾ç‰‡)");
 				}
 				return true;
 			}
 		});
 		
-		//×óÓÒ»¬¶¯
+		//å·¦å³æ»‘åŠ¨
 		scroll = (CheckBoxPreference)findPreference("scroll");
 		scroll.setChecked(ac.isScroll());
 		if(ac.isScroll()){
-			scroll.setSummary("ÒÑÆôÓÃ×óÓÒ»¬¶¯");
+			scroll.setSummary("å·²å¯ç”¨å·¦å³æ»‘åŠ¨");
 		}else{
-			scroll.setSummary("ÒÑ¹Ø±Õ×óÓÒ»¬¶¯");
+			scroll.setSummary("å·²å…³é—­å·¦å³æ»‘åŠ¨");
 		}
 		scroll.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 				ac.setConfigScroll(scroll.isChecked());
 				if(scroll.isChecked()){
-					scroll.setSummary("ÒÑÆôÓÃ×óÓÒ»¬¶¯");
+					scroll.setSummary("å·²å¯ç”¨å·¦å³æ»‘åŠ¨");
 				}else{
-					scroll.setSummary("ÒÑ¹Ø±Õ×óÓÒ»¬¶¯");
+					scroll.setSummary("å·²å…³é—­å·¦å³æ»‘åŠ¨");
 				}
 				return true;
 			}
 		});
 		
-		//ÌáÊ¾ÉùÒô
+		//æç¤ºå£°éŸ³
 		voice = (CheckBoxPreference)findPreference("voice");
 		voice.setChecked(ac.isVoice());
 		if(ac.isVoice()){
-			voice.setSummary("ÒÑ¿ªÆôÌáÊ¾ÉùÒô");
+			voice.setSummary("å·²å¼€å¯æç¤ºå£°éŸ³");
 		}else{
-			voice.setSummary("ÒÑ¹Ø±ÕÌáÊ¾ÉùÒô");
+			voice.setSummary("å·²å…³é—­æç¤ºå£°éŸ³");
 		}
 		voice.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
 				ac.setConfigVoice(voice.isChecked());
 				if(voice.isChecked()){
-					voice.setSummary("ÒÑ¿ªÆôÌáÊ¾ÉùÒô");
+					voice.setSummary("å·²å¼€å¯æç¤ºå£°éŸ³");
 				}else{
-					voice.setSummary("ÒÑ¹Ø±ÕÌáÊ¾ÉùÒô");
+					voice.setSummary("å·²å…³é—­æç¤ºå£°éŸ³");
 				}
 				return true;
 			}
 		});
 		
-		//Æô¶¯¼ì²é¸üĞÂ
+		//å¯åŠ¨æ£€æŸ¥æ›´æ–°
 		checkup = (CheckBoxPreference)findPreference("checkup");
 		checkup.setChecked(ac.isCheckUp());
 		checkup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -174,7 +132,7 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//¼ÆËã»º´æ´óĞ¡		
+		//è®¡ç®—ç¼“å­˜å¤§å°		
 		long fileSize = 0;
 		String cacheSize = "0KB";		
 		File filesDir = getFilesDir();
@@ -182,7 +140,7 @@ public class Setting extends PreferenceActivity{
 		
 		fileSize += FileUtils.getDirSize(filesDir);
 		fileSize += FileUtils.getDirSize(cacheDir);		
-		//2.2°æ±¾²ÅÓĞ½«Ó¦ÓÃ»º´æ×ªÒÆµ½sd¿¨µÄ¹¦ÄÜ
+		//2.2ç‰ˆæœ¬æ‰æœ‰å°†åº”ç”¨ç¼“å­˜è½¬ç§»åˆ°sdå¡çš„åŠŸèƒ½
 		if(AppContext.isMethodsCompat(android.os.Build.VERSION_CODES.FROYO)){
 			File externalCacheDir = MethodsCompat.getExternalCacheDir(this);
 			fileSize += FileUtils.getDirSize(externalCacheDir);
@@ -190,7 +148,7 @@ public class Setting extends PreferenceActivity{
 		if(fileSize > 0)
 			cacheSize = FileUtils.formatFileSize(fileSize);
 		
-		//Çå³ı»º´æ
+		//æ¸…é™¤ç¼“å­˜
 		cache = (Preference)findPreference("cache");
 		cache.setSummary(cacheSize);
 		cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -201,7 +159,7 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//Òâ¼û·´À¡
+		//æ„è§åé¦ˆ
 		feedback = (Preference)findPreference("feedback");
 		feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -210,7 +168,7 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//°æ±¾¸üĞÂ
+		//ç‰ˆæœ¬æ›´æ–°
 		update = (Preference)findPreference("update");
 		update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -219,7 +177,7 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//¹ØÓÚÎÒÃÇ
+		//å…³äºæˆ‘ä»¬
 		about = (Preference)findPreference("about");
 		about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
@@ -237,17 +195,13 @@ public class Setting extends PreferenceActivity{
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		
-		if(intent.getBooleanExtra("LOGIN", false)){
-			account.setTitle(R.string.main_menu_logout);
-		}				
+						
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		//½áÊøActivity&´Ó¶ÑÕ»ÖĞÒÆ³ı
+		//ç»“æŸActivity&ä»å †æ ˆä¸­ç§»é™¤
 		AppManager.getAppManager().finishActivity(this);
 	}	
 }
-

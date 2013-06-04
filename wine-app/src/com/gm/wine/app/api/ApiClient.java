@@ -64,11 +64,11 @@ public class ApiClient {
 		if (appUserAgent == null || appUserAgent == "") {
 			StringBuilder ua = new StringBuilder("OSChina.NET");
 			ua.append('/' + appContext.getPackageInfo().versionName + '_'
-					+ appContext.getPackageInfo().versionCode);// App�汾
-			ua.append("/Android");// �ֻ�ϵͳƽ̨
-			ua.append("/" + android.os.Build.VERSION.RELEASE);// �ֻ�ϵͳ�汾
-			ua.append("/" + android.os.Build.MODEL); // �ֻ��ͺ�
-			ua.append("/" + appContext.getAppId());// �ͻ���Ψһ��ʶ
+					+ appContext.getPackageInfo().versionCode);
+			ua.append("/Android");//
+			ua.append("/" + android.os.Build.VERSION.RELEASE);
+			ua.append("/" + android.os.Build.MODEL); 
+			ua.append("/" + appContext.getAppId());
 			appUserAgent = ua.toString();
 		}
 		return appUserAgent;
@@ -76,19 +76,14 @@ public class ApiClient {
 
 	private static HttpClient getHttpClient() {
 		HttpClient httpClient = new HttpClient();
-		// ���� HttpClient ���� Cookie,���������һ��Ĳ���
 		httpClient.getParams().setCookiePolicy(
 				CookiePolicy.BROWSER_COMPATIBILITY);
-		// ���� Ĭ�ϵĳ�ʱ���Դ������
 		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
 				new DefaultHttpMethodRetryHandler());
-		// ���� ���ӳ�ʱʱ��
 		httpClient.getHttpConnectionManager().getParams()
 				.setConnectionTimeout(TIMEOUT_CONNECTION);
-		// ���� ����ݳ�ʱʱ��
 		httpClient.getHttpConnectionManager().getParams()
 				.setSoTimeout(TIMEOUT_SOCKET);
-		// ���� �ַ�
 		httpClient.getParams().setContentCharset(UTF_8);
 		return httpClient;
 	}
@@ -96,7 +91,6 @@ public class ApiClient {
 	private static GetMethod getHttpGet(String url, String cookie,
 			String userAgent) {
 		GetMethod httpGet = new GetMethod(url);
-		// ���� ����ʱʱ��
 		httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpGet.setRequestHeader("Host", URLs.HOST);
 		httpGet.setRequestHeader("Connection", "Keep-Alive");
@@ -108,7 +102,6 @@ public class ApiClient {
 	private static PostMethod getHttpPost(String url, String cookie,
 			String userAgent) {
 		PostMethod httpPost = new PostMethod(url);
-		// ���� ����ʱʱ��
 		httpPost.getParams().setSoTimeout(TIMEOUT_SOCKET);
 		httpPost.setRequestHeader("Host", URLs.HOST);
 		httpPost.setRequestHeader("Connection", "Keep-Alive");
@@ -127,20 +120,11 @@ public class ApiClient {
 			url.append('&');
 			url.append(name);
 			url.append('=');
-			url.append(String.valueOf(params.get(name)));
-			// ����URLEncoder����
-			// url.append(URLEncoder.encode(String.valueOf(params.get(name)),
-			// UTF_8));
+			url.append(String.valueOf(params.get(name)));;
 		}
 
 		return url.toString().replace("?&", "?");
 	}
-	/**
-	 * ��ȡ����ͼƬ
-	 * 
-	 * @param url
-	 * @return
-	 */
 	public static Bitmap getNetBitmap(String url) throws AppException {
 		// System.out.println("image_url==> "+url);
 		HttpClient httpClient = null;
@@ -168,7 +152,6 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ����������쳣��������Э�鲻�Ի��߷��ص�����������
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -180,23 +163,16 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ���������쳣
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// �ͷ�����
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
 		} while (time < RETRY_TIME);
 		return bitmap;
 	}
-	/**
-	 * ���汾����
-	 * 
-	 * @param url
-	 * @return
-	 */
+
 	public static Update checkVersion(AppContext appContext)
 			throws AppException {
 		try {
@@ -208,12 +184,7 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	/**
-	 * get����URL
-	 * 
-	 * @param url
-	 * @throws AppException
-	 */
+
 	private static String http_get(AppContext appContext, String url)
 			throws AppException {
 		String data = "";
@@ -245,7 +216,6 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ����������쳣��������Э�鲻�Ի��߷��ص�����������
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -257,11 +227,11 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ���������쳣
+
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// �ͷ�����
+
 				httpGet.releaseConnection();
 				httpClient = null;
 			}
@@ -277,14 +247,7 @@ public class ApiClient {
 		}
 		return data;
 	}
-	/**
-	 * ����post����
-	 * 
-	 * @param url
-	 * @param params
-	 * @param files
-	 * @throws AppException
-	 */
+
 	private static String _post(AppContext appContext, String url,
 			Map<String, Object> params) throws AppException {
 		// System.out.println("post_url==> "+url);
@@ -295,7 +258,6 @@ public class ApiClient {
 		HttpClient httpClient = null;
 		PostMethod httpPost = null;
 
-		// post�?������
 		int length = (params == null ? 0 : params.size());
 		Part[] parts = new Part[length];
 		int i = 0;
@@ -324,7 +286,7 @@ public class ApiClient {
 					for (Cookie ck : cookies) {
 						tmpcookies += ck.toString() + ";";
 					}
-					// ����cookie
+
 					if (appContext != null && tmpcookies != "") {
 						appContext.setProperty("cookie", tmpcookies);
 						appCookie = tmpcookies;
@@ -342,7 +304,7 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ����������쳣��������Э�鲻�Ի��߷��ص�����������
+
 				e.printStackTrace();
 				throw AppException.http(e);
 			} catch (IOException e) {
@@ -354,11 +316,11 @@ public class ApiClient {
 					}
 					continue;
 				}
-				// ���������쳣
+
 				e.printStackTrace();
 				throw AppException.network(e);
 			} finally {
-				// �ͷ�����
+
 				httpPost.releaseConnection();
 				httpClient = null;
 			}
@@ -538,7 +500,7 @@ public class ApiClient {
 	 */
 	public static NoticeVO getNoticeDetail(AppContext appContext,
 			final long notice_id) throws AppException {
-		String url = _MakeURL(URLs.PRODUCT_DETAIL,
+		String url = _MakeURL(URLs.NOTICE_DETAIL,
 				new HashMap<String, Object>() {
 					{
 						put("id", notice_id);
@@ -556,15 +518,7 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-	/**
-	 * ��¼�� �Զ�����cookie
-	 * 
-	 * @param url
-	 * @param username
-	 * @param pwd
-	 * @return
-	 * @throws AppException
-	 */
+
 	public static User login(AppContext appContext, String username, String pwd)
 			throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();

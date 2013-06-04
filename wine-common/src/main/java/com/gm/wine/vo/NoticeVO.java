@@ -27,6 +27,18 @@ public class NoticeVO extends BaseVO {
     private UserVO user; // 留言人
     private List<NoticeVO> childs;
 
+    private int               replyNum;              // 回复数
+
+    public int getReplyNum()
+    {
+        return replyNum;
+    }
+
+    public void setReplyNum(int replyNum)
+    {
+        this.replyNum = replyNum;
+    }
+
     private Date createdate;
 
     public Long getId()

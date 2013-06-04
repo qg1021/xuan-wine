@@ -7,55 +7,77 @@ import java.util.Date;
  */
 public class UserVO extends BaseVO {
 
-	/**
-	 * serialVersionUID long
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * serialVersionUID long
+     */
+    private static final long serialVersionUID = 1L;
 
-	private String loginName;
-	private String name;
-	private String password;
-	private Date createDate; // 创建时间
-	private String roleName; // 角色名称
+    private long              id;
+    private String loginName;
+    private String name;
+    private String password;
+    private Date createDate; // 创建时间
+    private String roleName; // 角色名称
 
-	public String getLoginName() {
-		return loginName;
-	}
+    public UserVO()
+    {
+    }
 
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
+    public UserVO(long id, String loginName, String name)
+    {
+        this.id = id;
+        this.loginName = loginName;
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public long getId()
+    {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getLoginName() {
+        return loginName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getRoleName() {
-		return roleName;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
 }

@@ -10,9 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 
+
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AbsListView;
@@ -127,7 +130,7 @@ public class Main extends BaseActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return true;
+		return false;
 	}
 	@Override
 	protected void onResume() {
@@ -948,6 +951,23 @@ public class Main extends BaseActivity {
 				}
 				break;
 		}
+	}
+	/**
+	 * 监听返回--是否退出程序
+	 */
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		boolean flag = true;
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			//是否退出应用
+			UIHelper.Exit(this);
+		}else if(keyCode == KeyEvent.KEYCODE_MENU){
+			//展示快捷栏&判断是否登录
+			UIHelper.showSettingLoginOrLogout(Main.this, mGrid.getQuickAction(0));
+			mGrid.show(fbSetting, true);
+		}else{
+			flag = super.onKeyDown(keyCode, event);
+		}
+		return flag;
 	}
 
 }

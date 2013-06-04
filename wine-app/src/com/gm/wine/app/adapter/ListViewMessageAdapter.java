@@ -92,11 +92,11 @@ public class ListViewMessageAdapter extends BaseAdapter {
 		// 设置文字和图片
 		NoticeVO msg = listItems.get(position);
 		listItemView.username.setText(UIHelper.parseMessageSpan(msg.getUser()
-				.getName(), msg.getContent(), ""));
+				.getName(), msg.getTitle(), ""));
 		listItemView.username.setTag(msg);// 设置隐藏参数(实体类)
 		listItemView.date
 				.setText(StringUtils.friendly_time(msg.getCreatedate()));
-		listItemView.messageCount.setText("共有 " + msg.getChilds().size()
+		listItemView.messageCount.setText("共有 " + msg.getReplyNum()
 				+ " 条回复");
 
 		return convertView;

@@ -40,13 +40,13 @@ public class AppContext extends Application {
 	public static final int NETTYPE_CMWAP = 0x02;
 	public static final int NETTYPE_CMNET = 0x03;
 
-	public static final int PAGE_SIZE = 20;// 默锟较凤拷页锟斤拷小
+	public static final int PAGE_SIZE = 20;
 
 	public static final int PAGE_SIZE_10 = 10;
-	private static final int CACHE_TIME = 60 * 60000;// 锟斤拷锟斤拷失效时锟斤拷
+	private static final int CACHE_TIME = 60 * 60000;
 
-	private boolean login = false; // 锟斤拷录状态
-	private int loginUid = 0; // 锟斤拷录锟矫伙拷锟斤拷id
+	private boolean login = false; 
+	private int loginUid = 0; 
 	private final Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
 
 	private final Handler unLoginHandler = new Handler() {
@@ -63,35 +63,23 @@ public class AppContext extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// 注锟斤拷App锟届常锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
+		
 		Thread.setDefaultUncaughtExceptionHandler(AppException
 				.getAppExceptionHandler());
 	}
 
-	/**
-	 * 锟斤拷獾鼻跋低筹拷锟斤拷锟斤拷欠锟轿拷锟侥Ｊ�
-	 * 
-	 * @return
-	 */
+
 	public boolean isAudioNormal() {
 		AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		return mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
 	}
 
-	/**
-	 * 应锟矫筹拷锟斤拷锟角否发筹拷锟斤拷示锟斤拷
-	 * 
-	 * @return
-	 */
+
 	public boolean isAppSound() {
 		return isAudioNormal() && isVoice();
 	}
 
-	/**
-	 * 锟斤拷锟斤拷锟斤拷锟斤拷欠锟斤拷锟斤拷
-	 * 
-	 * @return
-	 */
+
 	public boolean isNetworkConnected() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -284,7 +272,6 @@ public class AppContext extends Application {
 
 	public boolean isLoadImage() {
 		String perf_loadimage = getProperty(AppConfig.CONF_LOAD_IMAGE);
-		// 默锟斤拷锟角硷拷锟截碉拷
 		if (StringUtils.isEmpty(perf_loadimage)) {
 			return true;
 		} else {
@@ -300,7 +287,6 @@ public class AppContext extends Application {
 
 	public boolean isVoice() {
 		String perf_voice = getProperty(AppConfig.CONF_VOICE);
-		// 默锟斤拷锟角匡拷锟斤拷锟斤拷示锟斤拷锟斤拷
 		if (StringUtils.isEmpty(perf_voice)) {
 			return true;
 		} else {

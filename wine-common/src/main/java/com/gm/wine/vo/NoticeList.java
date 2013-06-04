@@ -47,7 +47,7 @@ public class NoticeList extends BaseVO
 
     private int               pageSize;
 
-    private int               totalSize;
+    private long              totalSize;
 
     private List<NoticeVO>    noticeList       = new ArrayList<NoticeVO>();
 
@@ -61,12 +61,12 @@ public class NoticeList extends BaseVO
         this.pageSize = pageSize;
     }
 
-    public int getTotalSize()
+    public long getTotalSize()
     {
         return totalSize;
     }
 
-    public void setTotalSize(int totalSize)
+    public void setTotalSize(long totalSize)
     {
         this.totalSize = totalSize;
     }

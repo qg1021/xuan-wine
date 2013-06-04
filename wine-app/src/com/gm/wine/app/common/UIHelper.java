@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+
+
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
 import com.gm.wine.app.AppManager;
@@ -30,20 +34,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
+
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
+
 import android.text.style.StyleSpan;
-import android.view.Menu;
+
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -72,18 +75,15 @@ public class UIHelper {
 	public final static int REQUEST_CODE_FOR_RESULT = 0x01;
 	public final static int REQUEST_CODE_FOR_REPLY = 0x02;
 	
-	/** ����ͼƬƥ�� */
+
 	private static Pattern facePattern = Pattern.compile("\\[{1}([0-9]\\d*)\\]{1}");
 	
-	/** ȫ��web��ʽ */
+	/** 全局web样式 */
 	public final static String WEB_STYLE = "<style>* {font-size:16px;line-height:20px;} p {color:#333;} a {color:#3E62A6;} img {max-width:310px;} " +
 			"img.alignleft {float:left;max-width:120px;margin:0 10px 5px 0;border:1px solid #ccc;background:#fff;padding:2px;} " +
 			"pre {font-size:9pt;line-height:12pt;font-family:Courier New,Arial;border:1px solid #ddd;border-left:5px solid #6CE26C;background:#f6f6f6;padding:5px;} " +
 			"a.tag {font-size:15px;text-decoration:none;background-color:#bbd6f3;border-bottom:2px solid #3E6D8E;border-right:2px solid #7F9FB6;color:#284a7b;margin:2px 2px 2px 0;padding:2px 4px;white-space:nowrap;}</style>";
-	/**
-	 * ��ʾ��ҳ
-	 * @param activity
-	 */
+
 	public static void showHome(Activity activity)
 	{
 		Intent intent = new Intent(activity,Main.class);
@@ -91,10 +91,7 @@ public class UIHelper {
 		activity.finish();
 	}
 	
-	/**
-	 * ��ʾ��¼ҳ��
-	 * @param activity
-	 */
+
 	public static void showLoginDialog(Context context)
 	{
 		Intent intent = new Intent(context,LoginDialog.class);
@@ -158,100 +155,15 @@ public class UIHelper {
 //		context.startActivity(intent);
 //	}
 
-	/**
-	 * ����ϵͳ��װ�˵�Ӧ�÷���
-	 * @param context
-	 * @param title
-	 * @param url
-	 */
-	public static void showShareMore(Activity context,final String title,final String url)
-	{
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_SUBJECT, "���?" + title);
-		intent.putExtra(Intent.EXTRA_TEXT, title + " " +url);
-		context.startActivity(Intent.createChooser(intent, "ѡ�����"));
-	}
+
 	
 
 	
-	/**
-	 * �ղز���ѡ���
-	 * @param context
-	 * @param thread
-	 */
-	public static void showFavoriteOptionDialog(final Activity context,final Thread thread)
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setIcon(R.drawable.ic_dialog_menu);
-		builder.setTitle(context.getString(R.string.select));
-		builder.setItems(R.array.favorite_options,new DialogInterface.OnClickListener(){
-			public void onClick(DialogInterface arg0, int arg1) {
-				switch (arg1) {
-					case 0://ɾ��
-						thread.start();
-						break;
-				}				
-			}
-		});
-		builder.create().show();
-	}
 
 
-	
-	/**
-	 * �����б����
-	 * @param context
-	 * @param thread
-	 */
-	public static void showBlogOptionDialog(final Context context,final Thread thread)
-	{
-		new AlertDialog.Builder(context)
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setTitle(context.getString(R.string.delete_blog))
-		.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				if(thread != null)
-					thread.start();
-				else
-					ToastMessage(context, R.string.msg_noaccess_delete);
-				dialog.dismiss();
-			}
-		})
-		.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		})
-		.create().show();
-	}
-	
-	/**
-	 * ��������ѡ���
-	 * @param context
-	 * @param thread
-	 */
-	public static void showTweetOptionDialog(final Context context,final Thread thread)
-	{
-		new AlertDialog.Builder(context)
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setTitle(context.getString(R.string.delete_tweet))
-		.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				if(thread != null)
-					thread.start();
-				else
-					ToastMessage(context, R.string.msg_noaccess_delete);
-				dialog.dismiss();
-			}
-		})
-		.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		})
-		.create().show();
-	}
+
+
+
 	
 
 	
@@ -274,7 +186,7 @@ public class UIHelper {
 //	}
 	
 	/**
-	 * ��ʾϵͳ���ý���
+	 * 显示系统设置界面
 	 * @param context
 	 */
 	public static void showSetting(Context context)
@@ -304,7 +216,7 @@ public class UIHelper {
 
 	
 	/**
-	 * ������ʾ�û�ͷ��
+	 * 加载显示用户头像
 	 * @param imgFace
 	 * @param faceURL
 	 */
@@ -314,23 +226,23 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ������ʾͼƬ
+	 * 加载显示图片
 	 * @param imgFace
 	 * @param faceURL
 	 * @param errMsg
 	 */
 	public static void showLoadImage(final ImageView imgView,final String imgURL,final String errMsg)
 	{
-		//��ȡ����ͼƬ
+		//读取本地图片
 		if(StringUtils.isEmpty(imgURL) || imgURL.endsWith("portrait.gif")){
 			Bitmap bmp = BitmapFactory.decodeResource(imgView.getResources(), R.drawable.widget_dface);
 			imgView.setImageBitmap(bmp);
 			return;
 		}
 		
-		//�Ƿ��л���ͼƬ
+		//是否有缓存图片
     	final String filename = FileUtils.getFileName(imgURL);
-    	//Environment.getExternalStorageDirectory();����/sdcard
+    	//Environment.getExternalStorageDirectory();返回/sdcard
     	String filepath = imgView.getContext().getFilesDir() + File.separator + filename;
 		File file = new File(filepath);
 		if(file.exists()){
@@ -339,7 +251,7 @@ public class UIHelper {
 			return;
     	}
 		
-		//�������ȡ&д��ͼƬ����
+		//从网络获取&写入图片缓存
 		String _errMsg = imgView.getContext().getString(R.string.msg_load_image_fail);
 		if(!StringUtils.isEmpty(errMsg))
 			_errMsg = errMsg;
@@ -349,7 +261,7 @@ public class UIHelper {
 				if(msg.what==1 && msg.obj != null){
 					imgView.setImageBitmap((Bitmap)msg.obj);
 					try {
-                    	//дͼƬ����
+                    	//写图片缓存
 						ImageUtils.saveImage(imgView.getContext(), filename, (Bitmap)msg.obj);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -377,7 +289,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * url��ת
+	 * url跳转
 	 * @param context
 	 * @param url
 	 */
@@ -408,7 +320,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * �������
+	 * 打开浏览器
 	 * @param context
 	 * @param url
 	 */
@@ -419,12 +331,12 @@ public class UIHelper {
 			context.startActivity(it);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ToastMessage(context, "�޷��������ҳ", 500);
+			ToastMessage(context, "无法浏览此网页", 500);
 		} 
 	}
 		
 	/**
-	 * ��ȡwebviewClient����
+	 * 获取webviewClient对象
 	 * @return
 	 */
 	public static WebViewClient getWebViewClient(){
@@ -438,7 +350,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ��ȡTextWatcher����
+	 * 获取TextWatcher对象
 	 * @param context
 	 * @param tmlKey
 	 * @return
@@ -446,7 +358,7 @@ public class UIHelper {
 	public static TextWatcher getTextWatcher(final Activity context, final String temlKey) {
 		return new TextWatcher() {		
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				//���浱ǰEditText���ڱ༭������
+				//保存当前EditText正在编辑的内容
 				((AppContext)context.getApplication()).setProperty(temlKey, s.toString());
 			}		
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}		
@@ -498,7 +410,7 @@ public class UIHelper {
 //	}
 	
 	/**
-	 * �������
+	 * 清除文字
 	 * @param cont
 	 * @param editer
 	 */
@@ -509,7 +421,7 @@ public class UIHelper {
 		builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//�������
+				//清除文字
 				editer.setText("");
 				numwords.setText("160");
 			}
@@ -541,21 +453,21 @@ public class UIHelper {
 
 	
 	/**
-	 * ��϶�̬�Ļظ��ı�
+	 * 组合动态的回复文本
 	 * @param name
 	 * @param body
 	 * @return
 	 */
 	public static SpannableString parseActiveReply(String name,String body){
-		SpannableString sp = new SpannableString(name+"��"+body);
-		//�����û�������Ӵ֡����� 
+		SpannableString sp = new SpannableString(name+"："+body);
+		//设置用户名字体加粗、高亮 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 0, name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * �����Ϣ�ı�
+	 * 组合消息文本
 	 * @param name
 	 * @param body
 	 * @return
@@ -565,35 +477,35 @@ public class UIHelper {
 		int start = 0;
 		int end = 0;
 		if(StringUtils.isEmpty(action)){
-			sp = new SpannableString(name + "��" + body);
+			sp = new SpannableString(name + "：" + body);
 			end = name.length();
 		}else{
-			sp = new SpannableString(action + name + "��" + body);
+			sp = new SpannableString(action + name + "：" + body);
 			start = action.length();
 			end = start + name.length();
 		}
-		//�����û�������Ӵ֡����� 
+		//设置用户名字体加粗、高亮 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * ��ϻظ������ı�
+	 * 组合回复引用文本
 	 * @param name
 	 * @param body
 	 * @return
 	 */
 	public static SpannableString parseQuoteSpan(String name,String body){
-		SpannableString sp = new SpannableString("�ظ���"+name+"\n"+body);
-		//�����û�������Ӵ֡����� 
+		SpannableString sp = new SpannableString("回复："+name+"\n"+body);
+		//设置用户名字体加粗、高亮 
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 3, 3+name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 3, 3+name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
 	}
 	
 	/**
-	 * ����Toast��Ϣ
+	 * 弹出Toast消息
 	 * @param msg
 	 */
 	public static void ToastMessage(Context cont,String msg)
@@ -610,7 +522,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ������ؼ����¼�
+	 * 点击返回监听事件
 	 * @param activity
 	 * @return
 	 */
@@ -621,7 +533,7 @@ public class UIHelper {
 				activity.finish();
 			}
 		};
-	}	
+	}
 	
 	/**
 	 * ��ʾ��������
@@ -651,8 +563,9 @@ public class UIHelper {
 //		}
 //	}
 	
+	
 	/**
-	 * �������ʾ��¼��ǳ�
+	 * 快捷栏显示登录与登出
 	 * @param activity
 	 * @param qa
 	 */
@@ -668,7 +581,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ������Ƿ���ʾ����ͼƬ
+	 * 快捷栏是否显示文章图片
 	 * @param activity
 	 * @param qa
 	 */
@@ -684,7 +597,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * �û���¼��ע��
+	 * 用户登录或注销
 	 * @param activity
 	 */
 	public static void loginOrLogout(Activity activity)
@@ -692,14 +605,14 @@ public class UIHelper {
 		AppContext ac = (AppContext)activity.getApplication();
 		if(ac.isLogin()){
 			ac.Logout();
-			ToastMessage(activity, "���˳���¼");
+			ToastMessage(activity, "已退出登录");
 		}else{
 			showLoginDialog(activity);
 		}
 	}
 	
 	/**
-	 * �����Ƿ����ͼƬ��ʾ
+	 * 文章是否加载图片显示
 	 * @param activity
 	 */
 	public static void changeSettingIsLoadImage(Activity activity)
@@ -707,10 +620,10 @@ public class UIHelper {
 		AppContext ac = (AppContext)activity.getApplication();
 		if(ac.isLoadImage()){
 			ac.setConfigLoadimage(false);
-			ToastMessage(activity, "���������²�����ͼƬ");
+			ToastMessage(activity, "已设置文章不加载图片");
 		}else{
 			ac.setConfigLoadimage(true);
-			ToastMessage(activity, "���������¼���ͼƬ");
+			ToastMessage(activity, "已设置文章加载图片");
 		}
 	}
 	public static void changeSettingIsLoadImage(Activity activity,boolean b)
@@ -720,7 +633,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ���app����
+	 * 清除app缓存
 	 * @param activity
 	 */
 	public static void clearAppCache(Activity activity)
@@ -729,9 +642,9 @@ public class UIHelper {
 		final Handler handler = new Handler(){
 			public void handleMessage(Message msg) {
 				if(msg.what==1){
-					ToastMessage(ac, "�������ɹ�");
+					ToastMessage(ac, "缓存清除成功");
 				}else{
-					ToastMessage(ac, "�������ʧ��");
+					ToastMessage(ac, "缓存清除失败");
 				}
 			}
 		};
@@ -751,7 +664,7 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ����App�쳣��������
+	 * 发送App异常崩溃报告
 	 * @param cont
 	 * @param crashReport
 	 */
@@ -764,22 +677,22 @@ public class UIHelper {
 		builder.setPositiveButton(R.string.submit_report, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//�����쳣����
+				//发送异常报告
 				Intent i = new Intent(Intent.ACTION_SEND);
-				//i.setType("text/plain"); //ģ����
-				i.setType("message/rfc822") ; //���
-				i.putExtra(Intent.EXTRA_EMAIL, new String[]{"jxsmallmouse@163.com"});
-				i.putExtra(Intent.EXTRA_SUBJECT,"��Դ�й�Android�ͻ��� - ���󱨸�");
+				//i.setType("text/plain"); //模拟器
+				i.setType("message/rfc822") ; //真机
+				i.putExtra(Intent.EXTRA_EMAIL, new String[]{"qg1019@gmail.com"});
+				i.putExtra(Intent.EXTRA_SUBJECT,"宣酒特贡Android客户端 - 错误报告");
 				i.putExtra(Intent.EXTRA_TEXT,crashReport);
-				cont.startActivity(Intent.createChooser(i, "���ʹ��󱨸�"));
-				//�˳�
+				cont.startActivity(Intent.createChooser(i, "发送错误报告"));
+				//退出
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});
 		builder.setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//�˳�
+				//退出
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});
@@ -787,18 +700,18 @@ public class UIHelper {
 	}
 	
 	/**
-	 * �˳�����
+	 * 退出程序
 	 * @param cont
 	 */
 	public static void Exit(final Context cont)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setIcon(R.drawable.icon);
 		builder.setTitle(R.string.app_menu_surelogout);
 		builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				//�˳�
+				//退出
 				AppManager.getAppManager().AppExit(cont);
 			}
 		});
