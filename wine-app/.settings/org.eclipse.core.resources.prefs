@@ -4,6 +4,7 @@ encoding//src/com/gm/wine/app/AppContext.java=UTF-8
 encoding//src/com/gm/wine/app/AppException.java=UTF-8
 encoding//src/com/gm/wine/app/AppManager.java=UTF-8
 encoding//src/com/gm/wine/app/AppStart.java=UTF-8
+encoding//src/com/gm/wine/app/adapter/ListViewMessageAdapter.java=UTF-8
 encoding//src/com/gm/wine/app/bean/URLs.java=UTF-8
 encoding//src/com/gm/wine/app/ui/Main.java=UTF-8
 encoding/<project>=UTF-8

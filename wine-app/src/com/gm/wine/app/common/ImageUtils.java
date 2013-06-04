@@ -10,25 +10,23 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -37,68 +35,74 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 
-/** 
- * Í¼Æ¬²Ù×÷¹¤¾ß°ü
+/**
+ * å›¾ç‰‡æ“ä½œå·¥å…·åŒ…
+ * 
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
  */
-public class ImageUtils{
-	
-    public final static String SDCARD_MNT = "/mnt/sdcard";
-    public final static String SDCARD = "/sdcard";
-    
-    /** ÇëÇóÏà²á */
-    public static final int REQUEST_CODE_GETIMAGE_BYSDCARD = 0;
-    /** ÇëÇóÏà»ú */
-    public static final int REQUEST_CODE_GETIMAGE_BYCAMERA = 1;
-    /** ÇëÇó²Ã¼ô */
-    public static final int REQUEST_CODE_GETIMAGE_BYCROP = 2;
-    
+public class ImageUtils {
+
+	public final static String SDCARD_MNT = "/mnt/sdcard";
+	public final static String SDCARD = "/sdcard";
+
+	/** è¯·æ±‚ç›¸å†Œ */
+	public static final int REQUEST_CODE_GETIMAGE_BYSDCARD = 0;
+	/** è¯·æ±‚ç›¸æœº */
+	public static final int REQUEST_CODE_GETIMAGE_BYCAMERA = 1;
+	/** è¯·æ±‚è£å‰ª */
+	public static final int REQUEST_CODE_GETIMAGE_BYCROP = 2;
+
 	/**
-	 * Ğ´Í¼Æ¬ÎÄ¼ş
-	 * ÔÚAndroidÏµÍ³ÖĞ£¬ÎÄ¼ş±£´æÔÚ /data/data/PACKAGE_NAME/files Ä¿Â¼ÏÂ
-	 * @throws IOException 
+	 * å†™å›¾ç‰‡æ–‡ä»¶ åœ¨Androidç³»ç»Ÿä¸­ï¼Œæ–‡ä»¶ä¿å­˜åœ¨ /data/data/PACKAGE_NAME/files ç›®å½•ä¸‹
+	 * 
+	 * @throws IOException
 	 */
-	public static void saveImage(Context context, String fileName, Bitmap bitmap) throws IOException 
-	{ 
+	public static void saveImage(Context context, String fileName, Bitmap bitmap)
+			throws IOException {
 		saveImage(context, fileName, bitmap, 100);
 	}
-	public static void saveImage(Context context, String fileName, Bitmap bitmap, int quality) throws IOException 
-	{ 
-		if(bitmap==null || fileName==null || context==null)	return;		
+	public static void saveImage(Context context, String fileName,
+			Bitmap bitmap, int quality) throws IOException {
+		if (bitmap == null || fileName == null || context == null) {
+			return;
+		}
 
-		FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+		FileOutputStream fos = context.openFileOutput(fileName,
+				Context.MODE_PRIVATE);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.JPEG, quality, stream);
 		byte[] bytes = stream.toByteArray();
-		fos.write(bytes); 			
+		fos.write(bytes);
 		fos.close();
 	}
-	
+
 	/**
-	 * Ğ´Í¼Æ¬ÎÄ¼şµ½SD¿¨
-	 * @throws IOException 
+	 * å†™å›¾ç‰‡æ–‡ä»¶åˆ°SDå¡
+	 * 
+	 * @throws IOException
 	 */
-	public static void saveImageToSD(String filePath, Bitmap bitmap, int quality) throws IOException
-	{
-		if(bitmap != null) {
+	public static void saveImageToSD(String filePath, Bitmap bitmap, int quality)
+			throws IOException {
+		if (bitmap != null) {
 			FileOutputStream fos = new FileOutputStream(filePath);
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			bitmap.compress(CompressFormat.JPEG, quality, stream);
 			byte[] bytes = stream.toByteArray();
-			fos.write(bytes); 			
+			fos.write(bytes);
 			fos.close();
 		}
 	}
-    
+
 	/**
-	 * »ñÈ¡bitmap
+	 * è·å–bitmap
+	 * 
 	 * @param context
 	 * @param fileName
 	 * @return
 	 */
-	public static Bitmap getBitmap(Context context,String fileName) {
+	public static Bitmap getBitmap(Context context, String fileName) {
 		FileInputStream fis = null;
 		Bitmap bitmap = null;
 		try {
@@ -108,520 +112,551 @@ public class ImageUtils{
 			e.printStackTrace();
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 		return bitmap;
 	}
 	/**
-	 * »ñÈ¡bitmap
+	 * è·å–bitmap
+	 * 
 	 * @param filePath
 	 * @return
 	 */
 	public static Bitmap getBitmapByPath(String filePath) {
 		return getBitmapByPath(filePath, null);
 	}
-	public static Bitmap getBitmapByPath(String filePath, BitmapFactory.Options opts) {
+	public static Bitmap getBitmapByPath(String filePath,
+			BitmapFactory.Options opts) {
 		FileInputStream fis = null;
-		Bitmap bitmap =null; 
-		try { 
+		Bitmap bitmap = null;
+		try {
 			File file = new File(filePath);
 			fis = new FileInputStream(file);
-			bitmap = BitmapFactory.decodeStream(fis,null,opts);
-		} catch (FileNotFoundException e) {  
+			bitmap = BitmapFactory.decodeStream(fis, null, opts);
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 		return bitmap;
 	}
 	/**
-	 * »ñÈ¡bitmap
+	 * è·å–bitmap
+	 * 
 	 * @param file
 	 * @return
 	 */
 	public static Bitmap getBitmapByFile(File file) {
 		FileInputStream fis = null;
-		Bitmap bitmap =null; 
-		try { 
+		Bitmap bitmap = null;
+		try {
 			fis = new FileInputStream(file);
 			bitmap = BitmapFactory.decodeStream(fis);
-		} catch (FileNotFoundException e) {  
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			try {
 				fis.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 		}
 		return bitmap;
 	}
-	
+
 	/**
-	 * Ê¹ÓÃµ±Ç°Ê±¼ä´ÁÆ´½ÓÒ»¸öÎ¨Ò»µÄÎÄ¼şÃû
+	 * ä½¿ç”¨å½“å‰æ—¶é—´æˆ³æ‹¼æ¥ä¸€ä¸ªå”¯ä¸€çš„æ–‡ä»¶å
+	 * 
 	 * @param format
 	 * @return
 	 */
-    public static String getTempFileName() 
-    {
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SS");
-    	String fileName = format.format( new Timestamp( System.currentTimeMillis()) );
-    	return fileName;
-    }
-    
-    /**
-     * »ñÈ¡ÕÕÏà»úÊ¹ÓÃµÄÄ¿Â¼
-     * @return
-     */
-    public static String getCamerPath()
-    {
-    	return Environment.getExternalStorageDirectory() + File.separator +  "FounderNews" + File.separator;
-    }
-    
+	public static String getTempFileName() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SS");
+		String fileName = format.format(new Timestamp(System
+				.currentTimeMillis()));
+		return fileName;
+	}
+
 	/**
-	 * ÅĞ¶Ïµ±Ç°UrlÊÇ·ñ±ê×¼µÄcontent://ÑùÊ½£¬Èç¹û²»ÊÇ£¬Ôò·µ»Ø¾ø¶ÔÂ·¾¶
+	 * è·å–ç…§ç›¸æœºä½¿ç”¨çš„ç›®å½•
+	 * 
+	 * @return
+	 */
+	public static String getCamerPath() {
+		return Environment.getExternalStorageDirectory() + File.separator
+				+ "FounderNews" + File.separator;
+	}
+
+	/**
+	 * åˆ¤æ–­å½“å‰Urlæ˜¯å¦æ ‡å‡†çš„content://æ ·å¼ï¼Œå¦‚æœä¸æ˜¯ï¼Œåˆ™è¿”å›ç»å¯¹è·¯å¾„
+	 * 
 	 * @param uri
 	 * @return
 	 */
-	public static String getAbsolutePathFromNoStandardUri(Uri mUri)
-	{	
+	public static String getAbsolutePathFromNoStandardUri(Uri mUri) {
 		String filePath = null;
-		
+
 		String mUriString = mUri.toString();
 		mUriString = Uri.decode(mUriString);
-		
+
 		String pre1 = "file://" + SDCARD + File.separator;
 		String pre2 = "file://" + SDCARD_MNT + File.separator;
-		
-		if( mUriString.startsWith(pre1) )
-		{    
-			filePath = Environment.getExternalStorageDirectory().getPath() + File.separator + mUriString.substring( pre1.length() );
-		}
-		else if( mUriString.startsWith(pre2) )
-		{
-			filePath = Environment.getExternalStorageDirectory().getPath() + File.separator + mUriString.substring( pre2.length() );
+
+		if (mUriString.startsWith(pre1)) {
+			filePath = Environment.getExternalStorageDirectory().getPath()
+					+ File.separator + mUriString.substring(pre1.length());
+		} else if (mUriString.startsWith(pre2)) {
+			filePath = Environment.getExternalStorageDirectory().getPath()
+					+ File.separator + mUriString.substring(pre2.length());
 		}
 		return filePath;
 	}
-	
-	 /**
-     * Í¨¹ıuri»ñÈ¡ÎÄ¼şµÄ¾ø¶ÔÂ·¾¶
-     * @param uri
-     * @return
-     */
-	public static String getAbsoluteImagePath(Activity context,Uri uri) 
-    {
+
+	/**
+	 * é€šè¿‡uriè·å–æ–‡ä»¶çš„ç»å¯¹è·¯å¾„
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	public static String getAbsoluteImagePath(Activity context, Uri uri) {
 		String imagePath = "";
-        String [] proj={MediaStore.Images.Media.DATA};
-        Cursor cursor = context.managedQuery( uri,
-                        proj, 		// Which columns to return
-                        null,       // WHERE clause; which rows to return (all rows)
-                        null,       // WHERE clause selection arguments (none)
-                        null); 		// Order-by clause (ascending by name)
-        
-        if(cursor!=null)
-        {
-        	int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        	if(  cursor.getCount()>0 && cursor.moveToFirst() )
-            {
-            	imagePath = cursor.getString(column_index);
-            }
-        }
-        
-        return imagePath;
-    }
-	
-	/**
-	 * »ñÈ¡Í¼Æ¬ËõÂÔÍ¼
-	 * Ö»ÓĞAndroid2.1ÒÔÉÏ°æ±¾Ö§³Ö
-	 * @param imgName
-	 * @param kind   MediaStore.Images.Thumbnails.MICRO_KIND
-	 * @return
-	 */
-	public static Bitmap loadImgThumbnail(Activity context, String imgName, int kind) 
-	{
-		Bitmap bitmap = null;
-		
-        String[] proj = { MediaStore.Images.Media._ID,
-                        MediaStore.Images.Media.DISPLAY_NAME };
-        
-        Cursor cursor = context.managedQuery(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
-                        MediaStore.Images.Media.DISPLAY_NAME + "='" + imgName +"'", null, null);
-       
-        if ( cursor!=null && cursor.getCount()>0 && cursor.moveToFirst() ) 
-        {
-        	ContentResolver crThumb = context.getContentResolver();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 1;
-            bitmap = MethodsCompat.getThumbnail(crThumb, cursor.getInt(0), kind, options);
-        } 
-        return bitmap;
+		String[] proj = {MediaStore.Images.Media.DATA};
+		Cursor cursor = context.managedQuery(uri, proj, // Which columns to
+														// return
+				null, // WHERE clause; which rows to return (all rows)
+				null, // WHERE clause selection arguments (none)
+				null); // Order-by clause (ascending by name)
+
+		if (cursor != null) {
+			int column_index = cursor
+					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+			if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+				imagePath = cursor.getString(column_index);
+			}
+		}
+
+		return imagePath;
 	}
-	
-    public static Bitmap loadImgThumbnail(String filePath, int w, int h) {
-    	Bitmap bitmap = getBitmapByPath(filePath);
-    	return zoomBitmap(bitmap, w, h);
-    }
-	
+
 	/**
-	 * »ñÈ¡SD¿¨ÖĞ×îĞÂÍ¼Æ¬Â·¾¶
+	 * è·å–å›¾ç‰‡ç¼©ç•¥å›¾ åªæœ‰Android2.1ä»¥ä¸Šç‰ˆæœ¬æ”¯æŒ
+	 * 
+	 * @param imgName
+	 * @param kind
+	 *            MediaStore.Images.Thumbnails.MICRO_KIND
 	 * @return
 	 */
-	public static String getLatestImage(Activity context)
-	{
-		String latestImage = null;
-		String[] items = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA }; 
+	public static Bitmap loadImgThumbnail(Activity context, String imgName,
+			int kind) {
+		Bitmap bitmap = null;
+
+		String[] proj = {MediaStore.Images.Media._ID,
+				MediaStore.Images.Media.DISPLAY_NAME};
+
 		Cursor cursor = context.managedQuery(
-		                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-		                                items, 
-		                                null,
-		                                null, 
-		                                MediaStore.Images.Media._ID + " desc");
-		
-		if( cursor != null && cursor.getCount()>0 )
-		{
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
+				MediaStore.Images.Media.DISPLAY_NAME + "='" + imgName + "'",
+				null, null);
+
+		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+			ContentResolver crThumb = context.getContentResolver();
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 1;
+			bitmap = MethodsCompat.getThumbnail(crThumb, cursor.getInt(0),
+					kind, options);
+		}
+		return bitmap;
+	}
+
+	public static Bitmap loadImgThumbnail(String filePath, int w, int h) {
+		Bitmap bitmap = getBitmapByPath(filePath);
+		return zoomBitmap(bitmap, w, h);
+	}
+
+	/**
+	 * è·å–SDå¡ä¸­æœ€æ–°å›¾ç‰‡è·¯å¾„
+	 * 
+	 * @return
+	 */
+	public static String getLatestImage(Activity context) {
+		String latestImage = null;
+		String[] items = {MediaStore.Images.Media._ID,
+				MediaStore.Images.Media.DATA};
+		Cursor cursor = context.managedQuery(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, items, null,
+				null, MediaStore.Images.Media._ID + " desc");
+
+		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			for( cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext() )
-			{
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor
+					.moveToNext()) {
 				latestImage = cursor.getString(1);
 				break;
 			}
 		}
-		
-	    return latestImage;
+
+		return latestImage;
 	}
-	
+
 	/**
-	 * ¼ÆËãËõ·ÅÍ¼Æ¬µÄ¿í¸ß
+	 * è®¡ç®—ç¼©æ”¾å›¾ç‰‡çš„å®½é«˜
+	 * 
 	 * @param img_size
 	 * @param square_size
 	 * @return
 	 */
 	public static int[] scaleImageSize(int[] img_size, int square_size) {
-		if(img_size[0] <= square_size && img_size[1] <= square_size)
+		if (img_size[0] <= square_size && img_size[1] <= square_size) {
 			return img_size;
-		double ratio = square_size / (double)Math.max(img_size[0], img_size[1]);
-		return new int[]{(int)(img_size[0] * ratio),(int)(img_size[1] * ratio)};
+		}
+		double ratio = square_size
+				/ (double) Math.max(img_size[0], img_size[1]);
+		return new int[]{(int) (img_size[0] * ratio),
+				(int) (img_size[1] * ratio)};
 	}
-	
+
 	/**
-	 * ´´½¨ËõÂÔÍ¼
+	 * åˆ›å»ºç¼©ç•¥å›¾
+	 * 
 	 * @param context
-	 * @param largeImagePath Ô­Ê¼´óÍ¼Â·¾¶
-	 * @param thumbfilePath Êä³öËõÂÔÍ¼Â·¾¶
-	 * @param square_size Êä³öÍ¼Æ¬¿í¶È
-	 * @param quality Êä³öÍ¼Æ¬ÖÊÁ¿
+	 * @param largeImagePath
+	 *            åŸå§‹å¤§å›¾è·¯å¾„
+	 * @param thumbfilePath
+	 *            è¾“å‡ºç¼©ç•¥å›¾è·¯å¾„
+	 * @param square_size
+	 *            è¾“å‡ºå›¾ç‰‡å®½åº¦
+	 * @param quality
+	 *            è¾“å‡ºå›¾ç‰‡è´¨é‡
 	 * @throws IOException
 	 */
-	public static void createImageThumbnail(Context context, String largeImagePath, String thumbfilePath, int square_size, int quality) throws IOException
-	{
+	public static void createImageThumbnail(Context context,
+			String largeImagePath, String thumbfilePath, int square_size,
+			int quality) throws IOException {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inSampleSize = 1;
-		//Ô­Ê¼Í¼Æ¬bitmap
+		// åŸå§‹å›¾ç‰‡bitmap
 		Bitmap cur_bitmap = getBitmapByPath(largeImagePath, opts);
-		
-		if(cur_bitmap == null) return;
-		
-		//Ô­Ê¼Í¼Æ¬µÄ¸ß¿í
-		int[] cur_img_size = new int[]{cur_bitmap.getWidth(),cur_bitmap.getHeight()};
-		//¼ÆËãÔ­Ê¼Í¼Æ¬Ëõ·ÅºóµÄ¿í¸ß
+
+		if (cur_bitmap == null) {
+			return;
+		}
+
+		// åŸå§‹å›¾ç‰‡çš„é«˜å®½
+		int[] cur_img_size = new int[]{cur_bitmap.getWidth(),
+				cur_bitmap.getHeight()};
+		// è®¡ç®—åŸå§‹å›¾ç‰‡ç¼©æ”¾åçš„å®½é«˜
 		int[] new_img_size = scaleImageSize(cur_img_size, square_size);
-		//Éú³ÉËõ·ÅºóµÄbitmap
-		Bitmap thb_bitmap = zoomBitmap(cur_bitmap, new_img_size[0], new_img_size[1]);
-		//Éú³ÉËõ·ÅºóµÄÍ¼Æ¬ÎÄ¼ş
+		// ç”Ÿæˆç¼©æ”¾åçš„bitmap
+		Bitmap thb_bitmap = zoomBitmap(cur_bitmap, new_img_size[0],
+				new_img_size[1]);
+		// ç”Ÿæˆç¼©æ”¾åçš„å›¾ç‰‡æ–‡ä»¶
 		saveImageToSD(thumbfilePath, thb_bitmap, quality);
 	}
-	
-    /**
-     * ·Å´óËõĞ¡Í¼Æ¬
-     * @param bitmap
-     * @param w
-     * @param h
-     * @return
-     */
-    public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
-    	Bitmap newbmp = null;
-    	if(bitmap != null) {
-	        int width = bitmap.getWidth();
-	        int height = bitmap.getHeight();
-	        Matrix matrix = new Matrix();
-	        float scaleWidht = ((float) w / width);
-	        float scaleHeight = ((float) h / height);
-	        matrix.postScale(scaleWidht, scaleHeight);
-	        newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-    	}
-        return newbmp;
-    }
 
-    public static Bitmap scaleBitmap(Bitmap bitmap) {
-        //»ñÈ¡Õâ¸öÍ¼Æ¬µÄ¿íºÍ¸ß   
-        int width = bitmap.getWidth();   
-        int height = bitmap.getHeight();    
-        //¶¨ÒåÔ¤×ª»»³ÉµÄÍ¼Æ¬µÄ¿í¶ÈºÍ¸ß¶È   
-        int newWidth = 200;   
-        int newHeight = 200;     
-        //¼ÆËãËõ·ÅÂÊ£¬ĞÂ³ß´ç³ıÔ­Ê¼³ß´ç   
-        float scaleWidth = ((float) newWidth) / width;   
-        float scaleHeight = ((float) newHeight) / height;    
-        //´´½¨²Ù×÷Í¼Æ¬ÓÃµÄmatrix¶ÔÏó   
-        Matrix matrix = new Matrix();    
-        //Ëõ·ÅÍ¼Æ¬¶¯×÷   
-        matrix.postScale(scaleWidth, scaleHeight);  
-        //Ğı×ªÍ¼Æ¬ ¶¯×÷   
-        //matrix.postRotate(45);   
-        //´´½¨ĞÂµÄÍ¼Æ¬   
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        return resizedBitmap;
-    }
-    
-    /**
-     * (Ëõ·Å)ÖØ»æÍ¼Æ¬ 
-     * @param context Activity
-     * @param bitmap
-     * @return
-     */
-    public static Bitmap reDrawBitMap(Activity context,Bitmap bitmap){ 
-    	DisplayMetrics dm = new DisplayMetrics(); 
-    	context.getWindowManager().getDefaultDisplay().getMetrics(dm); 
-	    int rHeight = dm.heightPixels; 
-	    int rWidth = dm.widthPixels; 
-		//float rHeight=dm.heightPixels/dm.density+0.5f; 
-		//float rWidth=dm.widthPixels/dm.density+0.5f; 
-		//int height=bitmap.getScaledHeight(dm); 
-		//int width = bitmap.getScaledWidth(dm); 
-	    int height=bitmap.getHeight(); 
-	    int width = bitmap.getWidth(); 
-	    float zoomScale; 
-	    /**·½Ê½1**/
-//	    if(rWidth/rHeight>width/height){//ÒÔ¸ßÎª×¼ 
-//	    	zoomScale=((float) rHeight) / height; 
-//	    }else{ 
-//	    	//if(rWidth/rHeight<width/height)//ÒÔ¿íÎª×¼ 
-//	    	zoomScale=((float) rWidth) / width; 
-//	    } 
-	    /**·½Ê½2**/
-//	    if(width*1.5 >= height) {//ÒÔ¿íÎª×¼
-//	    	if(width >= rWidth)
-//	    		zoomScale = ((float) rWidth) / width;
-//	    	else
-//	    		zoomScale = 1.0f;
-//	    }else {//ÒÔ¸ßÎª×¼
-//	    	if(height >= rHeight)
-//	    		zoomScale = ((float) rHeight) / height;
-//	    	else
-//	    		zoomScale = 1.0f;
-//	    }
-	    /**·½Ê½3**/
-	    if(width >= rWidth)
-    		zoomScale = ((float) rWidth) / width;
-    	else
-    		zoomScale = 1.0f;
-	    //´´½¨²Ù×÷Í¼Æ¬ÓÃµÄmatrix¶ÔÏó  
-	    Matrix matrix = new Matrix();  
-	    //Ëõ·ÅÍ¼Æ¬¶¯×÷  
-	    matrix.postScale(zoomScale, zoomScale);  
-	    Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);  
-	    return resizedBitmap; 
-    }  
-    
-    /**
-     * ½«Drawable×ª»¯ÎªBitmap
-     * @param drawable
-     * @return
-     */
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        int width = drawable.getIntrinsicWidth();
-        int height = drawable.getIntrinsicHeight();
-        Bitmap bitmap = Bitmap.createBitmap(width, height, drawable
-                .getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, width, height);
-        drawable.draw(canvas);
-        return bitmap;
+	/**
+	 * æ”¾å¤§ç¼©å°å›¾ç‰‡
+	 * 
+	 * @param bitmap
+	 * @param w
+	 * @param h
+	 * @return
+	 */
+	public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
+		Bitmap newbmp = null;
+		if (bitmap != null) {
+			int width = bitmap.getWidth();
+			int height = bitmap.getHeight();
+			Matrix matrix = new Matrix();
+			float scaleWidht = ((float) w / width);
+			float scaleHeight = ((float) h / height);
+			matrix.postScale(scaleWidht, scaleHeight);
+			newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix,
+					true);
+		}
+		return newbmp;
+	}
 
-    }
+	public static Bitmap scaleBitmap(Bitmap bitmap) {
+		// è·å–è¿™ä¸ªå›¾ç‰‡çš„å®½å’Œé«˜
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		// å®šä¹‰é¢„è½¬æ¢æˆçš„å›¾ç‰‡çš„å®½åº¦å’Œé«˜åº¦
+		int newWidth = 200;
+		int newHeight = 200;
+		// è®¡ç®—ç¼©æ”¾ç‡ï¼Œæ–°å°ºå¯¸é™¤åŸå§‹å°ºå¯¸
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		// åˆ›å»ºæ“ä½œå›¾ç‰‡ç”¨çš„matrixå¯¹è±¡
+		Matrix matrix = new Matrix();
+		// ç¼©æ”¾å›¾ç‰‡åŠ¨ä½œ
+		matrix.postScale(scaleWidth, scaleHeight);
+		// æ—‹è½¬å›¾ç‰‡ åŠ¨ä½œ
+		// matrix.postRotate(45);
+		// åˆ›å»ºæ–°çš„å›¾ç‰‡
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height,
+				matrix, true);
+		return resizedBitmap;
+	}
 
-    /**
-     * »ñµÃÔ²½ÇÍ¼Æ¬µÄ·½·¨
-     * @param bitmap
-     * @param roundPx Ò»°ãÉè³É14
-     * @return
-     */
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
+	/**
+	 * (ç¼©æ”¾)é‡ç»˜å›¾ç‰‡
+	 * 
+	 * @param context
+	 *            Activity
+	 * @param bitmap
+	 * @return
+	 */
+	public static Bitmap reDrawBitMap(Activity context, Bitmap bitmap) {
+		DisplayMetrics dm = new DisplayMetrics();
+		context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int rWidth = dm.widthPixels;
+		bitmap.getHeight();
+		int width = bitmap.getWidth();
+		float zoomScale;
+		/** æ–¹å¼1 **/
+		// if(rWidth/rHeight>width/height){//ä»¥é«˜ä¸ºå‡†
+		// zoomScale=((float) rHeight) / height;
+		// }else{
+		// //if(rWidth/rHeight<width/height)//ä»¥å®½ä¸ºå‡†
+		// zoomScale=((float) rWidth) / width;
+		// }
+		/** æ–¹å¼2 **/
+		// if(width*1.5 >= height) {//ä»¥å®½ä¸ºå‡†
+		// if(width >= rWidth)
+		// zoomScale = ((float) rWidth) / width;
+		// else
+		// zoomScale = 1.0f;
+		// }else {//ä»¥é«˜ä¸ºå‡†
+		// if(height >= rHeight)
+		// zoomScale = ((float) rHeight) / height;
+		// else
+		// zoomScale = 1.0f;
+		// }
+		/** æ–¹å¼3 **/
+		if (width >= rWidth) {
+			zoomScale = ((float) rWidth) / width;
+		} else {
+			zoomScale = 1.0f;
+		}
+		// åˆ›å»ºæ“ä½œå›¾ç‰‡ç”¨çš„matrixå¯¹è±¡
+		Matrix matrix = new Matrix();
+		// ç¼©æ”¾å›¾ç‰‡åŠ¨ä½œ
+		matrix.postScale(zoomScale, zoomScale);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		return resizedBitmap;
+	}
 
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
+	/**
+	 * å°†Drawableè½¬åŒ–ä¸ºBitmap
+	 * 
+	 * @param drawable
+	 * @return
+	 */
+	public static Bitmap drawableToBitmap(Drawable drawable) {
+		int width = drawable.getIntrinsicWidth();
+		int height = drawable.getIntrinsicHeight();
+		Bitmap bitmap = Bitmap.createBitmap(width, height, drawable
+				.getOpacity() != PixelFormat.OPAQUE
+				? Bitmap.Config.ARGB_8888
+				: Bitmap.Config.RGB_565);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, width, height);
+		drawable.draw(canvas);
+		return bitmap;
 
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
+	}
 
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+	/**
+	 * è·å¾—åœ†è§’å›¾ç‰‡çš„æ–¹æ³•
+	 * 
+	 * @param bitmap
+	 * @param roundPx
+	 *            ä¸€èˆ¬è®¾æˆ14
+	 * @return
+	 */
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPx) {
 
-        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
 
-        return output;
-    }
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF = new RectF(rect);
 
-    /**
-     * »ñµÃ´øµ¹Ó°µÄÍ¼Æ¬·½·¨
-     * @param bitmap
-     * @return
-     */
-    public static Bitmap createReflectionImageWithOrigin(Bitmap bitmap) {
-        final int reflectionGap = 4;
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
 
-        Matrix matrix = new Matrix();
-        matrix.preScale(1, -1);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
 
-        Bitmap reflectionImage = Bitmap.createBitmap(bitmap, 0, height / 2,
-                width, height / 2, matrix, false);
+		return output;
+	}
 
-        Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
-                (height + height / 2), Config.ARGB_8888);
+	/**
+	 * è·å¾—å¸¦å€’å½±çš„å›¾ç‰‡æ–¹æ³•
+	 * 
+	 * @param bitmap
+	 * @return
+	 */
+	public static Bitmap createReflectionImageWithOrigin(Bitmap bitmap) {
+		final int reflectionGap = 4;
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
 
-        Canvas canvas = new Canvas(bitmapWithReflection);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        Paint deafalutPaint = new Paint();
-        canvas.drawRect(0, height, width, height + reflectionGap, deafalutPaint);
+		Matrix matrix = new Matrix();
+		matrix.preScale(1, -1);
 
-        canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
+		Bitmap reflectionImage = Bitmap.createBitmap(bitmap, 0, height / 2,
+				width, height / 2, matrix, false);
 
-        Paint paint = new Paint();
-        LinearGradient shader = new LinearGradient(0, bitmap.getHeight(), 0,
-                bitmapWithReflection.getHeight() + reflectionGap, 0x70ffffff,
-                0x00ffffff, TileMode.CLAMP);
-        paint.setShader(shader);
-        // Set the Transfer mode to be porter duff and destination in
-        paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
-        // Draw a rectangle using the paint with our linear gradient
-        canvas.drawRect(0, height, width, bitmapWithReflection.getHeight()
-                + reflectionGap, paint);
+		Bitmap bitmapWithReflection = Bitmap.createBitmap(width,
+				(height + height / 2), Config.ARGB_8888);
 
-        return bitmapWithReflection;
-    }
-    
-    /**
-     * ½«bitmap×ª»¯Îªdrawable
-     * @param bitmap
-     * @return
-     */
-    public static Drawable bitmapToDrawable(Bitmap bitmap) {
-    	Drawable drawable = new BitmapDrawable(bitmap);
-    	return drawable;
-    }
-    
-    /**
-     * »ñÈ¡Í¼Æ¬ÀàĞÍ
-     * @param file
-     * @return
-     */
-    public static String getImageType(File file){
-        if(file == null||!file.exists()){
-            return null;
-        }
-        InputStream in = null;
-        try {
-            in = new FileInputStream(file);
-            String type = getImageType(in);
-            return type;
-        } catch (IOException e) {
-            return null;
-        }finally{
-            try{
-                if(in != null){
-                    in.close();
-                }
-            }catch(IOException e){
-            }
-        }
-    }
-    
-    /**
-     * detect bytes's image type by inputstream
-     * @param in
-     * @return
-     * @see #getImageType(byte[])
-     */
-    public static String getImageType(InputStream in) {
-        if(in == null){
-            return null;
-        }
-        try{
-            byte[] bytes = new byte[8];
-            in.read(bytes);
-            return getImageType(bytes);
-        }catch(IOException e){
-            return null;
-        }
-    }
+		Canvas canvas = new Canvas(bitmapWithReflection);
+		canvas.drawBitmap(bitmap, 0, 0, null);
+		Paint deafalutPaint = new Paint();
+		canvas.drawRect(0, height, width, height + reflectionGap, deafalutPaint);
 
-    /**
-     * detect bytes's image type
-     * @param bytes 2~8 byte at beginning of the image file  
-     * @return image mimetype or null if the file is not image
-     */
-    public static String getImageType(byte[] bytes) {
-        if (isJPEG(bytes)) {
-            return "image/jpeg";
-        }
-        if (isGIF(bytes)) {
-            return "image/gif";
-        }
-        if (isPNG(bytes)) {
-            return "image/png";
-        }
-        if (isBMP(bytes)) {
-            return "application/x-bmp";
-        }
-        return null;
-    }
+		canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 
-    private static boolean isJPEG(byte[] b) {
-        if (b.length < 2) {
-            return false;
-        }
-        return (b[0] == (byte)0xFF) && (b[1] == (byte)0xD8);
-    }
+		Paint paint = new Paint();
+		LinearGradient shader = new LinearGradient(0, bitmap.getHeight(), 0,
+				bitmapWithReflection.getHeight() + reflectionGap, 0x70ffffff,
+				0x00ffffff, TileMode.CLAMP);
+		paint.setShader(shader);
+		// Set the Transfer mode to be porter duff and destination in
+		paint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
+		// Draw a rectangle using the paint with our linear gradient
+		canvas.drawRect(0, height, width, bitmapWithReflection.getHeight()
+				+ reflectionGap, paint);
 
-    private static boolean isGIF(byte[] b) {
-        if (b.length < 6) {
-            return false;
-        }
-        return b[0] == 'G' && b[1] == 'I' && b[2] == 'F' && b[3] == '8'
-                && (b[4] == '7' || b[4] == '9') && b[5] == 'a';
-    }
+		return bitmapWithReflection;
+	}
 
-    private static boolean isPNG(byte[] b) {
-        if (b.length < 8) {
-            return false;
-        }
-        return (b[0] == (byte) 137 && b[1] == (byte) 80 && b[2] == (byte) 78
-                && b[3] == (byte) 71 && b[4] == (byte) 13 && b[5] == (byte) 10
-                && b[6] == (byte) 26 && b[7] == (byte) 10);
-    }
+	/**
+	 * å°†bitmapè½¬åŒ–ä¸ºdrawable
+	 * 
+	 * @param bitmap
+	 * @return
+	 */
+	public static Drawable bitmapToDrawable(Bitmap bitmap) {
+		Drawable drawable = new BitmapDrawable(bitmap);
+		return drawable;
+	}
 
-    private static boolean isBMP(byte[] b) {
-        if (b.length < 2) {
-            return false;
-        }
-        return (b[0] == 0x42) && (b[1] == 0x4d);
-    }
+	/**
+	 * è·å–å›¾ç‰‡ç±»å‹
+	 * 
+	 * @param file
+	 * @return
+	 */
+	public static String getImageType(File file) {
+		if (file == null || !file.exists()) {
+			return null;
+		}
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			String type = getImageType(in);
+			return type;
+		} catch (IOException e) {
+			return null;
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+			}
+		}
+	}
+
+	/**
+	 * detect bytes's image type by inputstream
+	 * 
+	 * @param in
+	 * @return
+	 * @see #getImageType(byte[])
+	 */
+	public static String getImageType(InputStream in) {
+		if (in == null) {
+			return null;
+		}
+		try {
+			byte[] bytes = new byte[8];
+			in.read(bytes);
+			return getImageType(bytes);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * detect bytes's image type
+	 * 
+	 * @param bytes
+	 *            2~8 byte at beginning of the image file
+	 * @return image mimetype or null if the file is not image
+	 */
+	public static String getImageType(byte[] bytes) {
+		if (isJPEG(bytes)) {
+			return "image/jpeg";
+		}
+		if (isGIF(bytes)) {
+			return "image/gif";
+		}
+		if (isPNG(bytes)) {
+			return "image/png";
+		}
+		if (isBMP(bytes)) {
+			return "application/x-bmp";
+		}
+		return null;
+	}
+
+	private static boolean isJPEG(byte[] b) {
+		if (b.length < 2) {
+			return false;
+		}
+		return (b[0] == (byte) 0xFF) && (b[1] == (byte) 0xD8);
+	}
+
+	private static boolean isGIF(byte[] b) {
+		if (b.length < 6) {
+			return false;
+		}
+		return b[0] == 'G' && b[1] == 'I' && b[2] == 'F' && b[3] == '8'
+				&& (b[4] == '7' || b[4] == '9') && b[5] == 'a';
+	}
+
+	private static boolean isPNG(byte[] b) {
+		if (b.length < 8) {
+			return false;
+		}
+		return (b[0] == (byte) 137 && b[1] == (byte) 80 && b[2] == (byte) 78
+				&& b[3] == (byte) 71 && b[4] == (byte) 13 && b[5] == (byte) 10
+				&& b[6] == (byte) 26 && b[7] == (byte) 10);
+	}
+
+	private static boolean isBMP(byte[] b) {
+		if (b.length < 2) {
+			return false;
+		}
+		return (b[0] == 0x42) && (b[1] == 0x4d);
+	}
 }

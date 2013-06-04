@@ -4,24 +4,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Title: HTMLÏà¹ØµÄÕıÔò±í´ïÊ½¹¤¾ßÀà
- * Description: °üÀ¨¹ıÂËHTML±ê¼Ç£¬×ª»»HTML±ê¼Ç£¬Ìæ»»ÌØ¶¨HTML±ê¼Ç
- * Copyright: Copyright (c) 2006
+ * Title: HTMLç›¸å…³çš„æ­£åˆ™è¡¨è¾¾å¼å·¥å…·ç±» Description: åŒ…æ‹¬è¿‡æ»¤HTMLæ ‡è®°ï¼Œè½¬æ¢HTMLæ ‡è®°ï¼Œæ›¿æ¢ç‰¹å®šHTMLæ ‡è®° Copyright:
+ * Copyright (c) 2006
+ * 
  * @author hejian
  * @version 1.0
  * @createtime 2006-10-16
  */
 public class HtmlRegexpUtils {
-	private final static String regxpForHtml = "<([^>]*)>"; // ¹ıÂËËùÓĞÒÔ<¿ªÍ·ÒÔ>½áÎ²µÄ±êÇ©
+	private final static String regxpForHtml = "<([^>]*)>"; // è¿‡æ»¤æ‰€æœ‰ä»¥<å¼€å¤´ä»¥>ç»“å°¾çš„æ ‡ç­¾
 
-	private final static String regxpForImgTag = "<\\s*img\\s+([^>]*)\\s*>"; // ÕÒ³öIMG±êÇ©
+	private final static String regxpForImgTag = "<\\s*img\\s+([^>]*)\\s*>"; // æ‰¾å‡ºIMGæ ‡ç­¾
 
-	private final static String regxpForImaTagSrcAttrib = "src=\"([^\"]+)\""; // ÕÒ³öIMG±êÇ©µÄSRCÊôĞÔ
+	private final static String regxpForImaTagSrcAttrib = "src=\"([^\"]+)\""; // æ‰¾å‡ºIMGæ ‡ç­¾çš„SRCå±æ€§
 
-	public HtmlRegexpUtils() {}
+	public HtmlRegexpUtils() {
+	}
 
 	/**
-	 * »ù±¾¹¦ÄÜ£ºÌæ»»±ê¼ÇÒÔÕı³£ÏÔÊ¾
+	 * åŸºæœ¬åŠŸèƒ½ï¼šæ›¿æ¢æ ‡è®°ä»¥æ­£å¸¸æ˜¾ç¤º
+	 * 
 	 * @param input
 	 * @return String
 	 */
@@ -34,20 +36,20 @@ public class HtmlRegexpUtils {
 		for (int i = 0; i <= input.length() - 1; i++) {
 			c = input.charAt(i);
 			switch (c) {
-			case '<':
-				filtered.append("&lt;");
-				break;
-			case '>':
-				filtered.append("&gt;");
-				break;
-			case '"':
-				filtered.append("&quot;");
-				break;
-			case '&':
-				filtered.append("&amp;");
-				break;
-			default:
-				filtered.append(c);
+				case '<' :
+					filtered.append("&lt;");
+					break;
+				case '>' :
+					filtered.append("&gt;");
+					break;
+				case '"' :
+					filtered.append("&quot;");
+					break;
+				case '&' :
+					filtered.append("&amp;");
+					break;
+				default :
+					filtered.append(c);
 			}
 
 		}
@@ -55,7 +57,8 @@ public class HtmlRegexpUtils {
 	}
 
 	/**
-	 * »ù±¾¹¦ÄÜ£ºÅĞ¶Ï±ê¼ÇÊÇ·ñ´æÔÚ
+	 * åŸºæœ¬åŠŸèƒ½ï¼šåˆ¤æ–­æ ‡è®°æ˜¯å¦å­˜åœ¨
+	 * 
 	 * @param input
 	 * @return boolean
 	 */
@@ -66,18 +69,18 @@ public class HtmlRegexpUtils {
 			for (int i = 0; i <= input.length() - 1; i++) {
 				c = input.charAt(i);
 				switch (c) {
-				case '>':
-					flag = true;
-					break;
-				case '<':
-					flag = true;
-					break;
-				case '"':
-					flag = true;
-					break;
-				case '&':
-					flag = true;
-					break;
+					case '>' :
+						flag = true;
+						break;
+					case '<' :
+						flag = true;
+						break;
+					case '"' :
+						flag = true;
+						break;
+					case '&' :
+						flag = true;
+						break;
 				}
 			}
 		}
@@ -85,7 +88,8 @@ public class HtmlRegexpUtils {
 	}
 
 	/**
-	 * »ù±¾¹¦ÄÜ£º¹ıÂËËùÓĞÒÔ"<"¿ªÍ·ÒÔ">"½áÎ²µÄ±êÇ©
+	 * åŸºæœ¬åŠŸèƒ½ï¼šè¿‡æ»¤æ‰€æœ‰ä»¥"<"å¼€å¤´ä»¥">"ç»“å°¾çš„æ ‡ç­¾
+	 * 
 	 * @param str
 	 * @return String
 	 */
@@ -103,9 +107,11 @@ public class HtmlRegexpUtils {
 	}
 
 	/**
-	 * »ù±¾¹¦ÄÜ£º¹ıÂËÖ¸¶¨±êÇ©
+	 * åŸºæœ¬åŠŸèƒ½ï¼šè¿‡æ»¤æŒ‡å®šæ ‡ç­¾
+	 * 
 	 * @param str
-	 * @param tag Ö¸¶¨±êÇ©
+	 * @param tag
+	 *            æŒ‡å®šæ ‡ç­¾
 	 * @return String
 	 */
 	public static String fiterHtmlTag(String str, String tag) {
@@ -123,14 +129,19 @@ public class HtmlRegexpUtils {
 	}
 
 	/**
-	 * »ù±¾¹¦ÄÜ£ºÌæ»»Ö¸¶¨µÄ±êÇ©
+	 * åŸºæœ¬åŠŸèƒ½ï¼šæ›¿æ¢æŒ‡å®šçš„æ ‡ç­¾
+	 * 
 	 * @param str
-	 * @param beforeTag ÒªÌæ»»µÄ±êÇ©
-	 * @param tagAttrib ÒªÌæ»»µÄ±êÇ©ÊôĞÔÖµ
-	 * @param startTag ĞÂ±êÇ©¿ªÊ¼±ê¼Ç
-	 * @param endTag ĞÂ±êÇ©½áÊø±ê¼Ç
+	 * @param beforeTag
+	 *            è¦æ›¿æ¢çš„æ ‡ç­¾
+	 * @param tagAttrib
+	 *            è¦æ›¿æ¢çš„æ ‡ç­¾å±æ€§å€¼
+	 * @param startTag
+	 *            æ–°æ ‡ç­¾å¼€å§‹æ ‡è®°
+	 * @param endTag
+	 *            æ–°æ ‡ç­¾ç»“æŸæ ‡è®°
 	 * @return String
-	 * @Èç£ºÌæ»»img±êÇ©µÄsrcÊôĞÔÖµÎª[img]ÊôĞÔÖµ[/img]
+	 * @å¦‚ï¼šæ›¿æ¢imgæ ‡ç­¾çš„srcå±æ€§å€¼ä¸º[img]å±æ€§å€¼[/img]
 	 */
 	public static String replaceHtmlTag(String str, String beforeTag,
 			String tagAttrib, String startTag, String endTag) {

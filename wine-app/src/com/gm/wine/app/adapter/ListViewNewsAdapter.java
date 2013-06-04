@@ -2,10 +2,6 @@ package com.gm.wine.app.adapter;
 
 import java.util.List;
 
-import com.gm.wine.app.R;
-import com.gm.wine.app.common.StringUtils;
-import com.gm.wine.vo.NewsVO;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,81 +10,93 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gm.wine.app.R;
+import com.gm.wine.app.common.StringUtils;
+import com.gm.wine.vo.NewsVO;
+
 public class ListViewNewsAdapter extends BaseAdapter {
-	private Context 					context;//运行上下文
-	private List<NewsVO> 					listItems;//数据集合
-	private LayoutInflater 				listContainer;//视图容器
-	private int 						itemViewResource;//自定义项视图源 
-	static class ListItemView{				//自定义控件集合  
-	        public TextView title;  
-		    public TextView source;
-		    public TextView date;  
-		    public ImageView flag;
-	 }  
+	private final Context context;
+	private final List<NewsVO> listItems;
+	private final LayoutInflater listContainer;
+	private final int itemViewResource;
+	static class ListItemView {
+		public TextView title;
+		public TextView source;
+		public TextView date;
+		public ImageView flag;
+	}
 
 	/**
-	 * 实例化Adapter
+	 * 实锟斤拷Adapter
+	 * 
 	 * @param context
 	 * @param data
 	 * @param resource
 	 */
-	public ListViewNewsAdapter(Context context, List<NewsVO> data,int resource) {
-		this.context = context;			
-		this.listContainer = LayoutInflater.from(context);	//创建视图容器并设置上下文
+	public ListViewNewsAdapter(Context context, List<NewsVO> data, int resource) {
+		this.context = context;
+		this.listContainer = LayoutInflater.from(context); // 锟斤拷锟斤拷锟斤拷图锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
 		this.itemViewResource = resource;
 		this.listItems = data;
 	}
-	
+
+	@Override
 	public int getCount() {
 		return listItems.size();
 	}
 
+	@Override
 	public Object getItem(int arg0) {
 		return null;
 	}
 
+	@Override
 	public long getItemId(int arg0) {
 		return 0;
 	}
-	
+
 	/**
-	 * ListView Item设置
+	 * ListView Item锟斤拷锟斤拷
 	 */
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		//Log.d("method", "getView");
-		
-		//自定义视图
-		ListItemView  listItemView = null;
-		
+		// Log.d("method", "getView");
+
+		ListItemView listItemView = null;
+
 		if (convertView == null) {
-			//获取list_item布局文件的视图
+
 			convertView = listContainer.inflate(this.itemViewResource, null);
-			
+
 			listItemView = new ListItemView();
-			//获取控件对象
-			listItemView.title = (TextView)convertView.findViewById(R.id.news_listitem_title);
-			listItemView.source = (TextView)convertView.findViewById(R.id.news_listitem_source);
-			listItemView.date= (TextView)convertView.findViewById(R.id.news_listitem_date);
-			listItemView.flag= (ImageView)convertView.findViewById(R.id.news_listitem_flag);
-			
-			//设置控件集到convertView
+
+			listItemView.title = (TextView) convertView
+					.findViewById(R.id.news_listitem_title);
+			listItemView.source = (TextView) convertView
+					.findViewById(R.id.news_listitem_source);
+			listItemView.date = (TextView) convertView
+					.findViewById(R.id.news_listitem_date);
+			listItemView.flag = (ImageView) convertView
+					.findViewById(R.id.news_listitem_flag);
+
 			convertView.setTag(listItemView);
-		}else {
-			listItemView = (ListItemView)convertView.getTag();
-		}	
-		
-		//设置文字和图片
+		} else {
+			listItemView = (ListItemView) convertView.getTag();
+		}
+
 		NewsVO news = listItems.get(position);
-		
+
 		listItemView.title.setText(news.getTitle());
-		listItemView.title.setTag(news);//设置隐藏参数(实体类)
+		listItemView.title.setTag(news);
 		listItemView.source.setText(news.getSource());
-		listItemView.date.setText(StringUtils.friendly_time(news.getPublishdate()));
-		if(StringUtils.isToday(news.getPublishdate()))
+		listItemView.date.setText(StringUtils.friendly_time(news
+				.getPublishdate()));
+		if (StringUtils.isToday(news.getPublishdate())) {
 			listItemView.flag.setVisibility(View.VISIBLE);
-		else
+		} else {
 			listItemView.flag.setVisibility(View.GONE);
-		
+		}
+
 		return convertView;
 	}
 }

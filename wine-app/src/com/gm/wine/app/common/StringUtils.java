@@ -6,110 +6,125 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+/**
+ * å­—ç¬¦ä¸²æ“ä½œå·¥å…·åŒ…
+ * 
+ * @author liux (http://my.oschina.net/liux)
+ * @version 1.0
+ * @created 2012-3-21
+ */
 public class StringUtils {
-	private final static Pattern emailer = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
-	private final static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private final static SimpleDateFormat dateFormater2 = new SimpleDateFormat("yyyy-MM-dd");
-	
+	private final static Pattern emailer = Pattern
+			.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+	private final static SimpleDateFormat dateFormater = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+	private final static SimpleDateFormat dateFormater2 = new SimpleDateFormat(
+			"yyyy-MM-dd");
+
 	/**
-	 * ½«×Ö·û´®×ªÎ»ÈÕÆÚÀàĞÍ
+	 * å°†å­—ç¬¦ä¸²è½¬ä½æ—¥æœŸç±»å‹
+	 * 
 	 * @param sdate
 	 * @return
 	 */
 	public static Date toDate(String sdate) {
-		if(isEmpty(sdate))	return null;		
+		if (isEmpty(sdate)) {
+			return null;
+		}
 		try {
 			return dateFormater.parse(sdate);
 		} catch (ParseException e) {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * ÒÔÓÑºÃµÄ·½Ê½ÏÔÊ¾Ê±¼ä
+	 * ä»¥å‹å¥½çš„æ–¹å¼æ˜¾ç¤ºæ—¶é—´
+	 * 
 	 * @param sdate
 	 * @return
 	 */
 	public static String friendly_time(Date time) {
-	
-		if(time == null) {
+		// Date time = toDate(sdate);
+		if (time == null) {
 			return "Unknown";
 		}
 		String ftime = "";
 		Calendar cal = Calendar.getInstance();
-		
-		//ÅĞ¶ÏÊÇ·ñÊÇÍ¬Ò»Ìì
+
+		// åˆ¤æ–­æ˜¯å¦æ˜¯åŒä¸€å¤©
 		String curDate = dateFormater2.format(cal.getTime());
 		String paramDate = dateFormater2.format(time);
-		if(curDate.equals(paramDate)){
-			int hour = (int)((cal.getTimeInMillis() - time.getTime())/3600000);
-			if(hour == 0)
-				ftime = Math.max((cal.getTimeInMillis() - time.getTime()) / 60000,1)+"·ÖÖÓÇ°";
-			else 
-				ftime = hour+"Ğ¡Ê±Ç°";
+		if (curDate.equals(paramDate)) {
+			int hour = (int) ((cal.getTimeInMillis() - time.getTime()) / 3600000);
+			if (hour == 0) {
+				ftime = Math.max(
+						(cal.getTimeInMillis() - time.getTime()) / 60000, 1)
+						+ "åˆ†é’Ÿå‰";
+			} else {
+				ftime = hour + "å°æ—¶å‰";
+			}
 			return ftime;
 		}
-		
-		long lt = time.getTime()/86400000;
-		long ct = cal.getTimeInMillis()/86400000;
-		int days = (int)(ct - lt);		
-		if(days == 0){
-			int hour = (int)((cal.getTimeInMillis() - time.getTime())/3600000);
-			if(hour == 0)
-				ftime = Math.max((cal.getTimeInMillis() - time.getTime()) / 60000,1)+"·ÖÖÓÇ°";
-			else 
-				ftime = hour+"Ğ¡Ê±Ç°";
-		}
-		else if(days == 1){
-			ftime = "×òÌì";
-		}
-		else if(days == 2){
-			ftime = "Ç°Ìì";
-		}
-		else if(days > 2 && days <= 10){ 
-			ftime = days+"ÌìÇ°";			
-		}
-		else if(days > 10){			
+
+		long lt = time.getTime() / 86400000;
+		long ct = cal.getTimeInMillis() / 86400000;
+		int days = (int) (ct - lt);
+		if (days == 0) {
+			int hour = (int) ((cal.getTimeInMillis() - time.getTime()) / 3600000);
+			if (hour == 0) {
+				ftime = Math.max(
+						(cal.getTimeInMillis() - time.getTime()) / 60000, 1)
+						+ "åˆ†é’Ÿå‰";
+			} else {
+				ftime = hour + "å°æ—¶å‰";
+			}
+		} else if (days == 1) {
+			ftime = "æ˜¨å¤©";
+		} else if (days == 2) {
+			ftime = "å‰å¤©";
+		} else if (days > 2 && days <= 10) {
+			ftime = days + "å¤©å‰";
+		} else if (days > 10) {
 			ftime = dateFormater2.format(time);
 		}
 		return ftime;
 	}
-	
+
 	/**
-	 * ÅĞ¶Ï¸ø¶¨×Ö·û´®Ê±¼äÊÇ·ñÎª½ñÈÕ
+	 * åˆ¤æ–­ç»™å®šå­—ç¬¦ä¸²æ—¶é—´æ˜¯å¦ä¸ºä»Šæ—¥
+	 * 
 	 * @param sdate
 	 * @return boolean
 	 */
-	public static boolean isToday(Date time){
+	public static boolean isToday(Date time) {
 		boolean b = false;
+		// Date time = toDate(sdate);
 		Date today = new Date();
-		if(time != null){
+		if (time != null) {
 			String nowDate = dateFormater2.format(today);
 			String timeDate = dateFormater2.format(time);
-			if(nowDate.equals(timeDate)){
+			if (nowDate.equals(timeDate)) {
 				b = true;
 			}
 		}
 		return b;
 	}
-	
+
 	/**
-	 * ÅĞ¶Ï¸ø¶¨×Ö·û´®ÊÇ·ñ¿Õ°×´®¡£
-	 * ¿Õ°×´®ÊÇÖ¸ÓÉ¿Õ¸ñ¡¢ÖÆ±í·û¡¢»Ø³µ·û¡¢»»ĞĞ·û×é³ÉµÄ×Ö·û´®
-	 * ÈôÊäÈë×Ö·û´®Îªnull»ò¿Õ×Ö·û´®£¬·µ»Øtrue
+	 * åˆ¤æ–­ç»™å®šå­—ç¬¦ä¸²æ˜¯å¦ç©ºç™½ä¸²ã€‚ ç©ºç™½ä¸²æ˜¯æŒ‡ç”±ç©ºæ ¼ã€åˆ¶è¡¨ç¬¦ã€å›è½¦ç¬¦ã€æ¢è¡Œç¬¦ç»„æˆçš„å­—ç¬¦ä¸² è‹¥è¾“å…¥å­—ç¬¦ä¸²ä¸ºnullæˆ–ç©ºå­—ç¬¦ä¸²ï¼Œè¿”å›true
+	 * 
 	 * @param input
 	 * @return boolean
 	 */
-	public static boolean isEmpty( String input ) 
-	{
-		if ( input == null || "".equals( input ) )
+	public static boolean isEmpty(String input) {
+		if (input == null || "".equals(input)) {
 			return true;
-		
-		for ( int i = 0; i < input.length(); i++ ) 
-		{
-			char c = input.charAt( i );
-			if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
-			{
+		}
+
+		for (int i = 0; i < input.length(); i++) {
+			char c = input.charAt(i);
+			if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
 				return false;
 			}
 		}
@@ -117,56 +132,67 @@ public class StringUtils {
 	}
 
 	/**
-	 * ÅĞ¶ÏÊÇ²»ÊÇÒ»¸öºÏ·¨µÄµç×ÓÓÊ¼şµØÖ·
+	 * åˆ¤æ–­æ˜¯ä¸æ˜¯ä¸€ä¸ªåˆæ³•çš„ç”µå­é‚®ä»¶åœ°å€
+	 * 
 	 * @param email
 	 * @return
 	 */
-	public static boolean isEmail(String email){
-		if(email == null || email.trim().length()==0) 
+	public static boolean isEmail(String email) {
+		if (email == null || email.trim().length() == 0) {
 			return false;
-	    return emailer.matcher(email).matches();
+		}
+		return emailer.matcher(email).matches();
 	}
 	/**
-	 * ×Ö·û´®×ªÕûÊı
+	 * å­—ç¬¦ä¸²è½¬æ•´æ•°
+	 * 
 	 * @param str
 	 * @param defValue
 	 * @return
 	 */
 	public static int toInt(String str, int defValue) {
-		try{
+		try {
 			return Integer.parseInt(str);
-		}catch(Exception e){}
+		} catch (Exception e) {
+		}
 		return defValue;
 	}
 	/**
-	 * ¶ÔÏó×ªÕûÊı
+	 * å¯¹è±¡è½¬æ•´æ•°
+	 * 
 	 * @param obj
-	 * @return ×ª»»Òì³£·µ»Ø 0
+	 * @return è½¬æ¢å¼‚å¸¸è¿”å› 0
 	 */
 	public static int toInt(Object obj) {
-		if(obj==null) return 0;
-		return toInt(obj.toString(),0);
+		if (obj == null) {
+			return 0;
+		}
+		return toInt(obj.toString(), 0);
 	}
 	/**
-	 * ¶ÔÏó×ªÕûÊı
+	 * å¯¹è±¡è½¬æ•´æ•°
+	 * 
 	 * @param obj
-	 * @return ×ª»»Òì³£·µ»Ø 0
+	 * @return è½¬æ¢å¼‚å¸¸è¿”å› 0
 	 */
 	public static long toLong(String obj) {
-		try{
+		try {
 			return Long.parseLong(obj);
-		}catch(Exception e){}
+		} catch (Exception e) {
+		}
 		return 0;
 	}
 	/**
-	 * ×Ö·û´®×ª²¼¶ûÖµ
+	 * å­—ç¬¦ä¸²è½¬å¸ƒå°”å€¼
+	 * 
 	 * @param b
-	 * @return ×ª»»Òì³£·µ»Ø false
+	 * @return è½¬æ¢å¼‚å¸¸è¿”å› false
 	 */
 	public static boolean toBool(String b) {
-		try{
+		try {
 			return Boolean.parseBoolean(b);
-		}catch(Exception e){}
+		} catch (Exception e) {
+		}
 		return false;
 	}
 }

@@ -12,234 +12,228 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
-/** 
- * ÎÄ¼ş²Ù×÷¹¤¾ß°ü
+/**
+ * æ–‡ä»¶æ“ä½œå·¥å…·åŒ…
+ * 
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
  */
-public class FileUtils 
-{
+public class FileUtils {
 	/**
-	 * Ğ´ÎÄ±¾ÎÄ¼ş
-	 * ÔÚAndroidÏµÍ³ÖĞ£¬ÎÄ¼ş±£´æÔÚ /data/data/PACKAGE_NAME/files Ä¿Â¼ÏÂ
+	 * å†™æ–‡æœ¬æ–‡ä»¶ åœ¨Androidç³»ç»Ÿä¸­ï¼Œæ–‡ä»¶ä¿å­˜åœ¨ /data/data/PACKAGE_NAME/files ç›®å½•ä¸‹
+	 * 
 	 * @param context
 	 * @param msg
 	 */
-	public static void write(Context context, String fileName, String content) 
-	{ 
-		if( content == null )	content = "";
-		
-		try 
-		{
-			FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-			fos.write( content.getBytes() ); 
-			
-			fos.close();
+	public static void write(Context context, String fileName, String content) {
+		if (content == null) {
+			content = "";
 		}
-		catch (Exception e) 
-		{
+
+		try {
+			FileOutputStream fos = context.openFileOutput(fileName,
+					Context.MODE_PRIVATE);
+			fos.write(content.getBytes());
+
+			fos.close();
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-	
+
 	/**
-	 * ¶ÁÈ¡ÎÄ±¾ÎÄ¼ş
+	 * è¯»å–æ–‡æœ¬æ–‡ä»¶
+	 * 
 	 * @param context
 	 * @param fileName
 	 * @return
 	 */
-	public static String read( Context context, String fileName ) 
-	{
-		try 
-		{
+	public static String read(Context context, String fileName) {
+		try {
 			FileInputStream in = context.openFileInput(fileName);
 			return readInStream(in);
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
-	} 
-	
-	private static String readInStream(FileInputStream inStream)
-	{
-		try 
-		{
-		   ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-		   byte[] buffer = new byte[512];
-		   int length = -1;
-		   while((length = inStream.read(buffer)) != -1 )
-		   {
-			   outStream.write(buffer, 0, length);
-		   }
-		   
-		   outStream.close();
-		   inStream.close();
-		   return outStream.toString();
-		} 
-		catch (IOException e)
-		{
-		   Log.i("FileTest", e.getMessage()); 
+	}
+
+	private static String readInStream(FileInputStream inStream) {
+		try {
+			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+			byte[] buffer = new byte[512];
+			int length = -1;
+			while ((length = inStream.read(buffer)) != -1) {
+				outStream.write(buffer, 0, length);
+			}
+
+			outStream.close();
+			inStream.close();
+			return outStream.toString();
+		} catch (IOException e) {
+			Log.i("FileTest", e.getMessage());
 		}
 		return null;
 	}
-	
-	public static File createFile( String folderPath, String fileName )
-	{
+
+	public static File createFile(String folderPath, String fileName) {
 		File destDir = new File(folderPath);
-		if (!destDir.exists()) 
-		{
+		if (!destDir.exists()) {
 			destDir.mkdirs();
 		}
-		return new File(folderPath,  fileName + fileName );
+		return new File(folderPath, fileName + fileName);
 	}
-	
+
 	/**
-	 * ÏòÊÖ»úĞ´Í¼Æ¬
-	 * @param buffer   
+	 * å‘æ‰‹æœºå†™å›¾ç‰‡
+	 * 
+	 * @param buffer
 	 * @param folder
 	 * @param fileName
 	 * @return
 	 */
-	public static boolean writeFile( byte[] buffer, String folder, String fileName )
-	{
+	public static boolean writeFile(byte[] buffer, String folder,
+			String fileName) {
 		boolean writeSucc = false;
-		
-		boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-		
+
+		boolean sdCardExist = Environment.getExternalStorageState().equals(
+				android.os.Environment.MEDIA_MOUNTED);
+
 		String folderPath = "";
-		if( sdCardExist )
-		{
-			folderPath = Environment.getExternalStorageDirectory() + File.separator +  folder + File.separator;
+		if (sdCardExist) {
+			folderPath = Environment.getExternalStorageDirectory()
+					+ File.separator + folder + File.separator;
+		} else {
+			writeSucc = false;
 		}
-		else
-		{
-			writeSucc =false;
-		}
-		
+
 		File fileDir = new File(folderPath);
-		if(!fileDir.exists()) 
-		{
+		if (!fileDir.exists()) {
 			fileDir.mkdirs();
 		}
-		  
-		File file = new File( folderPath + fileName );
+
+		File file = new File(folderPath + fileName);
 		FileOutputStream out = null;
-		try 
-		{
-			out = new FileOutputStream( file );
+		try {
+			out = new FileOutputStream(file);
 			out.write(buffer);
 			writeSucc = true;
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		finally
-		{
-			try {out.close();} catch (IOException e) {e.printStackTrace();}
-		}
-		
+
 		return writeSucc;
 	}
-	
+
 	/**
-	 * ¸ù¾İÎÄ¼ş¾ø¶ÔÂ·¾¶»ñÈ¡ÎÄ¼şÃû
+	 * æ ¹æ®æ–‡ä»¶ç»å¯¹è·¯å¾„è·å–æ–‡ä»¶å
+	 * 
 	 * @param filePath
 	 * @return
 	 */
-	public static String getFileName( String filePath )
-	{
-		if( StringUtils.isEmpty(filePath) )	return "";
-		return filePath.substring( filePath.lastIndexOf( File.separator )+1 );
+	public static String getFileName(String filePath) {
+		if (StringUtils.isEmpty(filePath)) {
+			return "";
+		}
+		return filePath.substring(filePath.lastIndexOf(File.separator) + 1);
 	}
 	/**
-	 * ¸ù¾İÎÄ¼şµÄ¾ø¶ÔÂ·¾¶»ñÈ¡ÎÄ¼şÃûµ«²»°üº¬À©Õ¹Ãû
+	 * æ ¹æ®æ–‡ä»¶çš„ç»å¯¹è·¯å¾„è·å–æ–‡ä»¶åä½†ä¸åŒ…å«æ‰©å±•å
+	 * 
 	 * @param filePath
 	 * @return
 	 */
-	public static String getFileNameNoFormat( String filePath){
-		if(StringUtils.isEmpty(filePath)){
+	public static String getFileNameNoFormat(String filePath) {
+		if (StringUtils.isEmpty(filePath)) {
 			return "";
 		}
 		int point = filePath.lastIndexOf('.');
-		return filePath.substring(filePath.lastIndexOf(File.separator)+1,point);
+		return filePath.substring(filePath.lastIndexOf(File.separator) + 1,
+				point);
 	}
-	
+
 	/**
-	 * »ñÈ¡ÎÄ¼şÀ©Õ¹Ãû
+	 * è·å–æ–‡ä»¶æ‰©å±•å
+	 * 
 	 * @param fileName
 	 * @return
 	 */
-	public static String getFileFormat( String fileName )
-	{
-		if( StringUtils.isEmpty(fileName) )	return "";
-		
-		int point = fileName.lastIndexOf( '.' );
-		return fileName.substring( point+1 );
+	public static String getFileFormat(String fileName) {
+		if (StringUtils.isEmpty(fileName)) {
+			return "";
+		}
+
+		int point = fileName.lastIndexOf('.');
+		return fileName.substring(point + 1);
 	}
-	
+
 	/**
-	 * »ñÈ¡ÎÄ¼ş´óĞ¡
+	 * è·å–æ–‡ä»¶å¤§å°
+	 * 
 	 * @param filePath
 	 * @return
 	 */
-	public static long getFileSize( String filePath )
-	{
+	public static long getFileSize(String filePath) {
 		long size = 0;
-		
-		File file = new File( filePath );
-		if(file!=null && file.exists())
-		{
+
+		File file = new File(filePath);
+		if (file != null && file.exists()) {
 			size = file.length();
-		} 
+		}
 		return size;
 	}
-	
+
 	/**
-	 * »ñÈ¡ÎÄ¼ş´óĞ¡
-	 * @param size ×Ö½Ú
+	 * è·å–æ–‡ä»¶å¤§å°
+	 * 
+	 * @param size
+	 *            å­—èŠ‚
 	 * @return
 	 */
-	public static String getFileSize(long size) 
-	{
-		if (size <= 0)	return "0";
-		java.text.DecimalFormat df = new java.text.DecimalFormat("##.##");
-		float temp = (float)size / 1024;
-		if (temp >= 1024) 
-		{
-			return df.format(temp / 1024) + "M";
+	public static String getFileSize(long size) {
+		if (size <= 0) {
+			return "0";
 		}
-		else 
-		{
+		java.text.DecimalFormat df = new java.text.DecimalFormat("##.##");
+		float temp = (float) size / 1024;
+		if (temp >= 1024) {
+			return df.format(temp / 1024) + "M";
+		} else {
 			return df.format(temp) + "K";
 		}
 	}
 
 	/**
-	 * ×ª»»ÎÄ¼ş´óĞ¡
+	 * è½¬æ¢æ–‡ä»¶å¤§å°
+	 * 
 	 * @param fileS
 	 * @return B/KB/MB/GB
 	 */
 	public static String formatFileSize(long fileS) {
 		java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-        String fileSizeString = "";
-        if (fileS < 1024) {
-            fileSizeString = df.format((double) fileS) + "B";
-        } else if (fileS < 1048576) {
-            fileSizeString = df.format((double) fileS / 1024) + "KB";
-        } else if (fileS < 1073741824) {
-            fileSizeString = df.format((double) fileS / 1048576) + "MB";
-        } else {
-            fileSizeString = df.format((double) fileS / 1073741824) + "G";
-        }
-        return fileSizeString;
-    }
+		String fileSizeString = "";
+		if (fileS < 1024) {
+			fileSizeString = df.format((double) fileS) + "B";
+		} else if (fileS < 1048576) {
+			fileSizeString = df.format((double) fileS / 1024) + "KB";
+		} else if (fileS < 1073741824) {
+			fileSizeString = df.format((double) fileS / 1048576) + "MB";
+		} else {
+			fileSizeString = df.format((double) fileS / 1073741824) + "G";
+		}
+		return fileSizeString;
+	}
 
 	/**
-	 * »ñÈ¡Ä¿Â¼ÎÄ¼ş´óĞ¡
+	 * è·å–ç›®å½•æ–‡ä»¶å¤§å°
+	 * 
 	 * @param dir
 	 * @return
 	 */
@@ -247,55 +241,55 @@ public class FileUtils
 		if (dir == null) {
 			return 0;
 		}
-	    if (!dir.isDirectory()) {
-	    	return 0;
-	    }
-	    long dirSize = 0;
-	    File[] files = dir.listFiles();
-	    for (File file : files) {
-	    	if (file.isFile()) {
-	    		dirSize += file.length();
-	    	} else if (file.isDirectory()) {
-	    		dirSize += file.length();
-	    		dirSize += getDirSize(file); //µİ¹éµ÷ÓÃ¼ÌĞøÍ³¼Æ
-	    	}
-	    }
-	    return dirSize;
+		if (!dir.isDirectory()) {
+			return 0;
+		}
+		long dirSize = 0;
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isFile()) {
+				dirSize += file.length();
+			} else if (file.isDirectory()) {
+				dirSize += file.length();
+				dirSize += getDirSize(file); // é€’å½’è°ƒç”¨ç»§ç»­ç»Ÿè®¡
+			}
+		}
+		return dirSize;
 	}
-	
+
 	/**
-	 * »ñÈ¡Ä¿Â¼ÎÄ¼ş¸öÊı
+	 * è·å–ç›®å½•æ–‡ä»¶ä¸ªæ•°
+	 * 
 	 * @param f
 	 * @return
 	 */
-	public long getFileList(File dir){
-        long count = 0;
-        File[] files = dir.listFiles();
-        count = files.length;
-        for (File file : files) {
-            if (file.isDirectory()) {
-            	count = count + getFileList(file);//µİ¹é
-            	count--;
-            }
-        }
-        return count;  
-    }
-	
-	public static byte[] toBytes(InputStream in) throws IOException 
-	{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    int ch;
-	    while ((ch = in.read()) != -1)
-	    {
-	    	out.write(ch);
-	    }
-	    byte buffer[]=out.toByteArray();
-	    out.close();
-	    return buffer;
+	public long getFileList(File dir) {
+		long count = 0;
+		File[] files = dir.listFiles();
+		count = files.length;
+		for (File file : files) {
+			if (file.isDirectory()) {
+				count = count + getFileList(file);// é€’å½’
+				count--;
+			}
+		}
+		return count;
 	}
-	
+
+	public static byte[] toBytes(InputStream in) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		int ch;
+		while ((ch = in.read()) != -1) {
+			out.write(ch);
+		}
+		byte buffer[] = out.toByteArray();
+		out.close();
+		return buffer;
+	}
+
 	/**
-	 * ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+	 * æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -311,10 +305,11 @@ public class FileUtils
 		return status;
 
 	}
-	
+
 	/**
-	 * ¼ÆËãSD¿¨µÄÊ£Óà¿Õ¼ä
-	 * @return ·µ»Ø-1£¬ËµÃ÷Ã»ÓĞ°²×°sd¿¨
+	 * è®¡ç®—SDå¡çš„å‰©ä½™ç©ºé—´
+	 * 
+	 * @return è¿”å›-1ï¼Œè¯´æ˜æ²¡æœ‰å®‰è£…sdå¡
 	 */
 	public static long getFreeDiskSpace() {
 		String status = Environment.getExternalStorageState();
@@ -336,7 +331,8 @@ public class FileUtils
 	}
 
 	/**
-	 * ĞÂ½¨Ä¿Â¼
+	 * æ–°å»ºç›®å½•
+	 * 
 	 * @param directoryName
 	 * @return
 	 */
@@ -347,13 +343,15 @@ public class FileUtils
 			File newPath = new File(path.toString() + directoryName);
 			status = newPath.mkdir();
 			status = true;
-		} else
+		} else {
 			status = false;
+		}
 		return status;
 	}
 
 	/**
-	 * ¼ì²éÊÇ·ñ°²×°SD¿¨
+	 * æ£€æŸ¥æ˜¯å¦å®‰è£…SDå¡
+	 * 
 	 * @return
 	 */
 	public static boolean checkSaveLocationExists() {
@@ -361,13 +359,15 @@ public class FileUtils
 		boolean status;
 		if (sDCardStatus.equals(Environment.MEDIA_MOUNTED)) {
 			status = true;
-		} else
+		} else {
 			status = false;
+		}
 		return status;
 	}
 
 	/**
-	 * É¾³ıÄ¿Â¼(°üÀ¨£ºÄ¿Â¼ÀïµÄËùÓĞÎÄ¼ş)
+	 * åˆ é™¤ç›®å½•(åŒ…æ‹¬ï¼šç›®å½•é‡Œçš„æ‰€æœ‰æ–‡ä»¶)
+	 * 
 	 * @param fileName
 	 * @return
 	 */
@@ -385,9 +385,9 @@ public class FileUtils
 				// delete all files within the specified directory and then
 				// delete the directory
 				try {
-					for (int i = 0; i < listfile.length; i++) {
+					for (String element : listfile) {
 						File deletedFile = new File(newPath.toString() + "/"
-								+ listfile[i].toString());
+								+ element.toString());
 						deletedFile.delete();
 					}
 					newPath.delete();
@@ -398,15 +398,18 @@ public class FileUtils
 					status = false;
 				}
 
-			} else
+			} else {
 				status = false;
-		} else
+			}
+		} else {
 			status = false;
+		}
 		return status;
 	}
 
 	/**
-	 * É¾³ıÎÄ¼ş
+	 * åˆ é™¤æ–‡ä»¶
+	 * 
 	 * @param fileName
 	 * @return
 	 */
@@ -428,10 +431,12 @@ public class FileUtils
 					se.printStackTrace();
 					status = false;
 				}
-			} else
+			} else {
 				status = false;
-		} else
+			}
+		} else {
 			status = false;
+		}
 		return status;
 	}
 }
