@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -71,7 +68,6 @@ public class Main extends BaseActivity {
 	private TextView mHeadTitle;
 	private ProgressBar mHeadProgress;
 	private ImageButton mHeadPub_post;
-	
 
 	private RadioButton fbNews; // 新闻资讯
 	private RadioButton fbProduct; // 产品中心
@@ -147,103 +143,106 @@ public class Main extends BaseActivity {
 		mScrollLayout.setIsScroll(appContext.isScroll());
 	}
 	/**
-     * 初始化水平滚动翻页
-     */
-    private void initPageScroll()
-    {
-    	mScrollLayout = (ScrollLayout) findViewById(R.id.main_scrolllayout);
-    	
-    	LinearLayout linearLayout = (LinearLayout) findViewById(R.id.main_linearlayout_footer);
-    	mHeadTitles = getResources().getStringArray(R.array.head_titles);
-    	mViewCount = mScrollLayout.getChildCount();
-    	mButtons = new RadioButton[mViewCount];
-    	
-    	for(int i = 0; i < mViewCount; i++)
-    	{
-    		mButtons[i] = (RadioButton) linearLayout.getChildAt(i*2);
-    		mButtons[i].setTag(i);
-    		mButtons[i].setChecked(false);
-    		mButtons[i].setOnClickListener(new View.OnClickListener() {
+	 * 初始化水平滚动翻页
+	 */
+	private void initPageScroll() {
+		mScrollLayout = (ScrollLayout) findViewById(R.id.main_scrolllayout);
+
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.main_linearlayout_footer);
+		mHeadTitles = getResources().getStringArray(R.array.head_titles);
+		mViewCount = mScrollLayout.getChildCount();
+		mButtons = new RadioButton[mViewCount];
+
+		for (int i = 0; i < mViewCount; i++) {
+			mButtons[i] = (RadioButton) linearLayout.getChildAt(i * 2);
+			mButtons[i].setTag(i);
+			mButtons[i].setChecked(false);
+			mButtons[i].setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View v) {
-					int pos = (Integer)(v.getTag());
-					//点击当前项刷新
-	    			if(mCurSel == pos) {
-		    			switch (pos) {
-						case 0://资讯
-							if(lvNews.getVisibility() == View.VISIBLE)
-								lvNews.clickRefresh();
-							break;	
-						case 1://产品
-							lvProduct.clickRefresh();
-							break;
-						case 2://动弹
-							lvMessage.clickRefresh();
-							break;
+					int pos = (Integer) (v.getTag());
+					// 点击当前项刷新
+					if (mCurSel == pos) {
+						switch (pos) {
+							case 0 :// 资讯
+								if (lvNews.getVisibility() == View.VISIBLE) {
+									lvNews.clickRefresh();
+								}
+								break;
+							case 1 :// 产品
+								lvProduct.clickRefresh();
+								break;
+							case 2 :// 留言
+								lvMessage.clickRefresh();
+								break;
 						}
-	    			}
+					}
 					mScrollLayout.snapToScreen(pos);
 				}
 			});
-    	}
-    	
-    	//设置第一显示屏
-    	mCurSel = 0;
-    	mButtons[mCurSel].setChecked(true);
-    	
-    	mScrollLayout.SetOnViewChangeListener(new ScrollLayout.OnViewChangeListener() {
-			public void OnViewChange(int viewIndex) {
-				//切换列表视图-如果列表数据为空：加载数据
-				switch (viewIndex) {
-				case 0://资讯
-					if(lvNews.getVisibility() == View.VISIBLE) {
-						if(lvNewsData.isEmpty()) {
-							loadLvNewsData( 0, lvNewsHandler, UIHelper.LISTVIEW_ACTION_INIT);
-						}
-					} 
-					break;	
-				case 1://产品
-					if(lvProductData.isEmpty()) {
-						loadLvProductData(0, lvProductHandler, UIHelper.LISTVIEW_ACTION_INIT);
-					} 
-					break;
-				case 2://留言
-					if(lvMessageData.isEmpty()) {
-						loadLvMessageData(0, lvMessageHandler, UIHelper.LISTVIEW_ACTION_INIT);
-					}
-					break;
-				}
-				setCurPoint(viewIndex);
-			}
-		});
-    }
-    /**
-     * 设置底部栏当前焦点
-     * @param index
-     */
-    private void setCurPoint(int index)
-    {
-    	if (index < 0 || index > mViewCount - 1 || mCurSel == index)
-    		return;
-   	
-    	mButtons[mCurSel].setChecked(false);
-    	mButtons[index].setChecked(true);    	
-    	mHeadTitle.setText(mHeadTitles[index]);    	
-    	mCurSel = index;
-    	mHeadPub_post.setVisibility(View.GONE);
-		//头部logo、发帖、发动弹按钮显示
-    	if(index == 0){
-    		mHeadLogo.setImageResource(R.drawable.frame_logo_news);
-    	}
-    	else if(index == 1){
-    		mHeadLogo.setImageResource(R.drawable.frame_logo_post);
-    	}
-    	else if(index == 2){
-    		mHeadLogo.setImageResource(R.drawable.frame_logo_tweet);
-    		mHeadPub_post.setVisibility(View.VISIBLE);
-    	}
+		}
 
-    }
- 
+		// 设置第一显示屏
+		mCurSel = 0;
+		mButtons[mCurSel].setChecked(true);
+
+		mScrollLayout
+				.SetOnViewChangeListener(new ScrollLayout.OnViewChangeListener() {
+					@Override
+					public void OnViewChange(int viewIndex) {
+						// 切换列表视图-如果列表数据为空：加载数据
+						switch (viewIndex) {
+							case 0 :// 资讯
+								if (lvNews.getVisibility() == View.VISIBLE) {
+									if (lvNewsData.isEmpty()) {
+										loadLvNewsData(0, lvNewsHandler,
+												UIHelper.LISTVIEW_ACTION_INIT);
+									}
+								}
+								break;
+							case 1 :// 产品
+								if (lvProductData.isEmpty()) {
+									loadLvProductData(0, lvProductHandler,
+											UIHelper.LISTVIEW_ACTION_INIT);
+								}
+								break;
+							case 2 :// 留言
+								if (lvMessageData.isEmpty()) {
+									loadLvMessageData(0, lvMessageHandler,
+											UIHelper.LISTVIEW_ACTION_INIT);
+								}
+								break;
+						}
+						setCurPoint(viewIndex);
+					}
+				});
+	}
+	/**
+	 * 设置底部栏当前焦点
+	 * 
+	 * @param index
+	 */
+	private void setCurPoint(int index) {
+		if (index < 0 || index > mViewCount - 1 || mCurSel == index) {
+			return;
+		}
+
+		mButtons[mCurSel].setChecked(false);
+		mButtons[index].setChecked(true);
+		mHeadTitle.setText(mHeadTitles[index]);
+		mCurSel = index;
+		mHeadPub_post.setVisibility(View.GONE);
+		// 头部logo、发帖、发动弹按钮显示
+		if (index == 0) {
+			mHeadLogo.setImageResource(R.drawable.frame_logo_news);
+		} else if (index == 1) {
+			mHeadLogo.setImageResource(R.drawable.frame_logo_post);
+		} else if (index == 2) {
+			mHeadLogo.setImageResource(R.drawable.frame_logo_tweet);
+			mHeadPub_post.setVisibility(View.VISIBLE);
+		}
+
+	}
 
 	/**
 	 * 初始化新闻列表
@@ -710,7 +709,6 @@ public class Main extends BaseActivity {
 		}
 	};
 
-
 	private void initFrameListView() {
 		this.initNewsListView();
 		this.initProductListView();
@@ -718,17 +716,20 @@ public class Main extends BaseActivity {
 		this.initFrameListViewData();
 	}
 
-
 	private void initFrameListViewData() {
-		lvNewsHandler = this.getLvHandler(lvNews, lvNewsAdapter,lvNews_foot_more, lvNews_foot_progress, AppContext.PAGE_SIZE);
-		lvProductHandler = this.getLvHandler(lvProduct, lvProductAdapter,lvProduct_foot_more, lvProduct_foot_progress, AppContext.PAGE_SIZE_10);
-		lvMessageHandler = this.getLvHandler(lvMessage, lvMessageAdapter,lvMessage_foot_more, lvMessage_foot_progress, AppContext.PAGE_SIZE_10);
+		lvNewsHandler = this.getLvHandler(lvNews, lvNewsAdapter,
+				lvNews_foot_more, lvNews_foot_progress, AppContext.PAGE_SIZE);
+		lvProductHandler = this.getLvHandler(lvProduct, lvProductAdapter,
+				lvProduct_foot_more, lvProduct_foot_progress,
+				AppContext.PAGE_SIZE_10);
+		lvMessageHandler = this.getLvHandler(lvMessage, lvMessageAdapter,
+				lvMessage_foot_more, lvMessage_foot_progress,
+				AppContext.PAGE_SIZE_10);
 
 		if (lvNewsData.isEmpty()) {
 			loadLvNewsData(0, lvNewsHandler, UIHelper.LISTVIEW_ACTION_INIT);
 		}
 	}
-
 
 	private Handler getLvHandler(final PullToRefreshListView lv,
 			final BaseAdapter adapter, final TextView more,
@@ -782,7 +783,6 @@ public class Main extends BaseActivity {
 		};
 	}
 
-
 	private void handleLvData(int what, Object obj, int objtype, int actiontype) {
 		// Notice notice = null;
 		switch (actiontype) {
@@ -800,7 +800,8 @@ public class Main extends BaseActivity {
 								for (NewsVO news1 : nlist.getNewsList()) {
 									boolean b = false;
 									for (NewsVO news2 : lvNewsData) {
-										if (news1.getId() == news2.getId()) {
+										if (news1.getId().longValue() == news2
+												.getId().longValue()) {
 											b = true;
 											break;
 										}
@@ -810,13 +811,13 @@ public class Main extends BaseActivity {
 									}
 								}
 							} else {
-								newdata = what;
+								newdata = 0;
 							}
 						}
 						lvNewsData.clear();
 						lvNewsData.addAll(nlist.getNewsList());
 						break;
-					case UIHelper.LISTVIEW_DATATYPE_PRODUCT:
+					case UIHelper.LISTVIEW_DATATYPE_PRODUCT :
 						ProductList plist = (ProductList) obj;
 						// notice = nlist.getNotice();
 						lvProductSumData = what;
@@ -825,7 +826,8 @@ public class Main extends BaseActivity {
 								for (ProductVO p1 : plist.getProductList()) {
 									boolean b = false;
 									for (ProductVO p2 : lvProductData) {
-										if (p1.getId() == p2.getId()) {
+										if (p1.getId().longValue() == p2
+												.getId().longValue()) {
 											b = true;
 											break;
 										}
@@ -835,13 +837,13 @@ public class Main extends BaseActivity {
 									}
 								}
 							} else {
-								newdata = what;
+								newdata = 0;
 							}
 						}
 						lvProductData.clear();
 						lvProductData.addAll(plist.getProductList());
 						break;
-					case UIHelper.LISTVIEW_DATATYPE_MESSAGE:
+					case UIHelper.LISTVIEW_DATATYPE_MESSAGE :
 						NoticeList mlist = (NoticeList) obj;
 						// notice = nlist.getNotice();
 						lvMessageSumData = what;
@@ -850,7 +852,8 @@ public class Main extends BaseActivity {
 								for (NoticeVO m1 : mlist.getNoticeList()) {
 									boolean b = false;
 									for (NoticeVO m2 : lvMessageData) {
-										if (m1.getId() == m2.getId()) {
+										if (m1.getId().longValue() == m2
+												.getId().longValue()) {
 											b = true;
 											break;
 										}
@@ -860,7 +863,7 @@ public class Main extends BaseActivity {
 									}
 								}
 							} else {
-								newdata = what;
+								newdata = 0;
 							}
 						}
 						lvMessageData.clear();
@@ -955,16 +958,18 @@ public class Main extends BaseActivity {
 	/**
 	 * 监听返回--是否退出程序
 	 */
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		boolean flag = true;
-		if(keyCode == KeyEvent.KEYCODE_BACK) {
-			//是否退出应用
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			// 是否退出应用
 			UIHelper.Exit(this);
-		}else if(keyCode == KeyEvent.KEYCODE_MENU){
-			//展示快捷栏&判断是否登录
-			UIHelper.showSettingLoginOrLogout(Main.this, mGrid.getQuickAction(0));
+		} else if (keyCode == KeyEvent.KEYCODE_MENU) {
+			// 展示快捷栏&判断是否登录
+			UIHelper.showSettingLoginOrLogout(Main.this,
+					mGrid.getQuickAction(0));
 			mGrid.show(fbSetting, true);
-		}else{
+		} else {
 			flag = super.onKeyDown(keyCode, event);
 		}
 		return flag;

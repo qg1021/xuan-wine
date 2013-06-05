@@ -45,8 +45,8 @@ public class AppContext extends Application {
 	public static final int PAGE_SIZE_10 = 10;
 	private static final int CACHE_TIME = 60 * 60000;
 
-	private boolean login = false; 
-	private int loginUid = 0; 
+	private boolean login = false;
+	private int loginUid = 0;
 	private final Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
 
 	private final Handler unLoginHandler = new Handler() {
@@ -63,29 +63,25 @@ public class AppContext extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		Thread.setDefaultUncaughtExceptionHandler(AppException
 				.getAppExceptionHandler());
 	}
-
 
 	public boolean isAudioNormal() {
 		AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 		return mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
 	}
 
-
 	public boolean isAppSound() {
 		return isAudioNormal() && isVoice();
 	}
-
 
 	public boolean isNetworkConnected() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		return ni != null && ni.isConnectedOrConnecting();
 	}
-
 
 	public int getNetworkType() {
 		int netType = 0;
@@ -110,12 +106,10 @@ public class AppContext extends Application {
 		return netType;
 	}
 
-
 	public static boolean isMethodsCompat(int VersionCode) {
 		int currentVersion = android.os.Build.VERSION.SDK_INT;
 		return currentVersion >= VersionCode;
 	}
-
 
 	public PackageInfo getPackageInfo() {
 		PackageInfo info = null;
@@ -130,7 +124,6 @@ public class AppContext extends Application {
 		return info;
 	}
 
-
 	public String getAppId() {
 		String uniqueID = getProperty(AppConfig.CONF_APP_UNIQUEID);
 		if (StringUtils.isEmpty(uniqueID)) {
@@ -140,16 +133,13 @@ public class AppContext extends Application {
 		return uniqueID;
 	}
 
-
 	public boolean isLogin() {
 		return login;
 	}
 
-
 	public int getLoginUid() {
 		return this.loginUid;
 	}
-
 
 	public void Logout() {
 		ApiClient.cleanCookie();
@@ -158,7 +148,6 @@ public class AppContext extends Application {
 		this.loginUid = 0;
 	}
 
-
 	public Handler getUnLoginHandler() {
 		return this.unLoginHandler;
 	}
@@ -166,7 +155,7 @@ public class AppContext extends Application {
 	public NewsList getNewsList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		NewsList list = null;
-		String key = "newslist_" + "_" + pageIndex + "_" + PAGE_SIZE;
+		String key = "wine_newslist_" + "_" + pageIndex + "_" + PAGE_SIZE;
 		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
 			try {
 				list = ApiClient.getNewsList(this, pageIndex, PAGE_SIZE);
@@ -194,7 +183,7 @@ public class AppContext extends Application {
 	public ProductList getProductList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		ProductList list = null;
-		String key = "productlist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
+		String key = "wine_productlist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
 		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
 			try {
 				list = ApiClient.getProductList(this, pageIndex, PAGE_SIZE_10);
@@ -221,7 +210,7 @@ public class AppContext extends Application {
 	public NoticeList getNoticeList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		NoticeList list = null;
-		String key = "noticelist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
+		String key = "wine_noticelist_" + "_" + pageIndex + "_" + PAGE_SIZE_10;
 		if (isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
 			try {
 				list = ApiClient.getNoticeList(this, pageIndex, PAGE_SIZE_10);
@@ -245,7 +234,6 @@ public class AppContext extends Application {
 		return list;
 	}
 
-
 	public void cleanLoginInfo() {
 		this.loginUid = 0;
 		this.login = false;
@@ -253,7 +241,6 @@ public class AppContext extends Application {
 				"user.pwd", "user.location", "user.followers", "user.fans",
 				"user.score", "user.isRememberMe");
 	}
-
 
 	public Bitmap getUserFace(String key) throws AppException {
 		FileInputStream fis = null;
@@ -279,11 +266,9 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public void setConfigLoadimage(boolean b) {
 		setProperty(AppConfig.CONF_LOAD_IMAGE, String.valueOf(b));
 	}
-
 
 	public boolean isVoice() {
 		String perf_voice = getProperty(AppConfig.CONF_VOICE);
@@ -294,11 +279,9 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public void setConfigVoice(boolean b) {
 		setProperty(AppConfig.CONF_VOICE, String.valueOf(b));
 	}
-
 
 	public boolean isCheckUp() {
 		String perf_checkup = getProperty(AppConfig.CONF_CHECKUP);
@@ -310,11 +293,9 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public void setConfigCheckUp(boolean b) {
 		setProperty(AppConfig.CONF_CHECKUP, String.valueOf(b));
 	}
-
 
 	public boolean isScroll() {
 		String perf_scroll = getProperty(AppConfig.CONF_SCROLL);
@@ -326,11 +307,9 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public void setConfigScroll(boolean b) {
 		setProperty(AppConfig.CONF_SCROLL, String.valueOf(b));
 	}
-
 
 	public boolean isHttpsLogin() {
 		String perf_httpslogin = getProperty(AppConfig.CONF_HTTPS_LOGIN);
@@ -350,11 +329,9 @@ public class AppContext extends Application {
 		removeProperty(AppConfig.CONF_COOKIE);
 	}
 
-
 	private boolean isReadDataCache(String cachefile) {
 		return readObject(cachefile) != null;
 	}
-
 
 	private boolean isExistDataCache(String cachefile) {
 		boolean exist = false;
@@ -377,9 +354,7 @@ public class AppContext extends Application {
 		return failure;
 	}
 
-
 	public void clearAppCache() {
-		// 锟斤拷锟絯ebview锟斤拷锟斤拷
 		File file = CacheManager.getCacheFileBaseDir();
 		if (file != null && file.exists() && file.isDirectory()) {
 			for (File item : file.listFiles()) {
@@ -393,7 +368,7 @@ public class AppContext extends Application {
 		deleteDatabase("webviewCache.db");
 		deleteDatabase("webviewCache.db-shm");
 		deleteDatabase("webviewCache.db-wal");
-	
+
 		clearCacheFolder(getFilesDir(), System.currentTimeMillis());
 		clearCacheFolder(getCacheDir(), System.currentTimeMillis());
 
@@ -405,7 +380,6 @@ public class AppContext extends Application {
 			}
 		}
 	}
-
 
 	private int clearCacheFolder(File dir, long curTime) {
 		int deletedFiles = 0;
@@ -428,7 +402,6 @@ public class AppContext extends Application {
 		return deletedFiles;
 	}
 
-
 	public void setMemCache(String key, Object value) {
 		memCacheRegion.put(key, value);
 	}
@@ -436,7 +409,6 @@ public class AppContext extends Application {
 	public Object getMemCache(String key) {
 		return memCacheRegion.get(key);
 	}
-
 
 	public void setDiskCache(String key, String value) throws IOException {
 		FileOutputStream fos = null;
@@ -452,7 +424,6 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public String getDiskCache(String key) throws IOException {
 		FileInputStream fis = null;
 		try {
@@ -467,7 +438,6 @@ public class AppContext extends Application {
 			}
 		}
 	}
-
 
 	public boolean saveObject(Serializable ser, String file) {
 		FileOutputStream fos = null;
@@ -493,7 +463,6 @@ public class AppContext extends Application {
 		}
 	}
 
-
 	public Serializable readObject(String file) {
 		if (!isExistDataCache(file)) {
 			return null;
@@ -507,7 +476,7 @@ public class AppContext extends Application {
 		} catch (FileNotFoundException e) {
 		} catch (Exception e) {
 			e.printStackTrace();
-	
+
 			if (e instanceof InvalidClassException) {
 				File data = getFileStreamPath(file);
 				data.delete();
@@ -584,7 +553,8 @@ public class AppContext extends Application {
 				setProperty("user.fans", String.valueOf(user.getFans()));
 				setProperty("user.score", String.valueOf(user.getScore()));
 				setProperty("user.isRememberMe",
-						String.valueOf(user.isRememberMe()));		}
+						String.valueOf(user.isRememberMe()));
+			}
 		});
 	}
 }
