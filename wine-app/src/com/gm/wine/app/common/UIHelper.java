@@ -14,17 +14,28 @@ import java.util.regex.Pattern;
 
 
 
+
+
+
+
+
+
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
 import com.gm.wine.app.AppManager;
 import com.gm.wine.app.R;
 import com.gm.wine.app.api.ApiClient;
 import com.gm.wine.app.bean.URLs;
+import com.gm.wine.app.ui.ImageDialog;
+import com.gm.wine.app.ui.ImageZoomDialog;
 import com.gm.wine.app.ui.LoginDialog;
 import com.gm.wine.app.ui.Main;
+import com.gm.wine.app.ui.NewsDetail;
 import com.gm.wine.app.ui.Setting;
+import com.gm.wine.vo.NewsVO;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -105,16 +116,33 @@ public class UIHelper {
 	}
 	
 	/**
-	 * ��ʾ��������
+	 * 跳转到新闻详情
 	 * @param context
 	 * @param newsId
 	 */
-//	public static void showNewsDetail(Context context, int newsId)
-//	{
-//		Intent intent = new Intent(context, NewsDetail.class);
-//		intent.putExtra("news_id", newsId);
-//		context.startActivity(intent);
-//	}
+	public static void showNewsDetail(Context context, long newsId)
+	{
+		Intent intent = new Intent(context, NewsDetail.class);
+		intent.putExtra("news_id", newsId);
+		context.startActivity(intent);
+	}
+	/**
+	 * 新闻超链接点击跳转
+	 * @param context
+	 * @param newsId
+	 * @param newsType
+	 * @param objId
+	 */
+	public static void showNewsRedirect(Context context, NewsVO news)
+	{
+		String url = news.getLinkurl();
+
+		if(StringUtils.isEmpty(url)) {
+			showNewsDetail(context, news.getId());
+		} else {
+			showUrlRedirect(context, url);
+		}
+	}
 	
 
 
@@ -661,6 +689,34 @@ public class UIHelper {
 				handler.sendMessage(msg);
 			}
 		}.start();
+	}
+	public static void showImageDialog(Context context, String imgUrl)
+	{
+		Intent intent = new Intent(context, ImageDialog.class);
+		intent.putExtra("img_url", imgUrl);
+		context.startActivity(intent);
+	}
+	public static void showImageZoomDialog(Context context, String imgUrl)
+	{
+		Intent intent = new Intent(context, ImageZoomDialog.class);
+		intent.putExtra("img_url", imgUrl);
+		context.startActivity(intent);
+	}
+	/**
+	 * 添加网页的点击图片展示支持
+	 */
+	@SuppressLint("SetJavaScriptEnabled")
+	public static void addWebImageShow(final Context cxt, WebView wv) {
+		wv.getSettings().setJavaScriptEnabled(true);
+		wv.addJavascriptInterface(new OnWebViewImageListener() {
+
+			@Override
+			public void onImageClick(String bigImageUrl) {
+				if (bigImageUrl != null)
+					System.out.println("========="+bigImageUrl);
+					UIHelper.showImageZoomDialog(cxt, bigImageUrl);
+			}
+		}, "mWebViewImageListener");
 	}
 	
 	/**

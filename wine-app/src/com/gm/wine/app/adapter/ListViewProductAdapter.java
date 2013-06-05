@@ -2,6 +2,8 @@ package com.gm.wine.app.adapter;
 
 import java.util.List;
 
+
+
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -115,6 +117,11 @@ public class ListViewProductAdapter extends BaseAdapter {
 
 		return convertView;
 	}
+//	private View.OnClickListener imageClickListener = new View.OnClickListener(){
+//		public void onClick(View v) {
+//			UIHelper.showImageDialog(v.getContext(), (String)v.getTag());
+//		}
+//	};
 
 	// private View.OnClickListener faceClickListener = new
 	// View.OnClickListener(){

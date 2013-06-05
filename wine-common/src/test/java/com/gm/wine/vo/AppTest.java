@@ -1,4 +1,4 @@
-package com.gm.wine.common;
+package com.gm.wine.vo;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

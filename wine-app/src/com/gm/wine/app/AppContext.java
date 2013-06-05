@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.UUID;
 
+
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -32,8 +33,11 @@ import com.gm.wine.app.common.CyptoUtils;
 import com.gm.wine.app.common.StringUtils;
 import com.gm.wine.app.common.UIHelper;
 import com.gm.wine.vo.NewsList;
+import com.gm.wine.vo.NewsVO;
 import com.gm.wine.vo.NoticeList;
+import com.gm.wine.vo.NoticeVO;
 import com.gm.wine.vo.ProductList;
+import com.gm.wine.vo.ProductVO;
 
 public class AppContext extends Application {
 	public static final int NETTYPE_WIFI = 0x01;
@@ -179,7 +183,42 @@ public class AppContext extends Application {
 		}
 		return list;
 	}
-
+	/**
+	 * 新闻详情
+	 * @param news_id
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
+	public NewsVO getNewsDetail(long news_id, boolean isRefresh) throws AppException {		
+		NewsVO news = null;
+		String key = "winenews_"+news_id;
+		if(isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try{
+				news = ApiClient.getNewsDetail(this, news_id);
+				if(news != null){
+					news.setCacheKey(key);
+					saveObject(news, key);
+				}
+			}catch(AppException e){
+				news = (NewsVO)readObject(key);
+				if(news == null)
+					throw e;
+			}
+		} else {
+			news = (NewsVO)readObject(key);
+			if(news == null)
+				news = new NewsVO();
+		}
+		return news;		
+	}
+	/**
+	 * 产品列表
+	 * @param pageIndex
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
 	public ProductList getProductList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		ProductList list = null;
@@ -206,7 +245,42 @@ public class AppContext extends Application {
 		}
 		return list;
 	}
-
+	/**
+	 * 产品明细
+	 * @param product_id
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
+	public ProductVO getProductDetail(long product_id, boolean isRefresh) throws AppException {		
+		ProductVO product = null;
+		String key = "wineproduct_"+product_id;
+		if(isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try{
+				product = ApiClient.getProductDetail(this, product_id);
+				if(product != null){
+					product.setCacheKey(key);
+					saveObject(product, key);
+				}
+			}catch(AppException e){
+				product = (ProductVO)readObject(key);
+				if(product == null)
+					throw e;
+			}
+		} else {
+			product = (ProductVO)readObject(key);
+			if(product == null)
+				product = new ProductVO();
+		}
+		return product;		
+	}
+	/**
+	 * 留言公告
+	 * @param pageIndex
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
 	public NoticeList getNoticeList(int pageIndex, boolean isRefresh)
 			throws AppException {
 		NoticeList list = null;
@@ -233,6 +307,36 @@ public class AppContext extends Application {
 		}
 		return list;
 	}
+	/**
+	 * 留言明细
+	 * @param notice_id
+	 * @param isRefresh
+	 * @return
+	 * @throws AppException
+	 */
+	public NoticeVO getNoticeDetail(long notice_id, boolean isRefresh) throws AppException {		
+		NoticeVO notice = null;
+		String key = "winenotice_"+notice_id;
+		if(isNetworkConnected() && (!isReadDataCache(key) || isRefresh)) {
+			try{
+				notice = ApiClient.getNoticeDetail(this, notice_id);
+				if(notice != null){
+					notice.setCacheKey(key);
+					saveObject(notice, key);
+				}
+			}catch(AppException e){
+				notice = (NoticeVO)readObject(key);
+				if(notice == null)
+					throw e;
+			}
+		} else {
+			notice = (NoticeVO)readObject(key);
+			if(notice == null)
+				notice = new NoticeVO();
+		}
+		return notice;		
+	}
+
 
 	public void cleanLoginInfo() {
 		this.loginUid = 0;

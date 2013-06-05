@@ -17,6 +17,7 @@ public class UserVO extends BaseVO {
     private String name;
     private String password;
     private Date createDate; // 创建时间
+
     private String roleName; // 角色名称
 
     public UserVO()

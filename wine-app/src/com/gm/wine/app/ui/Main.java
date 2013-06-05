@@ -281,8 +281,8 @@ public class Main extends BaseActivity {
 					return;
 				}
 
-				// ��ת����������
-				// UIHelper.showNewsRedirect(view.getContext(), news);
+			
+				 UIHelper.showNewsRedirect(view.getContext(), news);
 			}
 		});
 		lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {

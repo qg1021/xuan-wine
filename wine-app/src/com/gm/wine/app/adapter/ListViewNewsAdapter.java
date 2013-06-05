@@ -26,16 +26,10 @@ public class ListViewNewsAdapter extends BaseAdapter {
 		public ImageView flag;
 	}
 
-	/**
-	 * ʵ��Adapter
-	 * 
-	 * @param context
-	 * @param data
-	 * @param resource
-	 */
+
 	public ListViewNewsAdapter(Context context, List<NewsVO> data, int resource) {
 		this.context = context;
-		this.listContainer = LayoutInflater.from(context); // ������ͼ����������������
+		this.listContainer = LayoutInflater.from(context);
 		this.itemViewResource = resource;
 		this.listItems = data;
 	}
