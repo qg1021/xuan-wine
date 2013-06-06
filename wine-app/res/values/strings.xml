@@ -59,7 +59,7 @@
     
     <string name="news_detail_head_title">新闻正文</string>
     <string name="news_detail_lable_pub">发布于</string>
-    <string name="question_detail_head_title">帖子正文</string>
+    <string name="product_detail_head_title">产品详情</string>
     <string name="question_pub_head_title">我要发帖</string>
     <string name="blog_detail_head_title">博客正文</string>
     <string name="software_detail_head_title">软件详情</string>

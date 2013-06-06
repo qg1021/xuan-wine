@@ -370,8 +370,7 @@ public class Main extends BaseActivity {
 					return;
 				}
 
-				// 跳转到问答详情
-				// UIHelper.showQuestionDetail(view.getContext(), post.getId());
+				 UIHelper.showProductRedirect(view.getContext(), p);
 			}
 		});
 		lvProduct.setOnScrollListener(new AbsListView.OnScrollListener() {

@@ -31,8 +31,10 @@ import com.gm.wine.app.ui.ImageZoomDialog;
 import com.gm.wine.app.ui.LoginDialog;
 import com.gm.wine.app.ui.Main;
 import com.gm.wine.app.ui.NewsDetail;
+import com.gm.wine.app.ui.ProductDetail;
 import com.gm.wine.app.ui.Setting;
 import com.gm.wine.vo.NewsVO;
+import com.gm.wine.vo.ProductVO;
 
 
 import android.annotation.SuppressLint;
@@ -127,6 +129,17 @@ public class UIHelper {
 		context.startActivity(intent);
 	}
 	/**
+	 * 跳转到产品详情
+	 * @param context
+	 * @param productId
+	 */
+	public static void showProductDetail(Context context, long productId)
+	{
+		Intent intent = new Intent(context, ProductDetail.class);
+		intent.putExtra("product_id", productId);
+		context.startActivity(intent);
+	}
+	/**
 	 * 新闻超链接点击跳转
 	 * @param context
 	 * @param newsId
@@ -142,6 +155,19 @@ public class UIHelper {
 		} else {
 			showUrlRedirect(context, url);
 		}
+	}
+	/**
+	 * 产品超链接点击跳转
+	 * @param context
+	 * @param newsId
+	 * @param newsType
+	 * @param objId
+	 */
+	public static void showProductRedirect(Context context, ProductVO product)
+	{
+		
+
+		showProductDetail(context,product.getId());
 	}
 	
 

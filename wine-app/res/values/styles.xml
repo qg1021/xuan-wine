@@ -238,6 +238,15 @@
 		<item name="android:background">@drawable/widget_dface_border</item>
 		<item name="android:src">@drawable/widget_dface_loading</item>
     </style> 
+    <style name="product_pic">
+		<item name="android:layout_width">100.0dip</item>
+		<item name="android:layout_height">100.0dip</item>
+		<item name="android:scaleType">fitCenter</item>
+		<item name="android:padding">0dip</item>
+		<item name="android:clickable">true</item>
+		<item name="android:background">@drawable/widget_dface_border</item>
+		<item name="android:src">@drawable/load</item>
+    </style>
     
     <style name="tab_button">
         <item name="android:layout_width">fill_parent</item>

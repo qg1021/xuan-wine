@@ -18,7 +18,7 @@ public class URLs implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public final static String HOST = "192.168.1.100:8088/wine-webapp";// www.crafts-bamboo.com/wine
+	public final static String HOST = "192.168.1.101:8088/wine-webapp";// www.crafts-bamboo.com/wine
 	public final static String HTTP = "http://";
 
 	private final static String URL_SPLITTER = "/";

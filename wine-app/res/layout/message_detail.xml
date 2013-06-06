@@ -20,6 +20,6 @@
 		
 	</LinearLayout>
    	
-	<include layout="@layout/message_detail_footer"/>
+
 	
 </LinearLayout>

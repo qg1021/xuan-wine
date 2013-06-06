@@ -5,15 +5,15 @@
   	android:orientation="vertical"
   	android:background="@color/white">
 
-	<include layout="@layout/question_detail_header"/>
+	<include layout="@layout/product_detail_header"/>
 
 	<ViewSwitcher
-    	android:id="@+id/question_detail_viewswitcher" 
+    	android:id="@+id/product_detail_viewswitcher" 
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:layout_weight="1">
 	    <ScrollView
-	    	android:id="@+id/question_detail_scrollview" 
+	    	android:id="@+id/product_detail_scrollview" 
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:layout_weight="1"
@@ -24,7 +24,7 @@
 		    	android:layout_width="fill_parent" 
 		    	android:layout_height="wrap_content">	
 		        <TextView 
-		        	android:id="@+id/question_detail_title" 
+		        	android:id="@+id/product_detail_name" 
 		            android:layout_width="fill_parent" 
 		         	android:layout_height="wrap_content"
 		         	android:layout_marginTop="10.0dip"
@@ -41,8 +41,15 @@
 			        android:layout_marginTop="6.0dip"
 			        android:layout_marginLeft="6.0dip"
 					android:layout_marginRight="6.0dip"
-			        android:gravity="center_vertical">   
-			       	<TextView android:id="@+id/question_detail_author"  
+			        android:gravity="center_vertical">
+			         <TextView 
+			    		android:layout_width="wrap_content" 
+			           	android:layout_height="wrap_content" 
+			           	android:layout_marginLeft="6.0dip"
+			           	android:textSize="@dimen/text_size_12"
+			            android:textColor="@color/gray"
+			            android:text="价格:"/>   
+			       	<TextView android:id="@+id/product_detail_price"  
 			    		android:layout_width="wrap_content" 
 			           	android:layout_height="wrap_content" 
 			           	android:textSize="@dimen/text_size_13"
@@ -54,30 +61,42 @@
 			           	android:textSize="@dimen/text_size_12"
 			            android:textColor="@color/gray"
 			            android:text="@string/news_detail_lable_pub"/>
-			       	<TextView android:id="@+id/question_detail_date"  
+			       	<TextView android:id="@+id/product_detail_date"  
 			    		android:layout_width="wrap_content" 
 			           	android:layout_height="wrap_content" 
 			           	android:layout_marginLeft="6.0dip"
 			           	android:textSize="@dimen/text_size_12"
 			            android:textColor="@color/gray"/>
-				    <ImageView 
-				      	android:layout_width="wrap_content" 
-				        android:layout_height="wrap_content"
-				        android:layout_marginLeft="10.0dip"
-				        android:layout_gravity="center_vertical"
-				        android:src="@drawable/widget_comment_count_icon"/>	        
-			       	<TextView android:id="@+id/question_detail_commentcount"  
-			    		android:layout_width="wrap_content" 
-			           	android:layout_height="wrap_content" 
-			           	android:layout_marginLeft="3.0dip"
-			           	android:textSize="@dimen/text_size_12"
-			            android:textColor="@color/gray"/>
+
 			   	</LinearLayout>
 			   	
 				<View style="@style/detail_cut_line"/>
-			   	
+				 <TextView 
+			    		android:layout_width="wrap_content" 
+			           	android:layout_height="wrap_content" 
+			           	android:layout_marginLeft="6.0dip"
+			           	android:textSize="@dimen/text_size_12"
+			            android:textColor="@color/gray"
+			            android:text="产品配图:"/>
+				<LinearLayout 
+			    	android:orientation="horizontal" 
+			        android:layout_width="fill_parent"  
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="6.0dip"
+			        android:layout_marginLeft="6.0dip"
+					android:layout_marginRight="6.0dip"
+			        android:gravity="center">
+					<ImageView  android:id="@+id/product_detail_pic" style="@style/product_pic"/>
+				</LinearLayout>
+				 <TextView 
+			    		android:layout_width="wrap_content" 
+			           	android:layout_height="wrap_content" 
+			           	android:layout_marginLeft="6.0dip"
+			           	android:textSize="@dimen/text_size_12"
+			            android:textColor="@color/gray"
+			            android:text="产品简介:"/>
 				<WebView 
-					android:id="@+id/question_detail_webview"
+					android:id="@+id/product_detail_webview"
 		        	android:layout_width="fill_parent"
 		        	android:layout_height="wrap_content"
 		        	android:background="@color/white"/>
@@ -88,6 +107,6 @@
 	    
    	</ViewSwitcher>
     
-   	<include layout="@layout/question_detail_footer"/>
+  
    	
 </LinearLayout>
