@@ -30,6 +30,7 @@ import com.gm.wine.app.ui.ImageDialog;
 import com.gm.wine.app.ui.ImageZoomDialog;
 import com.gm.wine.app.ui.LoginDialog;
 import com.gm.wine.app.ui.Main;
+import com.gm.wine.app.ui.MessageDetail;
 import com.gm.wine.app.ui.NewsDetail;
 import com.gm.wine.app.ui.ProductDetail;
 import com.gm.wine.app.ui.Setting;
@@ -140,6 +141,17 @@ public class UIHelper {
 		context.startActivity(intent);
 	}
 	/**
+	 * 跳到留言详情
+	 * @param context
+	 * @param messageId
+	 */
+	public static void showMessageDetail(Context context, long messageId)
+	{
+		Intent intent = new Intent(context, MessageDetail.class);
+		intent.putExtra("message_id", messageId);
+		context.startActivity(intent);
+	}
+	/**
 	 * 新闻超链接点击跳转
 	 * @param context
 	 * @param newsId
@@ -169,6 +181,7 @@ public class UIHelper {
 
 		showProductDetail(context,product.getId());
 	}
+	
 	
 
 

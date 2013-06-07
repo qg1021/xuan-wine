@@ -18,6 +18,7 @@
     	<activity android:name=".ui.ImageDialog" android:theme="@style/Theme.HalfTranslucent" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask"/>
 		<activity android:name=".ui.ImageZoomDialog" android:theme="@style/Theme.ZoomLight.Fullscreen" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTask"/>
     	<activity android:name=".ui.ProductDetail" android:theme="@style/Theme.SlideTop" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation"/>
+    	<activity android:name=".ui.MessageDetail" android:theme="@style/Theme.SlideTop" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

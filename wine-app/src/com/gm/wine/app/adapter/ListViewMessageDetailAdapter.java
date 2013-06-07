@@ -89,7 +89,7 @@ public class ListViewMessageDetailAdapter extends BaseAdapter {
 		
 		//设置文字和图片
 		NoticeVO msg = listItems.get(position);
-		listItemView.username.setLinkText("<font color='#0e5986'><b>" + msg.getUser().getName() + "</b></font>回复：" + msg.getContent());
+		listItemView.username.setLinkText("<font color='#0e5986'><b>" + msg.getUser().getName() + "</b></font>：" + msg.getContent());
 		//listItemView.username.setText(UIHelper.parseMessageSpan(msg.getAuthor(), msg.getContent(), ""));
 		//listItemView.username.parseLinkText();
 		listItemView.username.setTag(msg);//设置隐藏参数(实体类)

@@ -12,12 +12,18 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:layout_weight="1">
+		<LinearLayout
+	    	android:id="@+id/message_detail_linearlayout"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
 	   	
 		<com.gm.wine.app.widget.PullToRefreshListView
 		  	android:id="@+id/message_list_listview"
 		    style="@style/widget_listview"
 		    android:divider="@null"/>
 		
+		</LinearLayout>
 	</LinearLayout>
    	
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.gm.wine.app.R;
 import com.gm.wine.app.common.StringUtils;
 import com.gm.wine.app.common.UIHelper;
+import com.gm.wine.app.widget.LinkView;
 import com.gm.wine.vo.NoticeVO;
 
 /**
@@ -27,7 +28,7 @@ public class ListViewMessageAdapter extends BaseAdapter {
 	private final LayoutInflater listContainer;// 视图容器
 	private final int itemViewResource;// 自定义项视图源
 	static class ListItemView { // 自定义控件集合
-		public TextView username;
+		public LinkView username;
 		public TextView date;
 		public TextView messageCount;
 	}
@@ -78,7 +79,7 @@ public class ListViewMessageAdapter extends BaseAdapter {
 
 			listItemView = new ListItemView();
 			// 获取控件对象
-			listItemView.username = (TextView) convertView
+			listItemView.username = (LinkView) convertView
 					.findViewById(R.id.message_listitem_username);
 			listItemView.date = (TextView) convertView
 					.findViewById(R.id.message_listitem_date);
@@ -93,8 +94,7 @@ public class ListViewMessageAdapter extends BaseAdapter {
 
 		// 设置文字和图片
 		NoticeVO msg = listItems.get(position);
-		listItemView.username.setText(UIHelper.parseMessageSpan(msg.getUser()
-				.getName(), msg.getTitle(), ""));
+		listItemView.username.setLinkText("<font color='#0e5986'><b>" + msg.getUser().getName() + "</b></font>：" + msg.getContent());;
 		listItemView.username.setTag(msg);// 设置隐藏参数(实体类)
 		listItemView.date
 				.setText(StringUtils.friendly_time(msg.getCreatedate()));

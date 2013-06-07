@@ -236,7 +236,7 @@ public class Main extends BaseActivity {
 		if (index == 0) {
 			mHeadLogo.setImageResource(R.drawable.frame_logo_news);
 		} else if (index == 1) {
-			mHeadLogo.setImageResource(R.drawable.frame_logo_post);
+			mHeadLogo.setImageResource(R.drawable.frame_logo_active);
 		} else if (index == 2) {
 			mHeadLogo.setImageResource(R.drawable.frame_logo_tweet);
 			mHeadPub_post.setVisibility(View.VISIBLE);
@@ -460,7 +460,8 @@ public class Main extends BaseActivity {
 				}
 
 				// 跳转到问答详情
-				// UIHelper.showQuestionDetail(view.getContext(), post.getId());
+				if(p.getReplyNum()>0)
+				 UIHelper.showMessageDetail(view.getContext(), p.getId());
 			}
 		});
 		lvMessage.setOnScrollListener(new AbsListView.OnScrollListener() {
