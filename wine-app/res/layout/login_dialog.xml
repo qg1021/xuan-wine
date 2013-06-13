@@ -132,6 +132,18 @@
 	                        android:text="@string/login_dialog_login" 
 	                        android:background="@drawable/login_btn_selector" />
                     </LinearLayout>
+                    <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip">
+                        <Button 
+	                        android:id="@+id/reg_btn_reg" 
+	                        android:layout_width="fill_parent" 
+	                        android:layout_height="45dip" 
+	                        android:textSize="@dimen/text_size_20"
+	                        android:text="@string/login_dialog_reg" 
+	                        android:background="@drawable/login_btn_selector" />
+                    </LinearLayout>
                 </TableLayout>
             </RelativeLayout>
             <View 

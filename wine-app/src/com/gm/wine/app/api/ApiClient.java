@@ -33,6 +33,7 @@ import com.gm.wine.vo.NoticeList;
 import com.gm.wine.vo.NoticeVO;
 import com.gm.wine.vo.ProductList;
 import com.gm.wine.vo.ProductVO;
+import com.gm.wine.vo.UserVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -518,19 +519,26 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
-
-	public static User login(AppContext appContext, String username, String pwd)
+	/**
+	 * 登录验证
+	 * @param appContext
+	 * @param username
+	 * @param pwd
+	 * @return
+	 * @throws AppException
+	 */
+	public static UserVO login(AppContext appContext, String username, String pwd)
 			throws AppException {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("username", username);
-		params.put("pwd", pwd);
-		params.put("keep_login", 1);
+		params.put("loginName", username);
+		params.put("password", pwd);
+	
 
 		String loginurl = URLs.LOGIN_VALIDATE_HTTP;
 
 		try {
 			return new Gson().fromJson(_post(appContext, loginurl, params),
-					User.class);
+					UserVO.class);
 		} catch (Exception e) {
 			if (e instanceof AppException) {
 				throw (AppException) e;

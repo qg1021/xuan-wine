@@ -1,6 +1,5 @@
 ﻿package com.gm.wine.vo;
 
-import java.util.Date;
 
 /**
  * 用户
@@ -16,9 +15,18 @@ public class UserVO extends BaseVO {
     private String loginName;
     private String name;
     private String password;
-    private Date createDate; // 创建时间
 
-    private String roleName; // 角色名称
+    private boolean           rememberMe;
+
+    public boolean isRememberMe()
+    {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe)
+    {
+        this.rememberMe = rememberMe;
+    }
 
     public UserVO()
     {
@@ -65,20 +73,6 @@ public class UserVO extends BaseVO {
         this.password = password;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 
 }

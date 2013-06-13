@@ -52,9 +52,8 @@ import com.gm.wine.vo.ProductVO;
  */
 public class Main extends BaseActivity {
 	public static final int QUICKACTION_LOGIN_OR_LOGOUT = 0;
-	public static final int QUICKACTION_USERINFO = 1;
-	public static final int QUICKACTION_SETTING = 2;
-	public static final int QUICKACTION_EXIT = 3;
+	public static final int QUICKACTION_SETTING = 1;
+	public static final int QUICKACTION_EXIT = 2;
 
 	private AppContext appContext; // 全局Context
 
@@ -117,6 +116,7 @@ public class Main extends BaseActivity {
 		if (!appContext.isNetworkConnected()) {
 			UIHelper.ToastMessage(this, R.string.network_not_connected);
 		}
+		 appContext.initLoginInfo();
 		this.initHeadView();
 		this.initFootBar();
 		this.initPageScroll();
@@ -676,8 +676,6 @@ public class Main extends BaseActivity {
 		mGrid = new QuickActionGrid(this);
 		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_login,
 				R.string.main_menu_login));
-		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_myinfo,
-				R.string.main_menu_myinfo));
 		mGrid.addQuickAction(new MyQuickAction(this,
 				R.drawable.ic_menu_setting, R.string.main_menu_setting));
 		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_exit,
@@ -695,9 +693,6 @@ public class Main extends BaseActivity {
 			switch (position) {
 				case QUICKACTION_LOGIN_OR_LOGOUT :
 					UIHelper.loginOrLogout(Main.this);
-					break;
-				case QUICKACTION_USERINFO :
-					UIHelper.showUserInfo(Main.this);
 					break;
 				case QUICKACTION_SETTING :
 					UIHelper.showSetting(Main.this);

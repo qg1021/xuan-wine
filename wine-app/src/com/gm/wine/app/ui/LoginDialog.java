@@ -1,6 +1,8 @@
 package com.gm.wine.app.ui;
 
 
+
+
 import com.gm.wine.app.AppContext;
 import com.gm.wine.app.AppException;
 import com.gm.wine.app.R;
@@ -8,6 +10,7 @@ import com.gm.wine.app.api.ApiClient;
 import com.gm.wine.app.bean.User;
 import com.gm.wine.app.common.StringUtils;
 import com.gm.wine.app.common.UIHelper;
+import com.gm.wine.vo.UserVO;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -25,7 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ViewSwitcher;
 
 /**
- * ÓÃ»§µÇÂ¼¶Ô»°¿ò
+ * ç”¨æˆ·ç™»å½•å¯¹è¯æ¡†
  * @author liux (http://my.oschina.net/liux)
  * @version 1.0
  * @created 2012-3-21
@@ -68,13 +71,13 @@ public class LoginDialog extends BaseActivity{
         btn_login = (Button)findViewById(R.id.login_btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//Òş²ØÈí¼üÅÌ
+				//éšè—è½¯é”®ç›˜
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
 				
 				String account = mAccount.getText().toString();
 				String pwd = mPwd.getText().toString();
 				boolean isRememberMe = chb_rememberMe.isChecked();
-				//ÅĞ¶ÏÊäÈë
+				//åˆ¤æ–­è¾“å…¥
 				if(StringUtils.isEmpty(account)){
 					UIHelper.ToastMessage(v.getContext(), getString(R.string.msg_login_email_null));
 					return;
@@ -93,40 +96,40 @@ public class LoginDialog extends BaseActivity{
 			}
 		});
 
-        //ÊÇ·ñÏÔÊ¾µÇÂ¼ĞÅÏ¢
+        //æ˜¯å¦æ˜¾ç¤ºç™»å½•ä¿¡æ¯
         AppContext ac = (AppContext)getApplication();
-        User user = ac.getLoginInfo();
+        UserVO user = ac.getLoginInfo();
         if(user==null || !user.isRememberMe()) return;
-        if(!StringUtils.isEmpty(user.getAccount())){
-        	mAccount.setText(user.getAccount());
+        if(!StringUtils.isEmpty(user.getLoginName())){
+        	mAccount.setText(user.getLoginName());
         	mAccount.selectAll();
         	chb_rememberMe.setChecked(user.isRememberMe());
         }
-        if(!StringUtils.isEmpty(user.getPwd())){
-        	mPwd.setText(user.getPwd());
+        if(!StringUtils.isEmpty(user.getPassword())){
+        	mPwd.setText(user.getPassword());
         }
     }
     
-    //µÇÂ¼ÑéÖ¤
+    //ç™»å½•éªŒè¯
     private void login(final String account, final String pwd, final boolean isRememberMe) {
 		final Handler handler = new Handler() {
 			public void handleMessage(Message msg) {
 				if(msg.what == 1){
-					User user = (User)msg.obj;
+					UserVO user = (UserVO)msg.obj;
 					if(user != null){
-						//Çå¿ÕÔ­ÏÈcookie
+						//æ¸…ç©ºåŸå…ˆcookie
 						ApiClient.cleanCookie();
-						//·¢ËÍÍ¨Öª¹ã²¥
+						//å‘é€é€šçŸ¥å¹¿æ’­
 						//UIHelper.sendBroadCast(LoginDialog.this, user.getNotice());
-						//ÌáÊ¾µÇÂ½³É¹¦
+						//æç¤ºç™»é™†æˆåŠŸ
 						UIHelper.ToastMessage(LoginDialog.this, R.string.msg_login_success);
 						if(curLoginType == LOGIN_MAIN){
-							//Ìø×ª--¼ÓÔØÓÃ»§¶¯Ì¬
+							//è·³è½¬--åŠ è½½ç”¨æˆ·åŠ¨æ€
 							Intent intent = new Intent(LoginDialog.this, Main.class);
 							intent.putExtra("LOGIN", true);
 							startActivity(intent);
 						}else if(curLoginType == LOGIN_SETTING){
-							//Ìø×ª--ÓÃ»§ÉèÖÃÒ³Ãæ
+							//è·³è½¬--ç”¨æˆ·è®¾ç½®é¡µé¢
 							Intent intent = new Intent(LoginDialog.this, Setting.class);
 							intent.putExtra("LOGIN", true);
 							startActivity(intent);
@@ -149,19 +152,19 @@ public class LoginDialog extends BaseActivity{
 				Message msg =new Message();
 				try {
 					AppContext ac = (AppContext)getApplication(); 
-	                User user = ac.loginVerify(account, pwd);
-	                user.setAccount(account);
-	                user.setPwd(pwd);
+	                UserVO user = ac.loginVerify(account, pwd);
+	                user.setLoginName(account);
+	                user.setPassword(pwd);
 	                user.setRememberMe(isRememberMe);
-	              
-	                if(user.isOK()){
-	                	ac.saveLoginInfo(user);//±£´æµÇÂ¼ĞÅÏ¢
-	                	msg.what = 1;//³É¹¦
+	                int res = user.getErrorCode();
+	                if(res==0){
+	                	ac.saveLoginInfo(user);//ä¿å­˜ç™»å½•ä¿¡æ¯
+	                	msg.what = 1;//æˆåŠŸ
 	                	msg.obj = user;
 	                }else{
-	                	ac.cleanLoginInfo();//Çå³ıµÇÂ¼ĞÅÏ¢
-	                	msg.what = 0;//Ê§°Ü
-	                	//msg.obj = res.getErrorMessage();
+	                	ac.cleanLoginInfo();//æ¸…é™¤ç™»å½•ä¿¡æ¯
+	                	msg.what = 0;//å¤±è´¥
+	                	msg.obj = user.getErrorMessage();
 	                }
 	            } catch (AppException e) {
 	            	e.printStackTrace();

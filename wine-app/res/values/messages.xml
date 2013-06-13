@@ -38,7 +38,7 @@
     
     <string name="msg_load_is_null">读取失败，可能已被删除</string>
     <string name="msg_login_email_error">无效的邮箱地址</string>
-    <string name="msg_login_email_null">请输入邮箱</string>
+    <string name="msg_login_email_null">请输入帐号</string>
     <string name="msg_login_pwd_null">请输入密码</string>
     <string name="msg_login_success">登录成功</string>
     <string name="msg_login_fail">登录失败</string>

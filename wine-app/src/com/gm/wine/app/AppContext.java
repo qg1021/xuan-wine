@@ -38,6 +38,7 @@ import com.gm.wine.vo.NoticeList;
 import com.gm.wine.vo.NoticeVO;
 import com.gm.wine.vo.ProductList;
 import com.gm.wine.vo.ProductVO;
+import com.gm.wine.vo.UserVO;
 
 public class AppContext extends Application {
 	public static final int NETTYPE_WIFI = 0x01;
@@ -50,7 +51,7 @@ public class AppContext extends Application {
 	private static final int CACHE_TIME = 60 * 60000;
 
 	private boolean login = false;
-	private int loginUid = 0;
+	private long loginUid = 0;
 	private final Hashtable<String, Object> memCacheRegion = new Hashtable<String, Object>();
 
 	private final Handler unLoginHandler = new Handler() {
@@ -140,8 +141,20 @@ public class AppContext extends Application {
 	public boolean isLogin() {
 		return login;
 	}
+	/**
+	 * 初始化用户登录信息
+	 */
+	public void initLoginInfo() {
+		UserVO loginUser = getLoginInfo();
+		if(loginUser!=null && loginUser.getId()>0 && loginUser.isRememberMe()){
+			this.loginUid = loginUser.getId();
+			this.login = true;
+		}else{
+			this.Logout();
+		}
+	}
 
-	public int getLoginUid() {
+	public long getLoginUid() {
 		return this.loginUid;
 	}
 
@@ -622,40 +635,30 @@ public class AppContext extends Application {
 		AppConfig.getAppConfig(this).remove(key);
 	}
 
-	public User loginVerify(String account, String pwd) throws AppException {
+	public UserVO loginVerify(String account, String pwd) throws AppException {
 		return ApiClient.login(this, account, pwd);
 	}
 
-	public User getLoginInfo() {
-		User lu = new User();
-		lu.setUid(StringUtils.toInt(getProperty("user.uid"), 0));
+	public UserVO getLoginInfo() {
+		UserVO lu = new UserVO();
+		lu.setId(StringUtils.toInt(getProperty("user.uid"), 0));
 		lu.setName(getProperty("user.name"));
-		lu.setFace(getProperty("user.face"));
-		lu.setAccount(getProperty("user.account"));
-		lu.setPwd(CyptoUtils.decode("oschinaApp", getProperty("user.pwd")));
-		lu.setLocation(getProperty("user.location"));
-		lu.setFollowers(StringUtils.toInt(getProperty("user.followers"), 0));
-		lu.setFans(StringUtils.toInt(getProperty("user.fans"), 0));
-		lu.setScore(StringUtils.toInt(getProperty("user.score"), 0));
+		lu.setLoginName(getProperty("user.account"));
+		lu.setPassword(CyptoUtils.decode("wineApp", getProperty("user.pwd")));
 		lu.setRememberMe(StringUtils.toBool(getProperty("user.isRememberMe")));
 		return lu;
 	}
 
-	public void saveLoginInfo(final User user) {
-		this.loginUid = user.getUid();
+	public void saveLoginInfo(final UserVO user) {
+		this.loginUid = user.getId();
 		this.login = true;
 		setProperties(new Properties() {
 			{
-				setProperty("user.uid", String.valueOf(user.getUid()));
+				setProperty("user.uid", String.valueOf(user.getId()));
 				setProperty("user.name", user.getName());
-				setProperty("user.account", user.getAccount());
+				setProperty("user.account", user.getLoginName());
 				setProperty("user.pwd",
-						CyptoUtils.encode("oschinaApp", user.getPwd()));
-				setProperty("user.location", user.getLocation());
-				setProperty("user.followers",
-						String.valueOf(user.getFollowers()));
-				setProperty("user.fans", String.valueOf(user.getFans()));
-				setProperty("user.score", String.valueOf(user.getScore()));
+						CyptoUtils.encode("wineApp", user.getPassword()));
 				setProperty("user.isRememberMe",
 						String.valueOf(user.isRememberMe()));
 			}

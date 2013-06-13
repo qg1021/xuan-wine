@@ -18,15 +18,14 @@ public class URLs implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public final static String HOST = "192.168.1.101:8088/wine-webapp";// www.crafts-bamboo.com/wine
+	public final static String HOST = "192.168.1.100:8088/wine-webapp";// www.crafts-bamboo.com/wine
 	public final static String HTTP = "http://";
 
 	private final static String URL_SPLITTER = "/";
 	private final static String URL_UNDERLINE = "_";
 
 	private final static String URL_API_HOST = HTTP + HOST + URL_SPLITTER;
-	public final static String LOGIN_VALIDATE_HTTP = URL_API_HOST
-			+ "loginvalidate.action";// 登录验证
+	public final static String LOGIN_VALIDATE_HTTP = URL_API_HOST+ "loginvalidate.action";// 登录验证
 	public final static String NEWS_LIST = URL_API_HOST + "news.action";// 新闻资讯列表
 	public final static String NEWS_DETAIL = URL_API_HOST
 			+ "news!detail.action";// 新闻明细
