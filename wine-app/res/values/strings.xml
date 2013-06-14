@@ -41,6 +41,8 @@
     <string name="footbar_more">更多</string>
     
     <string name="login_dialog_logo">开源中国</string>
+    <string name="login_dialog_name">姓名:</string>
+    <string name="login_dialog_name_hint">输入姓名</string>
     <string name="login_dialog_account">账号:</string>
     <string name="login_dialog_account_hint">输入账号</string>
     <string name="login_dialog_password">密码:</string>

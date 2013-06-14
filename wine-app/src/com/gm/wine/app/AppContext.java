@@ -638,6 +638,12 @@ public class AppContext extends Application {
 	public UserVO loginVerify(String account, String pwd) throws AppException {
 		return ApiClient.login(this, account, pwd);
 	}
+	public boolean regVerify(String account) throws AppException{
+		return ApiClient.checkUserExist(this, account);
+	}
+	public UserVO reg(String account,String password,String name) throws AppException{
+		return ApiClient.reg(this, account,password,name);
+	}
 
 	public UserVO getLoginInfo() {
 		UserVO lu = new UserVO();

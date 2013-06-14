@@ -546,5 +546,56 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
+	/**
+	 * 验证用户名是否存在
+	 * true:验证通过 false:验证不通过
+	 * @param appContext
+	 * @param username
+	 * @return
+	 * @throws AppException
+	 */
+	public static boolean checkUserExist(AppContext appContext, String username)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loginName", username);
+	
+
+
+		try {
+			return new Gson().fromJson(_post(appContext, URLs.REG_CHECK_VALIDATE_HTTP, params),
+					Boolean.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * 用户注册
+	 * @param appContext
+	 * @param username
+	 * @param password
+	 * @param name
+	 * @return
+	 * @throws AppException
+	 */
+	public static UserVO reg(AppContext appContext, String username,String password,String name)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loginName", username);
+		params.put("password",password);
+		params.put("name", name);
+
+		try {
+			return new Gson().fromJson(_post(appContext,URLs.REG_HTTP, params),
+					UserVO.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
 
 }

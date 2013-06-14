@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/logindialog_space" 
+	android:id="@+id/regdialog_space" 
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
     <ScrollView 
-    	android:id="@+id/login_scrollview" 
+    	android:id="@+id/reg_scrollview" 
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
     	android:layout_centerInParent="true"
@@ -13,7 +13,7 @@
     	android:paddingRight="14.0dip" 
     	android:scrollbars="none" >
         <ViewSwitcher 
-        	android:id="@+id/logindialog_view_switcher" 
+        	android:id="@+id/regdialog_view_switcher" 
         	android:layout_width="fill_parent" 
         	android:layout_height="wrap_content">
             <RelativeLayout 
@@ -24,7 +24,7 @@
             	android:paddingBottom="20.0dip" >
                 <TableLayout 
 	                android:orientation="vertical" 
-	                android:id="@+id/login_user_table" 
+	                android:id="@+id/reg_user_table" 
 	                android:layout_width="fill_parent" 
 	                android:layout_height="wrap_content" 
 	                android:layout_marginTop="10.0dip" 
@@ -33,7 +33,7 @@
 	                android:layout_centerHorizontal="true"
 	                android:background="@drawable/login_user_table_bg" >
                     <LinearLayout 
-                    	android:id="@+id/login_uly"
+                    	android:id="@+id/reg_uly"
                      	android:layout_width="fill_parent" 
                      	android:layout_height="wrap_content">
                         <TextView 
@@ -46,7 +46,7 @@
 	                         android:textColor="#ff000000" 
 	                         android:text="@string/login_dialog_account" />
                         <AutoCompleteTextView 
-	                         android:id="@+id/login_account" 
+	                         android:id="@+id/reg_account" 
 	                         android:layout_width="fill_parent" 
 	                         android:layout_height="wrap_content" 
 	                         android:layout_marginTop="10.0dip" 
@@ -56,6 +56,7 @@
 	                         android:hint="@string/login_dialog_account_hint" 
 	                         android:textSize="@dimen/text_size_16" 
 	                         android:maxLines="1" 
+	                         android:maxLength="20"
 	                         android:singleLine="true" 
 	                         android:selectAllOnFocus="true" 
 	                         android:inputType="textEmailAddress" />
@@ -81,7 +82,7 @@
 	                        android:textColor="#ff000000" 
 	                        android:text="@string/login_dialog_password" />
                         <EditText 
-	                        android:id="@+id/login_password" 
+	                        android:id="@+id/reg_password" 
 	                        android:layout_width="fill_parent" 
 	                        android:layout_height="wrap_content" 
 	                        android:layout_marginLeft="8.0dip" 
@@ -90,7 +91,42 @@
 	                        android:background="@null" 
 	                        android:hint="@string/login_dialog_password_hint" 
 	                        android:maxLines="1" 
+	                        android:maxLength="20"
 	                        android:password="true" 
+	                        android:singleLine="true" 
+	                        android:selectAllOnFocus="true" />
+                    </LinearLayout>
+                     <ImageView 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip" 
+	                    android:layout_marginLeft="2.0dip" 
+	                    android:layout_marginRight="2.0dip" 
+	                    android:src="@drawable/login_line" 
+	                    android:scaleType="fitXY" />
+                     <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="7.0dip">
+                        <TextView 
+	                        android:layout_width="wrap_content" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:textStyle="bold" 
+	                        android:textColor="#ff000000" 
+	                        android:text="@string/login_dialog_name" />
+                        <EditText 
+	                        android:id="@+id/reg_name" 
+	                        android:layout_width="fill_parent" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:layout_marginRight="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:background="@null" 
+	                        android:maxLength="10"
+	                        android:hint="@string/login_dialog_name_hint" 
+	                        android:maxLines="1" 
 	                        android:singleLine="true" 
 	                        android:selectAllOnFocus="true" />
                     </LinearLayout>
@@ -99,55 +135,38 @@
 	                android:orientation="vertical" 
 	                android:layout_width="fill_parent" 
 	                android:layout_height="wrap_content" 
-	                android:layout_below="@+id/login_user_table" 
-	                android:layout_alignLeft="@+id/login_user_table" 
-	                android:layout_alignRight="@+id/login_user_table"
+	                android:layout_below="@+id/reg_user_table" 
+	                android:layout_alignLeft="@+id/reg_user_table" 
+	                android:layout_alignRight="@+id/reg_user_table"
 	                android:stretchColumns="0,2" >
-                    <TableRow 
-	                    android:gravity="center_horizontal"
-	                    android:layout_width="wrap_content" 
-	                    android:layout_height="wrap_content" 
-	                    android:layout_marginTop="5.0dip">
-                        <CheckBox 
-	                        android:id="@+id/login_checkbox_rememberMe" 
-	                        android:layout_width="wrap_content" 
-	                        android:layout_height="wrap_content" 
-	                        android:layout_gravity="left|center" 
-	                        android:button="@drawable/login_checkbox_selector"
-	                        android:paddingLeft="30dip"
-	                        android:textColor="@color/black"
-	                        android:textSize="@dimen/text_size_13"
-	                        android:text="@string/login_dialog_rememberMe"
-	                        android:checked="true"/>
-                    </TableRow>
                     <LinearLayout 
 	                    android:layout_width="fill_parent" 
 	                    android:layout_height="wrap_content" 
 	                    android:layout_marginTop="5.0dip">
                         <Button 
-	                        android:id="@+id/login_btn_login" 
-	                        android:layout_width="fill_parent" 
-	                        android:layout_height="45dip" 
-	                        android:textSize="@dimen/text_size_20"
-	                        android:text="@string/login_dialog_login" 
-	                        android:background="@drawable/login_btn_selector" />
-                    </LinearLayout>
-                    <LinearLayout 
-	                    android:layout_width="fill_parent" 
-	                    android:layout_height="wrap_content" 
-	                    android:layout_marginTop="5.0dip">
-                        <Button 
-	                        android:id="@+id/reg_btn_login" 
+	                        android:id="@+id/reg_btn_reg" 
 	                        android:layout_width="fill_parent" 
 	                        android:layout_height="45dip" 
 	                        android:textSize="@dimen/text_size_20"
 	                        android:text="@string/login_dialog_reg" 
 	                        android:background="@drawable/login_btn_selector" />
                     </LinearLayout>
+                    <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip">
+                        <Button 
+	                        android:id="@+id/login_btn_reg" 
+	                        android:layout_width="fill_parent" 
+	                        android:layout_height="45dip" 
+	                        android:textSize="@dimen/text_size_20"
+	                        android:text="@string/login_dialog_login" 
+	                        android:background="@drawable/login_btn_selector" />
+                    </LinearLayout>
                 </TableLayout>
             </RelativeLayout>
             <View 
-	            android:id="@+id/login_loading" 
+	            android:id="@+id/reg_loading" 
 	            android:layout_width="150.0dip" 
 	            android:layout_height="150.0dip"
 	            android:layout_gravity="center" 
@@ -155,10 +174,10 @@
         </ViewSwitcher>
     </ScrollView>
     <ImageButton 
-	    android:id="@+id/login_close_button" 
+	    android:id="@+id/reg_close_button" 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content"
-	    android:layout_alignRight="@+id/login_scrollview" 
-	    android:layout_alignTop="@+id/login_scrollview"
+	    android:layout_alignRight="@+id/reg_scrollview" 
+	    android:layout_alignTop="@+id/reg_scrollview"
 	    android:background="@drawable/login_close_button"  />
 </RelativeLayout>

@@ -3,61 +3,61 @@
  	android:oneshot="false">
     <item android:duration="100">
         <layer-list>
-           
+            <item android:drawable="@drawable/circle0" />
             <item android:drawable="@drawable/login_loading_10" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-            
+            <item android:drawable="@drawable/circle1" />
             <item android:drawable="@drawable/login_loading_11" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-          
+          	<item android:drawable="@drawable/circle2" />
             <item android:drawable="@drawable/login_loading_12" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-           
+           <item android:drawable="@drawable/circle3" />
             <item android:drawable="@drawable/login_loading_13" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-           
+           <item android:drawable="@drawable/circle0" />
             <item android:drawable="@drawable/login_loading_14" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-            
+            <item android:drawable="@drawable/circle1" />
             <item android:drawable="@drawable/login_loading_15" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-         
+         	<item android:drawable="@drawable/circle2" />
             <item android:drawable="@drawable/login_loading_16" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-            
+            <item android:drawable="@drawable/circle3" />
             <item android:drawable="@drawable/login_loading_17" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-           
+           <item android:drawable="@drawable/circle0" />
             <item android:drawable="@drawable/login_loading_18" />
         </layer-list>
     </item>
     <item android:duration="100">
         <layer-list>
-           
+           <item android:drawable="@drawable/circle1" />
             <item android:drawable="@drawable/login_loading_19" />
         </layer-list>
     </item>

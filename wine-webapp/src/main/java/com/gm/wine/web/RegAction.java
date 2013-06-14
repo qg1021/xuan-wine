@@ -26,6 +26,9 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.web;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.convention.annotation.Namespace;
@@ -36,18 +39,15 @@ import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springside.modules.utils.web.struts2.Struts2Utils;
 
+import com.gm.wine.core.RoleManager;
 import com.gm.wine.core.UserManager;
+import com.gm.wine.entity.Role;
 import com.gm.wine.entity.User;
 import com.gm.wine.vo.GlobalMessage;
 import com.gm.wine.vo.UserVO;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -66,7 +66,7 @@ import com.opensymphony.xwork2.ActionSupport;
     "text/html" }),
     @Result(name = "error", type = "json", params = { "contentType",
     "text/html" }) })
-    public class LoginvalidateAction extends ActionSupport
+    public class RegAction extends ActionSupport
     {
 
     /**
@@ -80,6 +80,9 @@ import com.opensymphony.xwork2.ActionSupport;
     private UserManager             userManager;
 
     @Autowired
+    private RoleManager             roleManager;
+
+    @Autowired
     @Qualifier("org.springframework.security.authenticationManager")
     protected AuthenticationManager authenticationManager;
 
@@ -89,28 +92,27 @@ import com.opensymphony.xwork2.ActionSupport;
         HttpServletRequest request = Struts2Utils.getRequest();
         String loginName = request.getParameter("loginName");
         String password = request.getParameter("password");
+        String name = request.getParameter("name");
+
         UserVO u = new UserVO();
 
         try
         {
-            User user = userManager.getUserByUsername(loginName);
-            if (user != null)
+            boolean isOK = userManager.isLoginNameExists(loginName, null);
+            if (isOK)
             {
-                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                        loginName, password);
-                token.setDetails(new WebAuthenticationDetails(request));
-                Authentication authenticatedUser = authenticationManager
-                .authenticate(token);
-
-                SecurityContextHolder.getContext().setAuthentication(
-                        authenticatedUser);
-                request
-                .getSession()
-                .setAttribute(
-                        HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                        SecurityContextHolder.getContext());
+                User user = new User();
+                user.setLoginName(loginName);
+                user.setPassword(password);
+                user.setName(name);
+                user.setCreateDate(new Date());
+                List<Role> rlist = Lists.newArrayList();
+                rlist.add(roleManager.findByName(Role.ROLE_TYPE_0));
+                user.setRoleList(rlist);
+                user.setRoleName(Role.ROLE_TYPE_0);
+                userManager.save(user);
                 u.setErrorCode(GlobalMessage.SUCCESS_CODE);
-                u.setErrorMessage("登录成功");
+                u.setErrorMessage("注册成功");
                 u.setId(user.getId());
                 u.setLoginName(user.getLoginName());
                 u.setName(user.getName());
@@ -118,17 +120,27 @@ import com.opensymphony.xwork2.ActionSupport;
             else
             {
                 u.setErrorCode(GlobalMessage.ERROR_CODE);
-                u.setErrorMessage("用户不存在");
+                u.setErrorMessage("帐号已存在");
             }
         }
-        catch (AuthenticationException e)
+        catch (Exception e)
         {
             e.printStackTrace();
             u.setErrorCode(GlobalMessage.ERROR_CODE);
-            u.setErrorMessage("密码错误");
+            u.setErrorMessage("系统异常");
         }
 
         data = new Gson().toJson(u);
+        return SUCCESS;
+    }
+
+    public String checkUserExist() throws Exception
+    {
+        HttpServletRequest request = Struts2Utils.getRequest();
+        String loginName = request.getParameter("loginName");
+        data = new Gson()
+        .toJson(userManager.isLoginNameExists(loginName, null));
+        System.out.println("------------" + data);
         return SUCCESS;
     }
 
