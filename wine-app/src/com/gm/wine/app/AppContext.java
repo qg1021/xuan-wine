@@ -638,11 +638,14 @@ public class AppContext extends Application {
 	public UserVO loginVerify(String account, String pwd) throws AppException {
 		return ApiClient.login(this, account, pwd);
 	}
-	public boolean regVerify(String account) throws AppException{
-		return ApiClient.checkUserExist(this, account);
+	public boolean pubMessage(NoticeVO notice) throws AppException{
+		return ApiClient.pubMessage(this, notice.getTitle(), notice.getContent(), notice.getUser().getId());
 	}
 	public UserVO reg(String account,String password,String name) throws AppException{
 		return ApiClient.reg(this, account,password,name);
+	}
+	public UserVO modifyPass(String account,String opassword,String npassword) throws AppException{
+		return ApiClient.modifyPass(this, account,opassword,npassword);
 	}
 
 	public UserVO getLoginInfo() {
@@ -670,4 +673,5 @@ public class AppContext extends Application {
 			}
 		});
 	}
+	
 }

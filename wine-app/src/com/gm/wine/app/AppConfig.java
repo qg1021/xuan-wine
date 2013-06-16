@@ -14,6 +14,10 @@ import com.gm.wine.app.common.StringUtils;
 
 public class AppConfig {
 	private final static String APP_CONFIG = "wine_config";
+	
+	public final static String TEMP_POST_TITLE = "temp_post_title";
+	public final static String TEMP_POST_CATALOG = "temp_post_catalog";
+	public final static String TEMP_POST_CONTENT = "temp_post_content";
 
 	public final static String CONF_APP_UNIQUEID = "APP_UNIQUEID";
 	public final static String CONF_COOKIE = "cookie";

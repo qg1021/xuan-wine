@@ -26,6 +26,7 @@
 //-------------------------------------------------------------------------
 package com.gm.wine.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ import org.springside.modules.utils.web.struts2.Struts2Utils;
 import cn.common.lib.springside.util.ParamPropertyUtils;
 
 import com.gm.wine.core.NoticeManager;
+import com.gm.wine.core.UserManager;
 import com.gm.wine.entity.Notice;
 import com.gm.wine.entity.User;
 import com.gm.wine.vo.GlobalMessage;
@@ -80,6 +82,9 @@ import com.opensymphony.xwork2.ActionSupport;
 
     @Autowired
     private NoticeManager     noticeManager;
+
+    @Autowired
+    private UserManager       userManager;
 
     @Override
     public String execute() throws Exception
@@ -143,6 +148,36 @@ import com.opensymphony.xwork2.ActionSupport;
         }
 
         data = new Gson().toJson(nv);
+        return SUCCESS;
+    }
+
+    /**
+     * 发布留言公告
+     */
+    public String save() throws Exception
+    {
+        boolean isOk = false;
+        try
+        {
+            HttpServletRequest request = Struts2Utils.getRequest();
+            String userId = request.getParameter("userid");
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            Notice n = new Notice();
+            n.setTitle(title);
+            n.setContent(content);
+            n.setCreatedate(new Date());
+            n.setTopic(true);
+            n.setUser(userManager.get(Long.parseLong(userId)));
+            noticeManager.save(n);
+            isOk = true;
+        }
+        catch (Exception e)
+        {
+            isOk = false;
+            e.printStackTrace();
+        }
+        data = new Gson().toJson(isOk);
         return SUCCESS;
     }
 

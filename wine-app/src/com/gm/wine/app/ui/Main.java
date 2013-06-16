@@ -645,7 +645,7 @@ public class Main extends BaseActivity {
 		mHeadPub_post.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// UIHelper.showQuestionPub(v.getContext());
+				UIHelper.showMessagePub(v.getContext());
 			}
 		});
 

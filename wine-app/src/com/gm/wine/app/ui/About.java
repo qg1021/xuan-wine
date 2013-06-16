@@ -20,7 +20,7 @@ import com.gm.wine.app.common.UpdateManager;
 public class About extends BaseActivity {
 
 	private TextView mVersion;
-	private Button mUpdate;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +37,5 @@ public class About extends BaseActivity {
 			e.printStackTrace(System.err);
 		}
 
-		mUpdate = (Button) findViewById(R.id.about_update);
-		mUpdate.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				UpdateManager.getUpdateManager().checkAppUpdate(About.this,
-						true);
-			}
-		});
 	}
 }

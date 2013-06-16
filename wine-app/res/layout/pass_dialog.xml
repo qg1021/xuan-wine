@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/passdialog_space" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent">
+    <ScrollView 
+    	android:id="@+id/pass_scrollview" 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content" 
+    	android:layout_centerInParent="true"
+    	android:paddingTop="14.0dip" 
+    	android:paddingLeft="14.0dip" 
+    	android:paddingRight="14.0dip" 
+    	android:scrollbars="none" >
+        <ViewSwitcher 
+        	android:id="@+id/passdialog_view_switcher" 
+        	android:layout_width="fill_parent" 
+        	android:layout_height="wrap_content">
+            <RelativeLayout 
+            	android:layout_width="fill_parent" 
+            	android:layout_height="fill_parent"
+            	android:background="@drawable/login_bg" 
+            	android:paddingTop="30.0dip"
+            	android:paddingBottom="20.0dip" >
+                <TableLayout 
+	                android:orientation="vertical" 
+	                android:id="@+id/pass_user_table" 
+	                android:layout_width="fill_parent" 
+	                android:layout_height="wrap_content" 
+	                android:layout_marginTop="10.0dip" 
+	                android:layout_marginLeft="15.0dip" 
+	                android:layout_marginRight="15.0dip" 
+	                android:layout_centerHorizontal="true"
+	                android:background="@drawable/login_user_table_bg" >
+                    <LinearLayout 
+                    	android:id="@+id/pass_uly"
+                     	android:layout_width="fill_parent" 
+                     	android:layout_height="wrap_content">
+                        <TextView 
+	                         android:layout_width="wrap_content" 
+	                         android:layout_height="wrap_content" 
+	                         android:layout_marginLeft="8.0dip" 
+	                         android:layout_marginTop="10.0dip" 
+	                         android:textSize="@dimen/text_size_16" 
+	                         android:textStyle="bold" 
+	                         android:textColor="#ff000000" 
+	                         android:text="@string/login_dialog_account" />
+                        <TextView 
+	                         android:id="@+id/pass_account" 
+	                         android:layout_width="fill_parent" 
+	                         android:layout_height="wrap_content" 
+	                         android:layout_marginTop="10.0dip" 
+	                         android:layout_marginLeft="8.0dip" 
+	                         android:layout_marginRight="8.0dip" 
+	                          android:textStyle="bold" 
+	                         android:textColor="#ff000000"  
+	                         />
+                    </LinearLayout>
+                    <ImageView 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip" 
+	                    android:layout_marginLeft="2.0dip" 
+	                    android:layout_marginRight="2.0dip" 
+	                    android:src="@drawable/login_line" 
+	                    android:scaleType="fitXY" />
+                    <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="7.0dip">
+                        <TextView 
+	                        android:layout_width="wrap_content" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:textStyle="bold" 
+	                        android:textColor="#ff000000" 
+	                        android:text="@string/login_dialog_password_old" />
+                        <EditText 
+	                        android:id="@+id/reg_old_password" 
+	                        android:layout_width="fill_parent" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:layout_marginRight="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:background="@null" 
+	                        android:hint="@string/login_dialog_password_old_hint" 
+	                        android:maxLines="1" 
+	                        android:maxLength="20"
+	                        android:password="true" 
+	                        android:singleLine="true" 
+	                        android:selectAllOnFocus="true" />
+                    </LinearLayout>
+                     <ImageView 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip" 
+	                    android:layout_marginLeft="2.0dip" 
+	                    android:layout_marginRight="2.0dip" 
+	                    android:src="@drawable/login_line" 
+	                    android:scaleType="fitXY" />
+                    <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="7.0dip">
+                        <TextView 
+	                        android:layout_width="wrap_content" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:textStyle="bold" 
+	                        android:textColor="#ff000000" 
+	                        android:text="@string/login_dialog_password_new" />
+                        <EditText 
+	                        android:id="@+id/reg_new_password" 
+	                        android:layout_width="fill_parent" 
+	                        android:layout_height="wrap_content" 
+	                        android:layout_marginLeft="8.0dip" 
+	                        android:layout_marginRight="8.0dip" 
+	                        android:textSize="@dimen/text_size_16" 
+	                        android:background="@null" 
+	                        android:hint="@string/login_dialog_password_new_hint" 
+	                        android:maxLines="1" 
+	                        android:maxLength="20"
+	                        android:password="true" 
+	                        android:singleLine="true" 
+	                        android:selectAllOnFocus="true" />
+                    </LinearLayout>
+                     
+                </TableLayout>
+                <TableLayout 
+	                android:orientation="vertical" 
+	                android:layout_width="fill_parent" 
+	                android:layout_height="wrap_content" 
+	                android:layout_below="@+id/pass_user_table" 
+	                android:layout_alignLeft="@+id/pass_user_table" 
+	                android:layout_alignRight="@+id/pass_user_table"
+	                android:stretchColumns="0,2" >
+                    <LinearLayout 
+	                    android:layout_width="fill_parent" 
+	                    android:layout_height="wrap_content" 
+	                    android:layout_marginTop="5.0dip">
+                    </LinearLayout>
+
+                </TableLayout>
+
+                <Button
+                    android:id="@+id/pass_btn_pass"
+                    android:layout_width="fill_parent"
+                    android:layout_height="45dip"
+                    android:layout_alignLeft="@+id/pass_user_table"
+                    android:layout_alignRight="@+id/pass_user_table"
+                    android:layout_below="@+id/pass_user_table"
+                    android:layout_marginTop="26dp"
+                    android:background="@drawable/login_btn_selector"
+                    android:text="@string/login_dialog_modifypass"
+                    android:textSize="@dimen/text_size_20" />
+
+            </RelativeLayout>
+            <View 
+	            android:id="@+id/reg_loading" 
+	            android:layout_width="150.0dip" 
+	            android:layout_height="150.0dip"
+	            android:layout_gravity="center" 
+	            android:background="@anim/login_loading"/>
+        </ViewSwitcher>
+    </ScrollView>
+    <ImageButton 
+	    android:id="@+id/pass_close_button" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:layout_alignRight="@+id/pass_scrollview" 
+	    android:layout_alignTop="@+id/pass_scrollview"
+	    android:background="@drawable/login_close_button"  />
+</RelativeLayout>

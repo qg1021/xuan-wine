@@ -28,9 +28,8 @@ public class Setting extends PreferenceActivity{
 	
 	SharedPreferences mPreferences;
 	Preference cache;
-	Preference feedback;
-	Preference update;
 	Preference about;
+	Preference mpass;
 	CheckBoxPreference loadimage;
 	CheckBoxPreference scroll;
 	CheckBoxPreference voice;
@@ -60,7 +59,7 @@ public class Setting extends PreferenceActivity{
 		final AppContext ac = (AppContext)getApplication();
 
 		
-;
+
 		
 		//加载图片loadimage
 		loadimage = (CheckBoxPreference)findPreference("loadimage");
@@ -122,15 +121,7 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//启动检查更新
-		checkup = (CheckBoxPreference)findPreference("checkup");
-		checkup.setChecked(ac.isCheckUp());
-		checkup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				ac.setConfigCheckUp(checkup.isChecked());
-				return true;
-			}
-		});
+
 		
 		//计算缓存大小		
 		long fileSize = 0;
@@ -159,20 +150,18 @@ public class Setting extends PreferenceActivity{
 			}
 		});
 		
-		//意见反馈
-		feedback = (Preference)findPreference("feedback");
-		feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				//UIHelper.showFeedBack(Setting.this);
-				return true;
-			}
-		});
+
 		
-		//版本更新
-		update = (Preference)findPreference("update");
-		update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+		//关于我们
+		mpass = (Preference)findPreference("spass");
+		mpass.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				UpdateManager.getUpdateManager().checkAppUpdate(Setting.this, true);
+				if(!ac.isLogin()){
+					UIHelper.showLoginDialog(Setting.this);
+				}else{
+					//跳转修改密码页面
+					UIHelper.showPassDialog(Setting.this);
+				}
 				return true;
 			}
 		});
@@ -181,7 +170,7 @@ public class Setting extends PreferenceActivity{
 		about = (Preference)findPreference("about");
 		about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				//UIHelper.showAbout(Setting.this);
+				UIHelper.showAbout(Setting.this);
 				return true;
 			}
 		});

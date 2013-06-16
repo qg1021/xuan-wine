@@ -407,7 +407,7 @@ table {
     width: 120px;
 }
 #entry .message{color:#090!important;}
-.content{padding:10px 10px 10px 10px;border: 1px solid #D1D1D1; border-radius: 1px 1px 1px 1px;margin-bottom: 10px;}
+.content{padding:10px 10px 10px 10px;border: 1px solid #D1D1D1; border-radius: 1px 1px 1px 1px;margin-bottom: 10px;min-height:300px;}
 
 .course_btn_orange{
 	background:url(../images/btn.gif) no-repeat -150px 0px;

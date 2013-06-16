@@ -65,6 +65,19 @@ public class NoticeManager extends CacheEntityManager<Notice, Long>
 
     /**
      * 
+     * 统计未回复的留言数
+     * 
+     * @since 2013-6-16
+     * @author qingang
+     * @return
+     */
+    public long countNoReplyNum()
+    {
+        return noticeDao.countNoReplyNum();
+    }
+
+    /**
+     * 
      * 批量删除
      * 
      * @since 2012-7-26

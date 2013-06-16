@@ -9,12 +9,14 @@
 <%@ page import="org.springframework.web.multipart.MultipartHttpServletRequest"%>
 <%@ page import="org.springframework.web.multipart.commons.CommonsMultipartResolver"%>
 <%@ page import="org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper"%>
+<%@page import="com.gm.wine.contant.Global"%>
+
 <%
 	//文件保存目录路径     //D:\Tomcat6.0\webapps\zswz\attached/ 
 	String savePath = request.getSession().getServletContext().getRealPath("/")+ "upload/news/";
 	//文件保存目录URL /zswz/attached/ 
 	String saveUrl = request.getContextPath() + "/upload/news/";
-	String displayUrl="http://localhost:8088/wine-webapp"+"/upload/news/";
+	String displayUrl=Global.appurl+"/upload/news/";
 	//定义允许上传的文件扩展名 
 	//定义允许上传的文件扩展名 
 	HashMap<String, String> extMap = new HashMap<String, String>();

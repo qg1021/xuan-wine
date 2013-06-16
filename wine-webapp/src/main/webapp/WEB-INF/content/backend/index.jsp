@@ -14,8 +14,13 @@
 	<%@ include file="/common/header.jsp"%>
 	<%@ include file="/common/menu.jsp"%>
 	<div class="w">
-		<div style="padding-top:20px;" class="content">
-			欢迎进入后台！
+		<div   class="content" align="center">
+			<div style="margin-top:100px;">
+			<h2>欢迎进入后台！</h2>
+			<s:if test="noReplyNum>0">
+				<div>有<font color="red">${noReplyNum}</font>条留言需回复!<a href="notice.action?filter_EQB_tanswer=false"><font color="red">回复留言</font></a></div>
+			</s:if>
+			</div>
 		</div>
 	</div>
 	<%@ include file="/common/footer.jsp" %>

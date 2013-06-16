@@ -597,5 +597,57 @@ public class ApiClient {
 			throw AppException.network(e);
 		}
 	}
+	/**
+	 * 修改密码
+	 * @param appContext
+	 * @param username
+	 * @param opassword
+	 * @param npassword
+	 * @return
+	 * @throws AppException
+	 */
+	public static UserVO modifyPass(AppContext appContext, String username,String opassword,String npassword)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("username", username);
+		params.put("oldpass",opassword);
+		params.put("newpass", npassword);
+
+		try {
+			return new Gson().fromJson(_post(appContext,URLs.USER_PASSWORD, params),
+					UserVO.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
+	/**
+	 * 发布留言
+	 * @param appContext
+	 * @param title
+	 * @param content
+	 * @param userid
+	 * @return
+	 * @throws AppException
+	 */
+	public static boolean pubMessage(AppContext appContext, String title,String content,long userid)
+			throws AppException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("title", title);
+		params.put("content",content);
+		params.put("userid", userid);
+
+		try {
+			return new Gson().fromJson(_post(appContext,URLs.NOTICE_PUB, params),
+					Boolean.class);
+		} catch (Exception e) {
+			if (e instanceof AppException) {
+				throw (AppException) e;
+			}
+			throw AppException.network(e);
+		}
+	}
 
 }

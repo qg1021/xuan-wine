@@ -52,6 +52,17 @@ public interface NoticeDao extends BaseDao<Notice, Long>
      */
     public void batchDelete(List<Long> ids);
 
+    /**
+     * 
+     * 统计未回复的留言数
+     * 
+     * @since 2013-6-16
+     * @author qingang
+     * @param filters
+     * @return
+     */
+    public long countNoReplyNum();
+
 
 
 }

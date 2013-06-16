@@ -18,7 +18,7 @@ public class URLs implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public final static String HOST = "192.168.1.100:8088/wine-webapp";// www.crafts-bamboo.com/wine
+	public final static String HOST = "www.crafts-bamboo.com/wine";// www.crafts-bamboo.com/wine
 	public final static String HTTP = "http://";
 
 	private final static String URL_SPLITTER = "/";
@@ -34,10 +34,11 @@ public class URLs implements Serializable {
 
 	public final static String NOTICE_LIST = URL_API_HOST + "notice.action";// 留言公告
 	public final static String NOTICE_DETAIL = URL_API_HOST+ "notice!detail.action";// 留言公告明细
+	public final static String NOTICE_PUB = URL_API_HOST + "notice!save.action";// 发布留言
 
 	public final static String USER_REGISTER = URL_API_HOST + "register.action";// 用户注册
 	public final static String USER_PASSWORD = URL_API_HOST
-			+ "modifypass.action";// 修改密码
+			+ "reg!modifypass.action";// 修改密码
 
 	public final static String PRODUCT_LIST = URL_API_HOST + "product.action";// 产品列表
 	public final static String PRODUCT_DETAIL = URL_API_HOST

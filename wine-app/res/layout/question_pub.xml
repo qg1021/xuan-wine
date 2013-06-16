@@ -36,30 +36,14 @@
 		        android:hint="输入标题"/>
 	    </LinearLayout>
 
-	    <LinearLayout
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="2.0dip">
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_vertical"
-	            android:text="分类："
-	            android:textColor="@color/black"
-	            android:textSize="15sp" />
-	        <Spinner
-	            android:id="@+id/question_pub_catalog"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:entries="@array/post_pub_options" />
-	    </LinearLayout>
+
+
 	    <TextView
 	        android:id="@+id/textView1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginLeft="2.0dip"
-	        android:text="请对问题进行详细描述："
+	        android:text="请对留言进行详细描述："
 	        android:textColor="@color/author_text" />
 
 	    <EditText
@@ -70,16 +54,8 @@
 	        android:lines="5"
 	        android:autoLink="web"
 	        android:gravity="top"
-	        android:hint="输入提问内容"/>
-          <CheckBox 
-            android:id="@+id/question_pub_email" 
-            android:layout_width="wrap_content" 
-            android:layout_height="25dip" 
-            android:layout_marginLeft="3.0dip"
-            android:layout_gravity="left|center" 
-            android:button="@drawable/login_checkbox_selector"
-            android:textColor="@color/black"
-            android:text="有人回答时邮件通知我"/>
+	        android:hint="输入留言内容"/>
+
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -86,6 +86,48 @@ import com.opensymphony.xwork2.ActionSupport;
     @Qualifier("org.springframework.security.authenticationManager")
     protected AuthenticationManager authenticationManager;
 
+    public String modifypass() throws Exception
+    {
+
+
+
+        UserVO u = new UserVO();
+
+        try
+        {
+            HttpServletRequest request = Struts2Utils.getRequest();
+            String username = request.getParameter("username");
+            String newpass = request.getParameter("newpass");
+            String oldpass = request.getParameter("oldpass");
+            User user = userManager.getUserByUsername(username);
+            boolean isOK = oldpass.equals(user.getPassword());
+            if (isOK)
+            {
+                user.setPassword(newpass);
+                userManager.save(user);
+                u.setErrorCode(GlobalMessage.SUCCESS_CODE);
+                u.setErrorMessage("密码修改成功,请重新登录");
+                u.setId(user.getId());
+                u.setLoginName(user.getLoginName());
+                u.setName(user.getName());
+            }
+            else
+            {
+                u.setErrorCode(GlobalMessage.ERROR_CODE);
+                u.setErrorMessage("旧密码输入错误");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            u.setErrorCode(GlobalMessage.ERROR_CODE);
+            u.setErrorMessage("系统异常");
+        }
+
+        data = new Gson().toJson(u);
+        return SUCCESS;
+    }
+
     @Override
     public String execute() throws Exception
     {
@@ -140,7 +182,6 @@ import com.opensymphony.xwork2.ActionSupport;
         String loginName = request.getParameter("loginName");
         data = new Gson()
         .toJson(userManager.isLoginNameExists(loginName, null));
-        System.out.println("------------" + data);
         return SUCCESS;
     }
 

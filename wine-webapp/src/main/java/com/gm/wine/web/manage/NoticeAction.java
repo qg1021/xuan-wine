@@ -209,6 +209,7 @@ public class NoticeAction extends CrudActionSupport<Notice>
                 p.setTanswer(true);
                 noticeManager.save(p);
                 entity.setAnswer(true);
+                entity.setTanswer(true);
                 entity.setParent(p);
                 entity.setCreatedate(new Date());
                 entity.setUser(userManager

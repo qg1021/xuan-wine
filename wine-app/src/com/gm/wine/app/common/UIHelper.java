@@ -7,8 +7,13 @@ import greendroid.widget.QuickAction;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.gm.wine.app.ui.About;
+
+
+
+
 
 
 
@@ -31,7 +36,9 @@ import com.gm.wine.app.ui.ImageZoomDialog;
 import com.gm.wine.app.ui.LoginDialog;
 import com.gm.wine.app.ui.Main;
 import com.gm.wine.app.ui.MessageDetail;
+import com.gm.wine.app.ui.MessagePub;
 import com.gm.wine.app.ui.NewsDetail;
+import com.gm.wine.app.ui.PassDialog;
 import com.gm.wine.app.ui.ProductDetail;
 import com.gm.wine.app.ui.Setting;
 import com.gm.wine.vo.NewsVO;
@@ -48,6 +55,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import android.net.Uri;
 import android.os.Handler;
@@ -55,9 +63,11 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 
 import android.text.style.StyleSpan;
 
@@ -115,6 +125,11 @@ public class UIHelper {
 			intent.putExtra("LOGINTYPE", LoginDialog.LOGIN_SETTING);
 		else
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+	public static void showPassDialog(Context context)
+	{
+		Intent intent = new Intent(context, PassDialog.class);
 		context.startActivity(intent);
 	}
 	
@@ -385,6 +400,15 @@ public class UIHelper {
 				break;
 		}
 	}
+	/**
+	 * 显示我要提问页面
+	 * @param context
+	 */
+	public static void showMessagePub(Context context)
+	{
+		Intent intent = new Intent(context, MessagePub.class);
+		context.startActivity(intent);
+	}
 	
 	/**
 	 * 打开浏览器
@@ -601,17 +625,16 @@ public class UIHelper {
 			}
 		};
 	}
-	
 	/**
-	 * ��ʾ��������
+	 * 显示关于我们
 	 * @param context
 	 */
-//	public static void showAbout(Context context)
-//	{
-//		Intent intent = new Intent(context, About.class);
-//		context.startActivity(intent);
-//	}
-	
+	public static void showAbout(Context context)
+	{
+		Intent intent = new Intent(context, About.class);
+		context.startActivity(intent);
+	}
+
 
 	
 	/**
@@ -816,5 +839,29 @@ public class UIHelper {
 			}
 		});
 		builder.show();
+	}
+	/**
+	 * 编辑器显示保存的草稿
+	 * @param context
+	 * @param editer
+	 * @param temlKey
+	 */
+	public static void showTempEditContent(Activity context, EditText editer, String temlKey) {
+		String tempContent = ((AppContext)context.getApplication()).getProperty(temlKey);
+		if(!StringUtils.isEmpty(tempContent)) {
+			SpannableStringBuilder builder = parseFaceByText(context, tempContent);
+			editer.setText(builder);
+			editer.setSelection(tempContent.length());//设置光标位置
+		}
+	}
+	/**
+	 * 将[12]之类的字符串替换为表情
+	 * @param context
+	 * @param content
+	 */
+	public static SpannableStringBuilder parseFaceByText(Context context, String content) {
+		SpannableStringBuilder builder = new SpannableStringBuilder(content);
+		
+		return builder;
 	}
 }

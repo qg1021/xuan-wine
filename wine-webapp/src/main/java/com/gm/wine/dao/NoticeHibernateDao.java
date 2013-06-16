@@ -46,7 +46,7 @@ import com.gm.wine.entity.Notice;
  */
 @Component
 public class NoticeHibernateDao extends HibernateDao<Notice, Long> implements
-        NoticeDao
+NoticeDao
 {
     /**
      * {@inheritDoc}
@@ -60,6 +60,19 @@ public class NoticeHibernateDao extends HibernateDao<Notice, Long> implements
         Map<String, List<Long>> values = Collections.singletonMap("ids", ids);
         super.batchExecute(hql, values);
 
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @since 2013-6-16
+     * @see com.gm.wine.api.NoticeDao#countNoReplyNum(java.util.List)
+     */
+    @Override
+    public long countNoReplyNum()
+    {
+        return super
+                .countHqlResult("from Notice where topic = true and tanswer = false ");
     }
 
 
