@@ -123,7 +123,7 @@
 	String newImgName = df.format(new Date()) + "_"
 			+ new Random().nextInt(1000) + "." + fileExt;
 	byte[] buffer = new byte[1024]; //获取文件输出流 
-	FileOutputStream fos = new FileOutputStream(savePath + "/"
+	FileOutputStream fos = new FileOutputStream(savePath
 			+ newImgName);
 	//获取内存中当前文件输入流 
 	//InputStream in = new FileInputStream(file);
@@ -141,7 +141,8 @@
 	//发送给 KE  
 	JSONObject obj = new JSONObject();
 	obj.put("error", 0);
-	obj.put("url", displayUrl+ "/" + newImgName);
+	obj.put("url", displayUrl+newImgName);
+	//System.out.println(displayUrl+newImgName);
 	///zswz/attached/image/20111129/  image 20111129195421_593.jpg 
 	out.println(obj.toJSONString());
 %>
